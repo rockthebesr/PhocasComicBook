@@ -21,10 +21,16 @@ var Router = (function () {
         router.get('/', function (req, res, next) {
             res.render('index', { title: 'Express' });
         });
-        /* GET Hello World page. */
-        router.get('/helloworld', function (req, res) {
-            res.render('helloworld', { title: 'Hello, World!' });
+        // /* GET Hello World page. */
+        // router.get('/helloworld', function (req, res) {
+        //     res.render('helloworld', { title: 'Hello, World!' });
+        // });
+
+        /* Get Comic page. */
+        router.get('/comic_page', function (req, res) {
+            res.render('comic_page', { title: 'comic_page'});
         });
+
         /* GET Userlist page. */
         router.get('/userlist', function (req, res) {
             var db = req.db;
