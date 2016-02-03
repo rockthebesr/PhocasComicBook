@@ -21,16 +21,10 @@ var Router = (function () {
         router.get('/', function (req, res, next) {
             res.render('index', { title: 'Express' });
         });
-        // /* GET Hello World page. */
-        // router.get('/helloworld', function (req, res) {
-        //     res.render('helloworld', { title: 'Hello, World!' });
-        // });
-
-        /* Get Comic page. */
-        router.get('/comic_page', function (req, res) {
-            res.render('comic_page', { title: 'comic_page'});
+        /* GET Hello World page. */
+        router.get('/helloworld', function (req, res) {
+            res.render('helloworld', { title: 'Hello, World!' });
         });
-
         /* GET Userlist page. */
         router.get('/userlist', function (req, res) {
             var db = req.db;
@@ -67,6 +61,22 @@ var Router = (function () {
                     res.redirect("userlist");
                 }
             });
+        });
+        /* Get Comic page. */
+        router.get('/comic_page', function (req, res) {
+            res.render('comic_page', { title: 'comic_page' });
+        });
+        /* Get Manage Comics page. */
+        router.get('/edit_comic', function (req, res) {
+            res.render('edit_comic', { title: 'edit_comic' });
+        });
+        /* Get Edit Comic page. */
+        router.get('/manage_comics', function (req, res) {
+            res.render('manage_comics', { title: 'manage_comics' });
+        });
+        /* Save image to database*/
+        router.get('/upload', function (req, res) {
+            //TODO
         });
         this.router = router;
     }
