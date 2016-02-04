@@ -117,3 +117,8 @@
   left: 0;
 }
 
+.uploadedImage {
+    width: 200px;
+    height: 200px;
+}
+
