@@ -22,7 +22,7 @@ class Application {
     var monk = require('monk');
     var db = monk('localhost:27017/phocas');
 
-    var routes = require('./routes/index');
+    var routes = require('./routes/home_page');
     var users = require('./routes/users');
 
     var app = express();

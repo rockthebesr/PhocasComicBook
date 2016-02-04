@@ -21,6 +21,27 @@
     padding:5px;
     text-align: center;
 }
+
+#login{
+    line-height:30px;
+    background-color:#eeeeee;
+    height:0px;
+    width:200px;
+    float:right;
+    padding:0px;
+    text-align: center;
+}
+
+#signup{
+    line-height:30px;
+    background-color:#eeeeee;
+    height:0px;
+    width:500px;
+    float:right;
+    padding:0px;
+    text-align: center;
+}
+
 #section {
     width:600px;
     float:left;
