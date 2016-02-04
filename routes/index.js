@@ -21,7 +21,15 @@ var Router = (function () {
         var upload = multer({ dest: './public/uploads' });
         /* GET home page. */
         router.get('/', function (req, res, next) {
-            res.render('index', { title: 'Express' });
+            res.render('home_page', { title: 'Express' });
+        });
+        /* GET login page. */
+        router.get('/log_in', function (req, res, next) {
+            res.render('log_in', { title: 'log in' });
+        });
+        /* GET signup page. */
+        router.get('/sign_up', function (req, res, next) {
+            res.render('sign_up', { title: 'sign up' });
         });
         /* GET Hello World page. */
         router.get('/helloworld', function (req, res) {
@@ -111,4 +119,3 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
-//# sourceMappingURL=index.js.map
