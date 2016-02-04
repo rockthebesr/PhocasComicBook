@@ -17,6 +17,8 @@ var Router = (function () {
     function Router() {
         var express = require('express');
         var router = express.Router();
+        var multer = require('multer');
+        var upload = multer({ dest: './uploads/' });
         /* GET home page. */
         router.get('/', function (req, res, next) {
             res.render('index', { title: 'Express' });
@@ -75,8 +77,27 @@ var Router = (function () {
             res.render('manage_comics', { title: 'manage_comics' });
         });
         /* Save image to database*/
-        router.get('/upload', function (req, res) {
-            //TODO
+        router.post('/upload', upload.single("image"), function (req, res) {
+            var fs = require("fs");
+            var oldPath = req.file.path;
+            var newPath = oldPath += '.jpg';
+            fs.rename(oldPath, newPath, function () {
+                var db = req.db;
+                // Set our collection
+                var collection = db.get('images');
+                collection.insert({
+                    "comicSetTitle": "",
+                    "imageUrl": newPath
+                }, function (err, doc) {
+                    if (err) {
+                        // If it failed, return error
+                        res.send("There was a problem adding the information to the database.");
+                    }
+                    else {
+                        res.redirect('edit_comic');
+                    }
+                });
+            });
         });
         this.router = router;
     }
