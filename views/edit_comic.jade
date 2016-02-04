@@ -4,3 +4,8 @@ block content
     form#forUploadImage(name="uploadImage",method="post",action="/upload" enctype="multipart/form-data") Select an image to upload:
         input#inputImage(type="file", name="image")
         button#btnUpload(type="submit") Upload Image
+
+    ul
+        each image, i in imageList
+            li
+                img(class="uploadedImage", src='#{image.imageUrl}')

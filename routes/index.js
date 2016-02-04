@@ -18,7 +18,7 @@ var Router = (function () {
         var express = require('express');
         var router = express.Router();
         var multer = require('multer');
-        var upload = multer({ dest: './uploads/' });
+        var upload = multer({ dest: './public/uploads' });
         /* GET home page. */
         router.get('/', function (req, res, next) {
             res.render('index', { title: 'Express' });
@@ -68,11 +68,17 @@ var Router = (function () {
         router.get('/comic_page', function (req, res) {
             res.render('comic_page', { title: 'comic_page' });
         });
-        /* Get Manage Comics page. */
+        /* Get Edit Comics page. */
         router.get('/edit_comic', function (req, res) {
-            res.render('edit_comic', { title: 'edit_comic' });
+            var db = req.db;
+            var collection = db.get('uploadedImages');
+            collection.find({}, {}, function (e, docs) {
+                res.render('edit_comic', {
+                    "imageList": docs
+                });
+            });
         });
-        /* Get Edit Comic page. */
+        /* Get Manage Comics page. */
         router.get('/manage_comics', function (req, res) {
             res.render('manage_comics', { title: 'manage_comics' });
         });
@@ -80,14 +86,14 @@ var Router = (function () {
         router.post('/upload', upload.single("image"), function (req, res) {
             var fs = require("fs");
             var oldPath = req.file.path;
-            var newPath = oldPath += '.jpg';
+            var newPath = oldPath + '.jpg';
             fs.rename(oldPath, newPath, function () {
                 var db = req.db;
                 // Set our collection
-                var collection = db.get('images');
+                var collection = db.get('uploadedImages');
                 collection.insert({
                     "comicSetTitle": "",
-                    "imageUrl": newPath
+                    "imageUrl": newPath.slice(7, newPath.length)
                 }, function (err, doc) {
                     if (err) {
                         // If it failed, return error
