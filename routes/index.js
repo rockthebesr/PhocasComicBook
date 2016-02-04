@@ -45,6 +45,31 @@ var Router = (function () {
         router.get('/newuser', function (req, res) {
             res.render('newuser', { title: 'Add New User' });
         });
+        /* Get New Sign in Page */
+        router.get('/sign_in', function (req, res) {
+            res.render('sign_in', { title: 'Sign In' });
+        });
+
+        router.post('/sign_in', function (req, res) {
+            var db = req.db;
+            var collection = db.get('usercollection');
+
+            collection.findOne({ username: req.body.username}, function(err, user) {
+                if (!user) {
+                    res.send( 'Invalid username or password');
+                }   else {
+                    if (req.body.password === user.password) {
+                        res.redirect('/comic_page');
+                    } else {
+                        res.render('Invalid username or password');
+                    }
+                }
+                });
+                });
+            
+
+            
+            
         /* POST to Add User Service */
         router.post('/adduser', function (req, res) {
             // Set our internal DB variable
