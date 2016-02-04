@@ -41,8 +41,8 @@ class Router {
     });
 
     /* GET login page. */
-    router.get('/log_in', function(req, res, next) {
-      res.render('log_in', { title: 'log in' });
+    router.get('/sign_in', function(req, res, next) {
+      res.render('sign_in', { title: 'sign in' });
     });
 
     /* GET signup page. */
