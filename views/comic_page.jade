@@ -1,17 +1,24 @@
 extends layout
 
+
 block content
     #header
       h1 Team Phocas here!
     #next
-      b1.nextButton(style='vertical-align:middle')
+      script(src='/javascript/functions.js')
+      b1.nextButton(style='vertical-align:middle', onclick="nextPic()")
         span Next 
     #prev
-      b2(class="prevButton")
+      b2(class="prevButton", onclick="prevPic()")
         span Previous
     #section
-      h2 Boom Shakalaka
-      img(src="images/comic_example.jpg", alt = "img should be here")
+    //   h2 title
+    //   ul
+    //         each image, i in imageList
+    //             li
+    //                 img(class="uploadedImage", src='#{image.imageUrl}')
+        h2 Yeah!~
+    h2 Yeah!~  
     #footer
       | Copyright © Phocas
   

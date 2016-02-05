@@ -101,8 +101,17 @@ class Router {
     });
 
     /* Get Comic page. */
-    router.get('/comic_page', function (req, res) {
-      res.render('comic_page', { title: 'comic_page'});
+    router.get('/comic_page/:comic_set_title', function (req, res) {
+        var db = req.db;
+        var collection = db.get('uploadedSets');
+        var comicSetTitle = req.params.comic_set_title;
+      collection.find({title : comicSetTitle}, function(docs){
+          res.render('comic_page', {
+              "comicSet" : docs,
+              "title": docs.title,
+              "imageList": docs.imageList
+          });
+      });
     });
 
 
