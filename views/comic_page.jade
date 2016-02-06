@@ -1,11 +1,11 @@
 extends layout
 
+script(src='/javascript/comic_page.js')
 
 block content
     #header
       h1 Team Phocas here!
     #next
-      script(src='/javascript/functions.js')
       b1.nextButton(style='vertical-align:middle', onclick="nextPic()")
         span Next 
     #prev

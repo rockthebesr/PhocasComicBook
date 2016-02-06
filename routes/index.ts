@@ -157,6 +157,10 @@ class Router {
       });
     });
 
+    router.post('/uploadComicSet', function(req, res) {
+      res.redirect('newuser');
+    });
+
     this.router = router;
   }
 

@@ -1,11 +1,20 @@
 extends layout
 
+script(src= '/javascript/edit_comic.js').
+    var uploadImageList =!{JSON.stringify(imageList)}
+    var imageList = imageList || {};
+
 block content
     form#forUploadImage(name="uploadImage",method="post",action="/upload" enctype="multipart/form-data") Select an image to upload:
         input#inputImage(type="file", name="image")
         button#btnUpload(type="submit") Upload Image
 
+
     ul
         each image, i in imageList
             li
                 img(class="uploadedImage", src='#{image.imageUrl}')
+
+    form#saveComicSet(name="saveComicSet", enctype="multipart/form-data") Enter the comic set name and then save
+        input#comicSetTitle(type="text", name="comicSetTitle")
+        button#btmSaveComicSet(type="submit") Save comic set

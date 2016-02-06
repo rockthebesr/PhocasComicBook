@@ -73,8 +73,17 @@ var Router = (function () {
             });
         });
         /* Get Comic page. */
-        router.get('/comic_page', function (req, res) {
-            res.render('comic_page', { title: 'comic_page' });
+        router.get('/comic_page/:comic_set_title', function (req, res) {
+            var db = req.db;
+            var collection = db.get('uploadedSets');
+            var comicSetTitle = req.params.comic_set_title;
+            collection.find({ title: comicSetTitle }, function (docs) {
+                res.render('comic_page', {
+                    "comicSet": docs,
+                    "title": docs.title,
+                    "imageList": docs.imageList
+                });
+            });
         });
         /* Get Edit Comics page. */
         router.get('/edit_comic', function (req, res) {
@@ -113,9 +122,13 @@ var Router = (function () {
                 });
             });
         });
+        router.post('/uploadComicSet', function (req, res) {
+            res.redirect('newuser');
+        });
         this.router = router;
     }
     return Router;
 })();
 var router = new Router();
 module.exports = router.router;
+//# sourceMappingURL=index.js.map
