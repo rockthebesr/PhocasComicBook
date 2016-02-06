@@ -1,8 +1,11 @@
 extends layout
 
-script(src= '/javascript/edit_comic.js').
-    var uploadImageList =!{JSON.stringify(imageList)}
-    var imageList = imageList || {};
+block scripts
+    script(type='text/javascript').
+      var uploadImageList = !{JSON.stringify(imageList)};
+      var imageList = imageList || {};
+
+    script(src= '/javascript/edit_comic.js')
 
 block content
     form#forUploadImage(name="uploadImage",method="post",action="/upload" enctype="multipart/form-data") Select an image to upload:
@@ -15,6 +18,8 @@ block content
             li
                 img(class="uploadedImage", src='#{image.imageUrl}')
 
-    form#saveComicSet(name="saveComicSet", enctype="multipart/form-data") Enter the comic set name and then save
-        input#comicSetTitle(type="text", name="comicSetTitle")
-        button#btmSaveComicSet(type="submit") Save comic set
+    h1  Enter the comic set name and then save
+        input#comicSetTitle(type="text")
+        button#btmSaveComicSet Save comic set
+
+

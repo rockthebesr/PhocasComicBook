@@ -1,7 +1,14 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        block essential
+            script(src='/javascript/jquery-2.2.0.js')
+            script(src="/javascript/config.js")
+            script(src='/javascript/require.js')
+
+        block scripts
+
+    body
+        block content

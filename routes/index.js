@@ -21,7 +21,7 @@ var Router = (function () {
         var upload = multer({ dest: './public/uploads' });
         /* GET home page. */
         router.get('/', function (req, res, next) {
-            res.render('home_page', { title: 'Express' });
+            res.render('home_page', { title: 'Phocas' });
         });
         /* GET login page. */
         router.get('/sign_in', function (req, res, next) {
@@ -123,7 +123,23 @@ var Router = (function () {
             });
         });
         router.post('/uploadComicSet', function (req, res) {
-            res.redirect('newuser');
+            var db = req.db;
+            var collection = db.get('uploadedSets');
+            // Submit to the DB
+            collection.insert({
+                "title": req.body.comicSetTitle,
+                "imageList": req.body.imageList
+            }, function (err, doc) {
+                if (err) {
+                    // If it failed, return error
+                    res.send("There was a problem adding the information to the database.");
+                }
+                else {
+                    // And forward to success page
+                    console.log("saved");
+                    res.send({ redirect: '/' });
+                }
+            });
         });
         this.router = router;
     }

@@ -1,18 +1,27 @@
-var $ = require("./jquery-2.2.0.js");
+require(["jquery"], function ($) {
+    $('#btmSaveComicSet').on('click', function () {
+        saveComicSet();
+    });
 
-
-
-$('#btmSaveComicSet').on('click', function () {
-    alert("working");
+    var saveComicSet = function () {
+        var title = $("#comicSetTitle").val();
+        if (!title) {
+            alert("You need a title!");
+        } else {
+            var imageList = uploadImageList;
+            $.each(imageList, function (index, imageData) {
+                imageData.comicSetTitle = title;
+            });
+            $.ajax({
+                url: '/uploadComicSet',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({comicSetTitle: title, imageList: imageList}),
+                success: function (data) {
+                    if (typeof data.redirect == 'string')
+                        window.location = data.redirect
+                }
+            })
+        }
+    };
 });
-
-var saveComicSet = function() {
-    var title = $("#comicSetTitle").val();
-    var imageList = uploadImageList;
-    $.ajax({
-        url: '/uploadComicSet',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({number:1})
-    })
-};
