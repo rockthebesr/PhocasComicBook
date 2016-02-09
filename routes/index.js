@@ -19,10 +19,6 @@ var Router = (function () {
         var router = express.Router();
         var multer = require('multer');
         var upload = multer({ dest: './public/uploads' });
-        /* GET home page. */
-        router.get('/', function (req, res, next) {
-            res.render('home_page', { title: 'Phocas' });
-        });
         /* GET login page. */
         router.get('/sign_in', function (req, res, next) {
             res.render('sign_in', { title: 'sign in' });
@@ -72,6 +68,30 @@ var Router = (function () {
                 }
             });
         });
+        /* GET Home page. */
+        router.get('/', function (req, res) {
+            var db = req.db;
+            var collection = db.get('uploadedSets');
+            collection.find({}, {}, function (e, docs) {
+                var firsturls = [];
+                var setTitles = [];
+                var i = 0;
+                for (var _i = 0; _i < docs.length; _i++) {
+                    var comicset = docs[_i];
+                    var imagelist = comicset.imageList;
+                    var firstimage = imagelist[0];
+                    var url = firstimage.imageUrl;
+                    var title = firstimage.comicSetTitle;
+                    firsturls[i] = url;
+                    setTitles[i] = title;
+                    i += 1;
+                }
+                res.render('home_page', {
+                    "urls": firsturls,
+                    "titles": setTitles
+                });
+            });
+        });
         /* Get Comic page. */
         router.get('/comic_page/:comic_set_title', function (req, res) {
             var db = req.db;
@@ -104,6 +124,7 @@ var Router = (function () {
             var fs = require("fs");
             var oldPath = req.file.path;
             var newPath = oldPath + '.jpg';
+            console.log(newPath);
             fs.rename(oldPath, newPath, function () {
                 var db = req.db;
                 // Set our collection
@@ -147,4 +168,3 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
-//# sourceMappingURL=index.js.map

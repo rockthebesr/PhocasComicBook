@@ -35,11 +35,6 @@ class Router {
     var multer = require('multer');
     var upload = multer({ dest: './public/uploads'});
 
-    /* GET home page. */
-    router.get('/', function(req, res, next) {
-      res.render('home_page', { title: 'Phocas' });
-    });
-
     /* GET login page. */
     router.get('/sign_in', function(req, res, next) {
       res.render('sign_in', { title: 'sign in' });
@@ -55,16 +50,18 @@ class Router {
       res.render('helloworld', { title: 'Hello, World!' });
     });
 
+
     /* GET Userlist page. */
     router.get('/userlist', function(req, res) {
       var db = req.db;
       var collection = db.get('usercollection');
       collection.find({},{},function(e,docs){
         res.render('userlist', {
-          "userlist" : docs
+          "userlist" : docs,
         });
       });
     });
+
 
     /* GET New User page. */
     router.get('/newuser', function(req, res) {
@@ -99,6 +96,35 @@ class Router {
         }
       });
     });
+
+
+    /* GET Home page. */
+    router.get('/', function(req, res) {
+      var db = req.db;
+      var collection = db.get('uploadedSets');
+      collection.find({},{},function(e,docs){
+        var firsturls : Array<string> = [];
+        var setTitles : Array<string> = [];
+
+        var i = 0;
+        for (var comicset of docs) {
+          var imagelist = comicset.imageList;
+          var firstimage = imagelist[0];
+
+          var url = firstimage.imageUrl;
+          var title = firstimage.comicSetTitle;
+
+          firsturls[i] = url;
+          setTitles[i] = title;
+          i += 1;
+        }
+        res.render('home_page', {
+          "urls" : firsturls,
+          "titles" : setTitles,
+        });
+      });
+    });
+
 
     /* Get Comic page. */
     router.get('/comic_page/:comic_set_title', function (req, res) {
@@ -137,6 +163,7 @@ class Router {
       var fs = require("fs");
       var oldPath = req.file.path;
       var newPath = oldPath + '.jpg';
+      console.log(newPath);
       fs.rename(oldPath, newPath, function() {
 
         var db = req.db;
