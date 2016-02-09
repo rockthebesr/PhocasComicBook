@@ -9,5 +9,7 @@ block content
       a(href = '/sign_up')
         img(src="images/signup.png", style='height:35px;width=50px;')
 
-
-
+    for url in urls
+        li
+            a(href = '/comic_page')
+                img(class="uploadedImage", src='#{url}')
