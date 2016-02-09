@@ -105,13 +105,15 @@ class Router {
         var db = req.db;
         var collection = db.get('uploadedSets');
         var comicSetTitle = req.params.comic_set_title;
-      collection.find({title : comicSetTitle}, function(docs){
-          res.render('comic_page', {
-              "comicSet" : docs,
-              "title": docs.title,
-              "imageList": docs.imageList
-          });
-      });
+        collection.find({title:comicSetTitle}, function(err,docs) {
+            var doc = docs.toArray();
+            var docnmlgb = doc.next();
+            res.render('comic_page', {
+               "comicSet": docnmlgb,
+               "title":docnmlgb.title,
+               "imageList" : docnmlgb.imageList
+            });
+        });
     });
 
 
