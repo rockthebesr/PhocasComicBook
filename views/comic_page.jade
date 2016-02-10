@@ -2,27 +2,27 @@ extends layout
 
 block scripts
     script(type='text/javascript').
-        var nextSet = !{JSON.stringify(nextSet)};
-        var prevSet = !{JSON.stringify(prevSet)};
-    
+      var nextSetTitle = !{JSON.stringify(nextSetTitle)};
+      var prevSetTitle = !{JSON.stringify(prevSetTitle)};
+
     script(src='/javascript/comic_page.js')
 
 block content
     #header
-      h1 Team Phocas here!
+        h1 Team Phocas here!
     #next
-      #btnNext.nextButton
-        span Next 
+        #btnNext.nextButton
+            span Next
     #prev
-      #btnPrev.prevButton
-        span Previous
+        #btnPrev.prevButton
+            span Previous
     #section
-      h2 #{title}
-      ul
+        h2 #{title}
+        ul
             each image, i in imageList
                 li
                     img(class="uploadedImage", src='#{image.imageUrl}')
     #footer
-      | Copyright © Phocas
+        | Copyright © Phocas
   
   

@@ -132,29 +132,22 @@ class Router {
         var collection = db.get('uploadedSets');
         var comicSetTitle = req.params.comic_set_title;
         collection.find({}, {}, function(err,docs) {
+          var nextSet = undefined;
+          var prevSet = undefined;
             for(var i =0; i<docs.length; i++) {
-                var comicSet = docs[i];
-                if (i==0){
-                    var prevSet = docs[i];
-                } else {
-                    prevSet = docs[i-1];
-                }
-                if(i == comicSet.length-1){
-                    var nextSet = docs[i];
-                }else{
-                    nextSet = docs[i+1];
-                }
-                if (comicSet.title === comicSetTitle) {
-                     var imageList = comicSet.imageList;
-                     var title = comicSet.title;
-                     
-                 }
+              var comicSet = docs[i];
+              if (comicSet.title === comicSetTitle) {
+                var imageList = comicSet.imageList;
+                var title = comicSet.title;
+                if (i > 0) {prevSet = docs[i-1].title}
+                if (i < docs.length) {nextSet = docs[i + 1].title}
+              }
             }            
             res.render('comic_page', {
                "title":title,
                "imageList" : imageList,
-               "nextSet" : nextSet,
-               "prevSet" : prevSet 
+               "nextSetTitle" : nextSet,
+               "prevSetTitle" : prevSet
             });
         });
     });
