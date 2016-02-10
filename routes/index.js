@@ -101,6 +101,16 @@ var Router = (function () {
                 var i = 0;
                 for (var _i = 0; _i < docs.length; _i++) {
                     var comicSet = docs[_i];
+                    if (i==0){
+                        var prevSet = docs[i];
+                    } else {
+                        prevSet = docs[i-1];
+                    }
+                    if(i == comicSet.length-1){
+                        var nextSet = docs[i];
+                    }else{
+                        nextSet = docs[i+1];
+                    }
                     if (comicSet.title === comicSetTitle) {
                         var imageList = comicSet.imageList;
                         for (var i = 0; i < imageList.length; i++) {
@@ -110,14 +120,13 @@ var Router = (function () {
                         }
                         var title = comicSet.title;
                     }
-                    else {
-                        alert("Image with given title not found!");
-                    }
                     i++;
                 }
                 res.render('comic_page', {
                     "title": title,
-                    "imageList": imageList
+                    "imageList": imageList,
+                    "nextSet" : nextSet,
+                    "prevSet" : prevSet
                 });
             });
         });

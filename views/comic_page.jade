@@ -1,16 +1,20 @@
 extends layout
 
 block scripts
+    script(type='text/javascript').
+        var nextSet = !{JSON.stringify(nextSet)};
+        var prevSet = !{JSON.stringify(prevSet)};
+    
     script(src='/javascript/comic_page.js')
 
 block content
     #header
       h1 Team Phocas here!
     #next
-      b1.nextButton(style='vertical-align:middle', onclick="nextPic()")
+      #btnNext.nextButton
         span Next 
     #prev
-      b2(class="prevButton", onclick="prevPic()")
+      #btnPrev.prevButton
         span Previous
     #section
       h2 #{title}

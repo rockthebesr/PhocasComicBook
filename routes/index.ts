@@ -132,20 +132,29 @@ class Router {
         var collection = db.get('uploadedSets');
         var comicSetTitle = req.params.comic_set_title;
         collection.find({}, {}, function(err,docs) {
-            var i =0;
-
-            for(var comicSet of docs) {
-                 if (comicSet.title === comicSetTitle) {
+            for(var i =0; i<docs.length; i++) {
+                var comicSet = docs[i];
+                if (i==0){
+                    var prevSet = docs[i];
+                } else {
+                    prevSet = docs[i-1];
+                }
+                if(i == comicSet.length-1){
+                    var nextSet = docs[i];
+                }else{
+                    nextSet = docs[i+1];
+                }
+                if (comicSet.title === comicSetTitle) {
                      var imageList = comicSet.imageList;
                      var title = comicSet.title;
-                 } else {
-                     alert("Image with given title not found!");
+                     
                  }
-                i++;
             }            
             res.render('comic_page', {
                "title":title,
-               "imageList" : imageList
+               "imageList" : imageList,
+               "nextSet" : nextSet,
+               "prevSet" : prevSet 
             });
         });
     });
