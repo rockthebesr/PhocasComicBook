@@ -97,11 +97,27 @@ var Router = (function () {
             var db = req.db;
             var collection = db.get('uploadedSets');
             var comicSetTitle = req.params.comic_set_title;
-            collection.find({ title: comicSetTitle }, function (docs) {
+            collection.find({}, {}, function (err, docs) {
+                var i = 0;
+                for (var _i = 0; _i < docs.length; _i++) {
+                    var comicSet = docs[_i];
+                    if (comicSet.title === comicSetTitle) {
+                        var imageList = comicSet.imageList;
+                        for (var i = 0; i < imageList.length; i++) {
+                            var image = imageList[i];
+                            var imageUrl = image.imageUrl;
+                            image.imageUrl = "../" + imageUrl;
+                        }
+                        var title = comicSet.title;
+                    }
+                    else {
+                        alert("Image with given title not found!");
+                    }
+                    i++;
+                }
                 res.render('comic_page', {
-                    "comicSet": docs,
-                    "title": docs.title,
-                    "imageList": docs.imageList
+                    "title": title,
+                    "imageList": imageList
                 });
             });
         });

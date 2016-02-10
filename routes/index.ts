@@ -131,13 +131,21 @@ class Router {
         var db = req.db;
         var collection = db.get('uploadedSets');
         var comicSetTitle = req.params.comic_set_title;
-        collection.find({title:comicSetTitle}, function(err,docs) {
-            var doc = docs.toArray();
-            var docnmlgb = doc.next();
+        collection.find({}, {}, function(err,docs) {
+            var i =0;
+
+            for(var comicSet of docs) {
+                 if (comicSet.title === comicSetTitle) {
+                     var imageList = comicSet.imageList;
+                     var title = comicSet.title;
+                 } else {
+                     alert("Image with given title not found!");
+                 }
+                i++;
+            }            
             res.render('comic_page', {
-               "comicSet": docnmlgb,
-               "title":docnmlgb.title,
-               "imageList" : docnmlgb.imageList
+               "title":title,
+               "imageList" : imageList
             });
         });
     });
