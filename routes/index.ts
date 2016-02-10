@@ -138,6 +138,11 @@ class Router {
               var comicSet = docs[i];
               if (comicSet.title === comicSetTitle) {
                 var imageList = comicSet.imageList;
+                for (var i = 0; i < imageList.length; i++) {
+                    var image = imageList[i];
+                    var imageUrl = image.imageUrl;
+                    image.imageUrl = "../" + imageUrl;
+                }
                 var title = comicSet.title;
                 if (i > 0) {prevSet = docs[i-1].title}
                 if (i < docs.length) {nextSet = docs[i + 1].title}
