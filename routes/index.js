@@ -105,9 +105,9 @@ var Router = (function () {
                     if (comicSet.title === comicSetTitle) {
                         var imageList = comicSet.imageList;
                         for (var i = 0; i < imageList.length; i++) {
-                             var image = imageList[i];
-                             var imageUrl = image.imageUrl;
-                             image.imageUrl = "../" + imageUrl;
+                            var image = imageList[i];
+                            var imageUrl = image.imageUrl;
+                            image.imageUrl = "../" + imageUrl;
                         }
                         var title = comicSet.title;
                         if (i > 0) {
@@ -131,8 +131,14 @@ var Router = (function () {
             var db = req.db;
             var collection = db.get('uploadedImages');
             collection.find({}, {}, function (e, docs) {
+                var imageList = [];
+                for (var _i = 0; _i < docs.length; _i++) {
+                    var image = docs[_i];
+                    if (image.comicSetTitle == "")
+                        imageList.push(image);
+                }
                 res.render('edit_comic', {
-                    "imageList": docs
+                    "imageList": imageList
                 });
             });
         });
@@ -179,7 +185,10 @@ var Router = (function () {
                 else {
                     // And forward to success page
                     console.log("saved");
-                    res.send({ redirect: '/' });
+                    db.get("uploadedImages").update({ comicSetTitle: "" }, { $set: { comicSetTitle: req.body.comicSetTitle } }, function (err) {
+                        console.log("uploaded images updated");
+                        res.send({ redirect: '/' });
+                    });
                 }
             });
         });

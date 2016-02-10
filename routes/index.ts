@@ -163,8 +163,12 @@ class Router {
       var db = req.db;
       var collection = db.get('uploadedImages');
       collection.find({},{},function(e,docs){
+        var imageList = [];
+        for (var image of docs) {
+          if (image.comicSetTitle == "") imageList.push(image);
+        }
         res.render('edit_comic', {
-          "imageList" : docs
+          "imageList" : imageList
         });
       });
     });
@@ -216,7 +220,10 @@ class Router {
         else {
           // And forward to success page
           console.log("saved");
-          res.send({redirect: '/'});
+            db.get("uploadedImages").update({comicSetTitle: ""}, {$set: {comicSetTitle: req.body.comicSetTitle}}, function (err) {
+                console.log("uploaded images updated");
+                res.send({ redirect: '/' });
+            });
         }
       });
     });
