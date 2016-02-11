@@ -9,6 +9,7 @@ block content
         a(href = '/sign_up')
             img(src="images/signup.png", style='height:35px;width=50px;')
 
+<<<<<<< HEAD
     
     ul
         each comicSet, c in comicSets
@@ -17,3 +18,14 @@ block content
                     each image, i in comicSet.imageList
                         a(href='/comic_page/'+comicSet.title)
                             img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
+=======
+    #edit
+        a(href = '/edit_comic')
+            img(src="images/edit.png", style='height:40px;width=60px;')
+
+    for urlandtitle in urlAndtitle
+        li
+            p #{urlandtitle[0]}
+            a(href = '/comic_page')
+                img(class="uploadedImage", src= '#{urlandtitle[1]}')
+>>>>>>> refs/remotes/origin/master

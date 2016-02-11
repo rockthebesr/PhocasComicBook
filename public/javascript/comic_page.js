@@ -1,4 +1,4 @@
-///<reference path='jquery.d.ts'/>
+///<reference path='../../types/DefinitelyTyped/jquery/jquery.d.ts'/>
 jQuery(document).on('click', '#btnNext', function () {
     nextComicSet();
 });

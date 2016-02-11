@@ -21,25 +21,25 @@ var Router = (function () {
         var upload = multer({ dest: './public/uploads' });
         /* GET login page. */
         router.get('/sign_in', function (req, res, next) {
-            res.render('sign_in', { title: 'Sign In' });
+            res.render('sign_in', { title: 'sign in' });
         });
         router.post('/sign_in', function (req, res) {
             var db = req.db;
-             var collection = db.get('usercollection');
- 
-             collection.findOne({ username: req.body.username}, function(err, user) {
-                 if (!user) {
-                     res.send( 'Invalid username or password');
-                 }   else {
-                     if (req.body.userpassword === user.password) {
-                         res.redirect('/');
-                     } else {
- 
-                         res.send('Invalid username or password');
-                     }
-                 }
-                 });
-                 });
+            var collection = db.get('usercollection');
+            collection.findOne({ username: req.body.username }, function (err, user) {
+                if (!user) {
+                    res.send('Invalid username or password');
+                }
+                else {
+                    if (req.body.userpassword === user.password) {
+                        res.redirect('/');
+                    }
+                    else {
+                        res.send('Invalid username or password');
+                    }
+                }
+            });
+        });
         /* GET signup page. */
         router.get('/sign_up', function (req, res, next) {
             res.render('sign_up', { title: 'sign up' });
@@ -71,27 +71,29 @@ var Router = (function () {
             // Set our collection
             var collection = db.get('usercollection');
             // Submit to the DB
-            collection.findOne({ username: req.body.username}, function(err, user) {
+            collection.findOne({ username: req.body.username }, function (err, user) {
                 if (user) {
-                    res.send( 'Username exists');
-                } else if (req.body.userpassword.length < 8) {
-                    res.send( 'Password is too short');
-                } else {
-                collection.insert({
-                "username": newUser.getName(),
-                "password": newUser.getPassword()
-            }, function (err, doc) {
-                if (err) {
-                    // If it failed, return error
-                    res.send("There was a problem adding the information to the database.");
+                    res.send('Username exists');
+                }
+                else if (req.body.userpassword.length < 8) {
+                    res.send('Password is too short');
                 }
                 else {
-                    // And forward to success page
-                    res.redirect('/');
+                    collection.insert({
+                        "username": newUser.getName(),
+                        "password": newUser.getPassword()
+                    }, function (err, doc) {
+                        if (err) {
+                            // If it failed, return error
+                            res.send("There was a problem adding the information to the database.");
+                        }
+                        else {
+                            // And forward to success page
+                            res.redirect('/');
+                        }
+                    });
                 }
             });
-            }
-        });
         });
        /* GET Home page. */
     router.get('/', function(req, res) {
@@ -151,7 +153,7 @@ var Router = (function () {
                 var imageList = [];
                 for (var _i = 0; _i < docs.length; _i++) {
                     var image = docs[_i];
-                    if (image.comicSetTitle == "")
+                    if (!image.isImageInUse)
                         imageList.push(image);
                 }
                 res.render('edit_comic', {
@@ -174,7 +176,7 @@ var Router = (function () {
                 // Set our collection
                 var collection = db.get('uploadedImages');
                 collection.insert({
-                    "comicSetTitle": "",
+                    "isImageInUse": false,
                     "imageUrl": newPath.slice(7, newPath.length)
                 }, function (err, doc) {
                     if (err) {
@@ -190,6 +192,7 @@ var Router = (function () {
         router.post('/uploadComicSet', function (req, res) {
             var db = req.db;
             var collection = db.get('uploadedSets');
+            var imageList = req.body.imageList;
             // Submit to the DB
             collection.insert({
                 "title": req.body.comicSetTitle,
@@ -202,10 +205,14 @@ var Router = (function () {
                 else {
                     // And forward to success page
                     console.log("saved");
-                    db.get("uploadedImages").update({ comicSetTitle: "" }, { $set: { comicSetTitle: req.body.comicSetTitle } }, function (err) {
-                        console.log("uploaded images updated");
-                        res.send({ redirect: '/' });
-                    });
+                    var uploadedImages = db.get("uploadedImages");
+                    for (var i = 0; i < imageList.length; i++) {
+                        var image = imageList[i];
+                        uploadedImages.update({ imageUrl: image.imageUrl }, { $set: { isImageInUse: true } }, function (err) {
+                            console.log("image updated");
+                        });
+                    }
+                    res.send({ redirect: "/" });
                 }
             });
         });
@@ -215,3 +222,4 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
+//# sourceMappingURL=index.js.map
