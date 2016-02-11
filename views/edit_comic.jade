@@ -16,6 +16,7 @@ block content
     ul
         each image, i in imageList
             li
+                input(class="uploadedImagePosition" type='text', name='imagePosition', value = image.imagePosition)
                 img(class="uploadedImage", src='#{image.imageUrl}')
 
     h1  Enter the comic set name and then save
