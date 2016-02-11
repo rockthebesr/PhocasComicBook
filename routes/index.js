@@ -1,15 +1,15 @@
 ///<reference path='../types/DefinitelyTyped/node/node.d.ts'/>
 ///<reference path='../types/DefinitelyTyped/express/express.d.ts'/>
 var User = (function () {
-    function User(name, email) {
+    function User(name, password) {
         this.name = name;
-        this.email = email;
+        this.password = password;
     }
     User.prototype.getName = function () {
         return this.name;
     };
-    User.prototype.getEmail = function () {
-        return this.email;
+    User.prototype.getPassword = function () {
+        return this.password;
     };
     return User;
 })();
@@ -31,7 +31,7 @@ var Router = (function () {
                  if (!user) {
                      res.send( 'Invalid username or password');
                  }   else {
-                     if (req.body.email === user.email) {
+                     if (req.body.userpassword === user.password) {
                          res.redirect('/');
                      } else {
  
@@ -67,13 +67,19 @@ var Router = (function () {
             // Set our internal DB variable
             var db = req.db;
             // Get our form values. These rely on the "name" attributes
-            var newUser = new User(req.body.username, req.body.useremail);
+            var newUser = new User(req.body.username, req.body.userpassword);
             // Set our collection
             var collection = db.get('usercollection');
             // Submit to the DB
-            collection.insert({
+            collection.findOne({ username: req.body.username}, function(err, user) {
+                if (user) {
+                    res.send( 'Username exists');
+                } else if (req.body.userpassword.length < 8) {
+                    res.send( 'Password is too short');
+                } else {
+                collection.insert({
                 "username": newUser.getName(),
-                "email": newUser.getEmail()
+                "password": newUser.getPassword()
             }, function (err, doc) {
                 if (err) {
                     // If it failed, return error
@@ -84,6 +90,8 @@ var Router = (function () {
                     res.redirect('/');
                 }
             });
+            }
+        });
         });
         /* GET Home page. */
         router.get('/', function (req, res) {

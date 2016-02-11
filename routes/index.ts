@@ -4,23 +4,23 @@
 
 interface UserInterface {
   getName(): string;
-  getEmail(): string;
+  getPassword(): string;
 
 }
 class User implements UserInterface {
   private name;
-  private email;
+  private password;
 
-  constructor(name: string, email:string) {
+  constructor(name: string, password:string) {
     this.name = name;
-    this.email = email;
+    this.password = password;
   }
   getName(): string {
     return this.name;
   }
 
-  getEmail(): string {
-    return this.email;
+  getPassword(): string {
+    return this.password;
   }
 
 }
@@ -48,7 +48,7 @@ class Router {
                  if (!user) {
                      res.send( 'Invalid username or password');
                  }   else {
-                     if (req.body.email === user.email) {
+                     if (req.body.userpassword === user.password) {
                          res.redirect('/');
                      } else {
  
@@ -94,26 +94,33 @@ class Router {
       var db = req.db;
 
       // Get our form values. These rely on the "name" attributes
-      var newUser = new User(req.body.username, req.body.useremail);
+      var newUser = new User(req.body.username, req.body.userpassword);
 
       // Set our collection
       var collection = db.get('usercollection');
 
       // Submit to the DB
-      collection.insert({
-        "username" : newUser.getName(),
-        "email" : newUser.getEmail()
-      }, function (err, doc) {
-        if (err) {
-          // If it failed, return error
-          res.send("There was a problem adding the information to the database.");
-        }
-        else {
-          // And forward to success page
-          res.redirect("userlist");
-        }
-      });
-    });
+      collection.findOne({ username: req.body.username}, function(err, user) {
+                if (user) {
+                    res.send( 'Username exists');
+                } else if (req.body.userpassword.length < 8) {
+                    res.send( 'Password is too short');
+                } else {
+                collection.insert({
+                "username": newUser.getName(),
+                "password": newUser.getPassword()
+            }, function (err, doc) {
+                if (err) {
+                    // If it failed, return error
+                    res.send("There was a problem adding the information to the database.");
+                }
+                else {
+                    // And forward to success page
+                    res.redirect('/');
+                }
+            });
+            }
+        });
 
 
     /* GET Home page. */
