@@ -90,8 +90,7 @@ var Router = (function () {
             var db = req.db;
             var collection = db.get('uploadedSets');
             collection.find({}, {}, function (e, docs) {
-                var firsturls = [];
-                var setTitles = [];
+                var urlAndtitle = [];
                 var i = 0;
                 for (var _i = 0; _i < docs.length; _i++) {
                     var comicset = docs[_i];
@@ -99,13 +98,14 @@ var Router = (function () {
                     var firstimage = imagelist[0];
                     var url = firstimage.imageUrl;
                     var title = firstimage.comicSetTitle;
-                    firsturls[i] = url;
-                    setTitles[i] = title;
+                    var singleurlAndtitle = [];
+                    singleurlAndtitle[0] = title;
+                    singleurlAndtitle[1] = url;
+                    urlAndtitle[i] = singleurlAndtitle;
                     i += 1;
                 }
                 res.render('home_page', {
-                    "urls": firsturls,
-                    "titles": setTitles
+                    "urlAndtitle": urlAndtitle
                 });
             });
         });
@@ -216,4 +216,3 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
-//# sourceMappingURL=index.js.map

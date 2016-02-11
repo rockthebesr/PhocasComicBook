@@ -2,14 +2,15 @@ extends layout
 
 block content
     #login
-      a(href = '/sign_in')
-        img(src="images/signin.jpg", style='height:30px;width=50px;')
+        a(href = '/sign_in')
+            img(src="images/signin.jpg", style='height:30px;width=50px;')
 
     #signup
-      a(href = '/sign_up')
-        img(src="images/signup.png", style='height:35px;width=50px;')
+        a(href = '/sign_up')
+            img(src="images/signup.png", style='height:35px;width=50px;')
 
-    for url in urls
+    for urlandtitle in urlAndtitle
         li
+            p #{urlandtitle[0]}
             a(href = '/comic_page')
-                img(class="uploadedImage", src='#{url}')
+                img(class="uploadedImage", src= '#{urlandtitle[1]}')
