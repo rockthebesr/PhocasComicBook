@@ -1,1 +1,1 @@
-web: node routes/index.ts
+web: node routes/index.js
