@@ -103,8 +103,7 @@ class Router {
       var db = req.db;
       var collection = db.get('uploadedSets');
       collection.find({},{},function(e,docs){
-        var firsturls : Array<string> = [];
-        var setTitles : Array<string> = [];
+        var urlAndtitle : Array<Array<string>> = [];
 
         var i = 0;
         for (var comicset of docs) {
@@ -114,13 +113,16 @@ class Router {
           var url = firstimage.imageUrl;
           var title = firstimage.comicSetTitle;
 
-          firsturls[i] = url;
-          setTitles[i] = title;
+          var singleurlAndtitle : Array<string> = [];
+          singleurlAndtitle[0] = title;
+          singleurlAndtitle[1] = url;
+
+          urlAndtitle[i] = singleurlAndtitle;
           i += 1;
         }
+
         res.render('home_page', {
-          "urls" : firsturls,
-          "titles" : setTitles,
+          "urlAndtitle" : urlAndtitle,
         });
       });
     });
