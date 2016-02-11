@@ -59,7 +59,7 @@
 .nextButton {
   display: inline-block;
   border-radius: 1px solid black;
-  background-color: red;
+  background-color: white;
   border: 1px solid black;
   color: black;
   text-align: center;
@@ -100,7 +100,7 @@
 .prevButton {
   display: inline-block;
   border-radius: 1px solid black;
-  background-color: red;
+  background-color: white;
   border: 1px solid black;
   color: black;
   text-align: center;
