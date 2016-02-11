@@ -113,7 +113,7 @@ var Router = (function () {
                         if (i > 0) {
                             prevSet = docs[i - 1].title;
                         }
-                        if (i < docs.length) {
+                        if (i < docs.length - 1) {
                             nextSet = docs[i + 1].title;
                         }
                         break;

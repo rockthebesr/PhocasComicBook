@@ -145,7 +145,7 @@ class Router {
                 }
                 var title = comicSet.title;
                 if (i > 0) {prevSet = docs[i-1].title}
-                if (i < docs.length) {nextSet = docs[i + 1].title}
+                if (i < docs.length - 1) {nextSet = docs[i + 1].title}
                 break;
               }
             }            
