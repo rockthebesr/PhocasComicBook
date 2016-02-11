@@ -95,21 +95,21 @@ var Router = (function () {
                 }
             });
         });
-       /* GET Home page. */
-    router.get('/', function(req, res) {
-      var db = req.db;
-      var collection = db.get('uploadedSets');
-      collection.find({},{},function(e,docs){
-            // for(var i =0; i<docs.length; i++) {
-            //   var comicSet = docs[i];
-            // //   var imageList = comicSet.imageList;
-            // //   var title = comicSet.title;
-            //   }
-        res.render('home_page', {
-            "comicSets":docs
+        /* GET Home page. */
+        router.get('/', function (req, res) {
+            var db = req.db;
+            var collection = db.get('uploadedSets');
+            collection.find({}, {}, function (e, docs) {
+                // for(var i =0; i<docs.length; i++) {
+                //   var comicSet = docs[i];
+                // //   var imageList = comicSet.imageList;
+                // //   var title = comicSet.title;
+                //   }
+                res.render('home_page', {
+                    "comicSets": docs
+                });
+            });
         });
-      });
-    });
         /* Get Comic page. */
         router.get('/comic_page/:comic_set_title', function (req, res) {
             var db = req.db;
