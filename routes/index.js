@@ -184,8 +184,10 @@ var Router = (function () {
                 var db = req.db;
                 // Set our collection
                 var collection = db.get('uploadedImages');
+                var unusedImages = 0;
                 collection.insert({
                     "isImageInUse": false,
+                    "imagePosition": unusedImages + 1,
                     "imageUrl": newPath.slice(7, newPath.length)
                 }, function (err, doc) {
                     if (err) {
