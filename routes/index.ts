@@ -129,26 +129,13 @@ class Router {
       var db = req.db;
       var collection = db.get('uploadedSets');
       collection.find({},{},function(e,docs){
-        var urlAndtitle : Array<Array<string>> = [];
-
-        var i = 0;
-        for (var comicset of docs) {
-          var imagelist = comicset.imageList;
-          var firstimage = imagelist[0];
-
-          var url = firstimage.imageUrl;
-          var title = firstimage.comicSetTitle;
-
-          var singleurlAndtitle : Array<string> = [];
-          singleurlAndtitle[0] = title;
-          singleurlAndtitle[1] = url;
-
-          urlAndtitle[i] = singleurlAndtitle;
-          i += 1;
-        }
-
+            // for(var i =0; i<docs.length; i++) {
+            //   var comicSet = docs[i];
+            // //   var imageList = comicSet.imageList;
+            // //   var title = comicSet.title;
+            //   }
         res.render('home_page', {
-          "urlAndtitle" : urlAndtitle,
+            "comicSets":docs
         });
       });
     });
@@ -162,7 +149,7 @@ class Router {
         collection.find({}, {}, function(err,docs) {
           var nextSet = undefined;
           var prevSet = undefined;
-            for(var i =0; i<docs.length; i++) {
+          for(var i =0; i<docs.length; i++) {
               var comicSet = docs[i];
               if (comicSet.title === comicSetTitle) {
                 var imageList = comicSet.imageList;
