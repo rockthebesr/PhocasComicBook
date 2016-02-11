@@ -9,8 +9,11 @@ block content
         a(href = '/sign_up')
             img(src="images/signup.png", style='height:35px;width=50px;')
 
-    for urlandtitle in urlAndtitle
-        li
-            p #{urlandtitle[0]}
-            a(href = '/comic_page')
-                img(class="uploadedImage", src= '#{urlandtitle[1]}')
+    
+    ul
+        each comicSet, c in comicSets
+            li
+                p #{comicSet.title}
+                    each image, i in comicSet.imageList
+                        a(href='/comic_page/'+comicSet.title)
+                            img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
