@@ -65,4 +65,3 @@ var Application = (function () {
 })();
 var application = new Application();
 module.exports = application.app;
-//# sourceMappingURL=app.js.map

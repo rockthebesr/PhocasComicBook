@@ -19,6 +19,7 @@ class Application {
 
 // New Code
     var mongo = require('mongodb');
+    var uri = 'mongodb://heroku_r774rtpz:pstcp2u20hiip964460qsrl1o@ds061385.mongolab.com:61385/heroku_r774rtpz';
     var monk = require('monk');
     var db = monk('localhost:27017/phocas');
 
