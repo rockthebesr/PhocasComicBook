@@ -21,8 +21,25 @@ var Router = (function () {
         var upload = multer({ dest: './public/uploads' });
         /* GET login page. */
         router.get('/sign_in', function (req, res, next) {
-            res.render('sign_in', { title: 'sign in' });
+            res.render('sign_in', { title: 'Sign In' });
         });
+        router.post('/sign_in', function (req, res) {
+            var db = req.db;
+             var collection = db.get('usercollection');
+ 
+             collection.findOne({ username: req.body.username}, function(err, user) {
+                 if (!user) {
+                     res.send( 'Invalid username or password');
+                 }   else {
+                     if (req.body.email === user.email) {
+                         res.redirect('/');
+                     } else {
+ 
+                         res.send('Invalid username or password');
+                     }
+                 }
+                 });
+                 });
         /* GET signup page. */
         router.get('/sign_up', function (req, res, next) {
             res.render('sign_up', { title: 'sign up' });
@@ -46,7 +63,7 @@ var Router = (function () {
             res.render('newuser', { title: 'Add New User' });
         });
         /* POST to Add User Service */
-        router.post('/adduser', function (req, res) {
+        router.post('/sign_up', function (req, res) {
             // Set our internal DB variable
             var db = req.db;
             // Get our form values. These rely on the "name" attributes
@@ -64,7 +81,7 @@ var Router = (function () {
                 }
                 else {
                     // And forward to success page
-                    res.redirect("userlist");
+                    res.redirect('/');
                 }
             });
         });

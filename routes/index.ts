@@ -40,6 +40,24 @@ class Router {
       res.render('sign_in', { title: 'sign in' });
     });
 
+    router.post('/sign_in', function (req, res) {
+            var db = req.db;
+             var collection = db.get('usercollection');
+ 
+             collection.findOne({ username: req.body.username}, function(err, user) {
+                 if (!user) {
+                     res.send( 'Invalid username or password');
+                 }   else {
+                     if (req.body.email === user.email) {
+                         res.redirect('/');
+                     } else {
+ 
+                         res.send('Invalid username or password');
+                     }
+                 }
+                 });
+                 });
+
     /* GET signup page. */
     router.get('/sign_up', function(req, res, next) {
       res.render('sign_up', { title: 'sign up' });
@@ -70,7 +88,7 @@ class Router {
 
 
     /* POST to Add User Service */
-    router.post('/adduser', function(req, res) {
+    router.post('/sign_up', function(req, res) {
 
       // Set our internal DB variable
       var db = req.db;
