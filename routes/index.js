@@ -1,15 +1,15 @@
 ///<reference path='../types/DefinitelyTyped/node/node.d.ts'/>
 ///<reference path='../types/DefinitelyTyped/express/express.d.ts'/>
 var User = (function () {
-    function User(name, email) {
+    function User(name, password) {
         this.name = name;
-        this.email = email;
+        this.password = password;
     }
     User.prototype.getName = function () {
         return this.name;
     };
-    User.prototype.getEmail = function () {
-        return this.email;
+    User.prototype.getPassword = function () {
+        return this.password;
     };
     return User;
 })();
@@ -22,6 +22,23 @@ var Router = (function () {
         /* GET login page. */
         router.get('/sign_in', function (req, res, next) {
             res.render('sign_in', { title: 'sign in' });
+        });
+        router.post('/sign_in', function (req, res) {
+            var db = req.db;
+            var collection = db.get('usercollection');
+            collection.findOne({ username: req.body.username }, function (err, user) {
+                if (!user) {
+                    res.send('Invalid username or password');
+                }
+                else {
+                    if (req.body.userpassword === user.password) {
+                        res.redirect('/');
+                    }
+                    else {
+                        res.send('Invalid username or password');
+                    }
+                }
+            });
         });
         /* GET signup page. */
         router.get('/sign_up', function (req, res, next) {
@@ -46,25 +63,35 @@ var Router = (function () {
             res.render('newuser', { title: 'Add New User' });
         });
         /* POST to Add User Service */
-        router.post('/adduser', function (req, res) {
+        router.post('/sign_up', function (req, res) {
             // Set our internal DB variable
             var db = req.db;
             // Get our form values. These rely on the "name" attributes
-            var newUser = new User(req.body.username, req.body.useremail);
+            var newUser = new User(req.body.username, req.body.userpassword);
             // Set our collection
             var collection = db.get('usercollection');
             // Submit to the DB
-            collection.insert({
-                "username": newUser.getName(),
-                "email": newUser.getEmail()
-            }, function (err, doc) {
-                if (err) {
-                    // If it failed, return error
-                    res.send("There was a problem adding the information to the database.");
+            collection.findOne({ username: req.body.username }, function (err, user) {
+                if (user) {
+                    res.send('Username exists');
+                }
+                else if (req.body.userpassword.length < 8) {
+                    res.send('Password is too short');
                 }
                 else {
-                    // And forward to success page
-                    res.redirect("userlist");
+                    collection.insert({
+                        "username": newUser.getName(),
+                        "password": newUser.getPassword()
+                    }, function (err, doc) {
+                        if (err) {
+                            // If it failed, return error
+                            res.send("There was a problem adding the information to the database.");
+                        }
+                        else {
+                            // And forward to success page
+                            res.redirect('/');
+                        }
+                    });
                 }
             });
         });
@@ -135,7 +162,7 @@ var Router = (function () {
                 var imageList = [];
                 for (var _i = 0; _i < docs.length; _i++) {
                     var image = docs[_i];
-                    if (image.comicSetTitle == "")
+                    if (!image.isImageInUse)
                         imageList.push(image);
                 }
                 res.render('edit_comic', {
@@ -158,7 +185,7 @@ var Router = (function () {
                 // Set our collection
                 var collection = db.get('uploadedImages');
                 collection.insert({
-                    "comicSetTitle": "",
+                    "isImageInUse": false,
                     "imageUrl": newPath.slice(7, newPath.length)
                 }, function (err, doc) {
                     if (err) {
@@ -174,6 +201,7 @@ var Router = (function () {
         router.post('/uploadComicSet', function (req, res) {
             var db = req.db;
             var collection = db.get('uploadedSets');
+            var imageList = req.body.imageList;
             // Submit to the DB
             collection.insert({
                 "title": req.body.comicSetTitle,
@@ -186,10 +214,14 @@ var Router = (function () {
                 else {
                     // And forward to success page
                     console.log("saved");
-                    db.get("uploadedImages").update({ comicSetTitle: "" }, { $set: { comicSetTitle: req.body.comicSetTitle } }, function (err) {
-                        console.log("uploaded images updated");
-                        res.send({ redirect: '/' });
-                    });
+                    var uploadedImages = db.get("uploadedImages");
+                    for (var i = 0; i < imageList.length; i++) {
+                        var image = imageList[i];
+                        uploadedImages.update({ imageUrl: image.imageUrl }, { $set: { isImageInUse: true } }, function (err) {
+                            console.log("image updated");
+                        });
+                    }
+                    res.send({ redirect: "/" });
                 }
             });
         });
@@ -199,3 +231,4 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
+//# sourceMappingURL=index.js.map

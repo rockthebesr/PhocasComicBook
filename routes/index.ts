@@ -4,23 +4,23 @@
 
 interface UserInterface {
   getName(): string;
-  getEmail(): string;
+  getPassword(): string;
 
 }
 class User implements UserInterface {
   private name;
-  private email;
+  private password;
 
-  constructor(name: string, email:string) {
+  constructor(name: string, password:string) {
     this.name = name;
-    this.email = email;
+    this.password = password;
   }
   getName(): string {
     return this.name;
   }
 
-  getEmail(): string {
-    return this.email;
+  getPassword(): string {
+    return this.password;
   }
 
 }
@@ -39,6 +39,24 @@ class Router {
     router.get('/sign_in', function(req, res, next) {
       res.render('sign_in', { title: 'sign in' });
     });
+
+    router.post('/sign_in', function (req, res) {
+            var db = req.db;
+             var collection = db.get('usercollection');
+ 
+             collection.findOne({ username: req.body.username}, function(err, user) {
+                 if (!user) {
+                     res.send( 'Invalid username or password');
+                 }   else {
+                     if (req.body.userpassword === user.password) {
+                         res.redirect('/');
+                     } else {
+ 
+                         res.send('Invalid username or password');
+                     }
+                 }
+                 });
+                 });
 
     /* GET signup page. */
     router.get('/sign_up', function(req, res, next) {
@@ -70,31 +88,39 @@ class Router {
 
 
     /* POST to Add User Service */
-    router.post('/adduser', function(req, res) {
+    router.post('/sign_up', function(req, res) {
 
-      // Set our internal DB variable
-      var db = req.db;
+        // Set our internal DB variable
+        var db = req.db;
 
-      // Get our form values. These rely on the "name" attributes
-      var newUser = new User(req.body.username, req.body.useremail);
+        // Get our form values. These rely on the "name" attributes
+        var newUser = new User(req.body.username, req.body.userpassword);
 
-      // Set our collection
-      var collection = db.get('usercollection');
+        // Set our collection
+        var collection = db.get('usercollection');
 
-      // Submit to the DB
-      collection.insert({
-        "username" : newUser.getName(),
-        "email" : newUser.getEmail()
-      }, function (err, doc) {
-        if (err) {
-          // If it failed, return error
-          res.send("There was a problem adding the information to the database.");
-        }
-        else {
-          // And forward to success page
-          res.redirect("userlist");
-        }
-      });
+        // Submit to the DB
+        collection.findOne({username: req.body.username}, function (err, user) {
+            if (user) {
+                res.send('Username exists');
+            } else if (req.body.userpassword.length < 8) {
+                res.send('Password is too short');
+            } else {
+                collection.insert({
+                    "username": newUser.getName(),
+                    "password": newUser.getPassword()
+                }, function (err, doc) {
+                    if (err) {
+                        // If it failed, return error
+                        res.send("There was a problem adding the information to the database.");
+                    }
+                    else {
+                        // And forward to success page
+                        res.redirect('/');
+                    }
+                });
+            }
+        });
     });
 
 
@@ -168,7 +194,7 @@ class Router {
       collection.find({},{},function(e,docs){
         var imageList = [];
         for (var image of docs) {
-          if (image.comicSetTitle == "") imageList.push(image);
+          if (!image.isImageInUse) imageList.push(image);
         }
         res.render('edit_comic', {
           "imageList" : imageList
@@ -194,7 +220,7 @@ class Router {
         // Set our collection
         var collection = db.get('uploadedImages');
         collection.insert({
-          "comicSetTitle" : "",
+          "isImageInUse" : false,
           "imageUrl" : newPath.slice(7, newPath.length),
         }, function (err, doc) {
           if (err) {
@@ -211,6 +237,7 @@ class Router {
     router.post('/uploadComicSet', function(req, res) {
       var db = req.db;
       var collection = db.get('uploadedSets');
+      var imageList = req.body.imageList;
       // Submit to the DB
       collection.insert({
         "title" : req.body.comicSetTitle,
@@ -223,10 +250,14 @@ class Router {
         else {
           // And forward to success page
           console.log("saved");
-            db.get("uploadedImages").update({comicSetTitle: ""}, {$set: {comicSetTitle: req.body.comicSetTitle}}, function (err) {
-                console.log("uploaded images updated");
-                res.send({ redirect: '/' });
-            });
+          var uploadedImages = db.get("uploadedImages");
+          for (var i = 0; i < imageList.length; i++) {
+              var image = imageList[i];
+              uploadedImages.update({imageUrl: image.imageUrl}, {$set: {isImageInUse: true}}, function (err) {
+                  console.log("image updated");
+              });
+          }
+          res.send({redirect: "/"});
         }
       });
     });
