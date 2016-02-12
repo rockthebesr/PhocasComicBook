@@ -13,10 +13,13 @@ block content
         a(href = '/manage_comics') Manage comics
     
     ul
-        each comicSet, c in comicSets
-            li
-                p #{comicSet.title}
-                    each image, i in comicSet.imageList
-                        a(href='/comic_page/'+comicSet.title)
-                            img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
+        if comicSets.length
+            each comicSet, c in comicSets
+                li
+                    p #{comicSet.title}
+                        each image, i in comicSet.imageList
+                            a(href='/comic_page/'+comicSet.title)
+                                img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
+        else
+            p empty comicSet
 
