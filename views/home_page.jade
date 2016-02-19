@@ -11,15 +11,32 @@ block content
 
     #manage
         a(href = '/manage_comics') Manage comics
+
+
+    form#formSearch(name="adduser",method="post",action="/")
+        input#inputUserName(type="text", placeholder="search", name="search")
+        button#btnSubmit(type="submit") search
+
+    form#formBack(name="adduser", method="get", action="/")
+        button#back(type="submit") back
     
     ul
         if comicSets.length
-            each comicSet, c in comicSets
+            if (indicator === 1)
                 li
-                    p #{comicSet.title}
-                        each image, i in comicSet.imageList
-                            a(href='/comic_page/'+comicSet.title)
+                    p #{title}
+                        each image in animagelist
+                            a(href='/comic_page/' + image.comicSetTitle)
                                 img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
+            else if (indicator === 2)
+                p Not Found
+            else
+                each comicSet, c in comicSets
+                    li
+                        p #{comicSet.title}
+                            each image, i in comicSet.imageList
+                                a(href='/comic_page/' + comicSet.title)
+                                    img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
         else
             p empty comicSet
 

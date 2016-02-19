@@ -100,13 +100,33 @@ var Router = (function () {
             var db = req.db;
             var collection = db.get('uploadedSets');
             collection.find({}, {}, function (e, docs) {
-                // for(var i =0; i<docs.length; i++) {
-                //   var comicSet = docs[i];
-                // //   var imageList = comicSet.imageList;
-                // //   var title = comicSet.title;
-                //   }
                 res.render('home_page', {
-                    "comicSets": docs
+                    "comicSets": docs,
+                    "indicator": 0
+                });
+            });
+        });
+        /* GET Home page. */
+        router.post('/', function (req, res) {
+            var db = req.db;
+            var collection = db.get('uploadedSets');
+            collection.find({}, {}, function (e, docs) {
+                var index = 0;
+                var indicator = 0;
+                for (var i = 0; i < docs.length; i++) {
+                    if (req.body.search === docs[i].title) {
+                        index = i;
+                        indicator = 1;
+                    }
+                }
+                if (indicator === 0) {
+                    indicator = 2;
+                }
+                res.render('home_page', {
+                    "comicSets": docs,
+                    "title": docs[index].title,
+                    "animagelist": docs[index].imageList,
+                    "indicator": indicator
                 });
             });
         });
@@ -224,4 +244,3 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
-//# sourceMappingURL=index.js.map

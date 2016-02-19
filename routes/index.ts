@@ -42,7 +42,7 @@ class Router {
 
     router.post('/sign_in', function (req, res) {
             var db = req.db;
-             var collection = db.get('usercollection');
+            var collection = db.get('usercollection');
  
              collection.findOne({ username: req.body.username}, function(err, user) {
                  if (!user) {
@@ -51,7 +51,7 @@ class Router {
                      if (req.body.userpassword === user.password) {
                          res.redirect('/');
                      } else {
- 
+
                          res.send('Invalid username or password');
                      }
                  }
@@ -124,18 +124,41 @@ class Router {
     });
 
 
+
+      /* GET Home page. */
+      router.get('/', function(req, res) {
+          var db = req.db;
+          var collection = db.get('uploadedSets');
+          collection.find({},{},function(e,docs){
+              res.render('home_page', {
+                  "comicSets":docs,
+                  "indicator": 0
+              });
+          });
+      });
+
+
     /* GET Home page. */
-    router.get('/', function(req, res) {
+    router.post('/', function(req, res) {
       var db = req.db;
       var collection = db.get('uploadedSets');
       collection.find({},{},function(e,docs){
-            // for(var i =0; i<docs.length; i++) {
-            //   var comicSet = docs[i];
-            // //   var imageList = comicSet.imageList;
-            // //   var title = comicSet.title;
-            //   }
+          var index = 0;
+          var indicator = 0;
+          for(var i = 0; i < docs.length; i++){
+              if(req.body.search === docs[i].title) {
+                  index = i;
+                  indicator = 1;
+              }
+          }
+          if(indicator === 0){
+              indicator = 2;
+          }
         res.render('home_page', {
-            "comicSets":docs
+            "comicSets":docs,
+            "title": docs[index].title,
+            "animagelist": docs[index].imageList,
+            "indicator": indicator
         });
       });
     });
