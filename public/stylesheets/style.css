@@ -153,3 +153,53 @@
     height: 200px;
 }
 
+form {
+    margin:10px auto;
+}
+
+input, button {
+    font-size:100%;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow:0 0 0 50px white inset;
+}
+
+.search {
+    padding:13px 30px;
+    background:rgba(0, 0, 0, 0);
+    border:1px solid darkblue;
+}
+.searchbutton {
+    position:relative;
+    padding:13px 15px;
+    left:-1px;
+    border:1px solid #207cca;
+    background-color: #207cca;
+    color:#fafafa;
+    cursor: pointer;
+}
+.searchbutton:hover  {
+    background-color: slateblue;
+    color:#fafafa;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #777;
+    font-size: 17px;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #777;
+    opacity:  1;
+    font-size: 17px;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #777;
+    opacity:  1;
+    font-size: 17px;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #777;
+    font-size: 17px;
+}
+

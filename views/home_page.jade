@@ -13,12 +13,9 @@ block content
         a(href = '/manage_comics') Manage comics
 
 
-    form#formSearch(name="adduser",method="post",action="/")
-        input#inputUserName(type="text", placeholder="search", name="search")
-        button#btnSubmit(type="submit") search
-
-    form#formBack(name="adduser", method="get", action="/")
-        button#back(type="submit") back
+    form#formSearch.form(name="adduser",method="post",action="/")
+        input#inputUserName.search(type="text", size = 25, placeholder="Find a comic", name="search")
+        button#btnSubmit.searchbutton(type="submit") search
     
     ul
         if comicSets.length
@@ -30,6 +27,8 @@ block content
                                 img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
             else if (indicator === 2)
                 p Not Found
+                form#formBack(name="adduser", method="get", action="/")
+                    button#back(type="submit") Home Page
             else
                 each comicSet, c in comicSets
                     li
