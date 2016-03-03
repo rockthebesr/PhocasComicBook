@@ -22,6 +22,8 @@ block content
             span Previous
     #section
         h2 #{title}
+        #editComicBottom
+            a(href='/edit_comic/' + title) Edit this comic!
         ul
             each image, i in imageList
                 li
