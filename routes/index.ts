@@ -158,7 +158,8 @@ class Router {
             "comicSets":docs,
             "title": docs[index].title,
             "animagelist": docs[index].imageList,
-            "indicator": indicator
+            "indicator": indicator,
+            "result": req.body.search
         });
       });
     });
