@@ -157,6 +157,10 @@ form {
     margin:10px auto;
 }
 
+.resultfont {
+    font-size: 25px;
+}
+
 input, button {
     font-size:100%;
 }
@@ -201,5 +205,11 @@ input:-webkit-autofill {
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
     color:    #777;
     font-size: 17px;
+}
+
+#UserInput::-webkit-search-cancel-button{
+    position:relative;
+    left:10px;
+    cursor: pointer;
 }
 

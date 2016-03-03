@@ -14,7 +14,7 @@ block content
 
 
     form#formSearch.form(name="adduser",method="post",action="/")
-        input#inputUserName.search(type="text", size = 25, placeholder="Find a comic", name="search")
+        input#UserInput.search(type="search", size = 25, placeholder="Find a comic", name="search")
         button#btnSubmit.searchbutton(type="submit") search
     
     ul
@@ -26,9 +26,9 @@ block content
                             a(href='/comic_page/' + image.comicSetTitle)
                                 img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
             else if (indicator === 2)
-                p Not Found
-                form#formBack(name="adduser", method="get", action="/")
-                    button#back(type="submit") Home Page
+                p.resultfont No Result for "#{result}"
+                p.resultfont #[span Back to] #[a(href='/') All Comics]
+
             else
                 each comicSet, c in comicSets
                     li

@@ -126,7 +126,8 @@ var Router = (function () {
                     "comicSets": docs,
                     "title": docs[index].title,
                     "animagelist": docs[index].imageList,
-                    "indicator": indicator
+                    "indicator": indicator,
+                    "result": req.body.search
                 });
             });
         });
@@ -277,4 +278,3 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
-//# sourceMappingURL=index.js.map
