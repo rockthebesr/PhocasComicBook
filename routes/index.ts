@@ -212,6 +212,35 @@ class Router {
       });
     });
 
+    /* Get Edit Comic Page with existing comic set. */
+    router.get('/edit_comic/:comic_set_title', function(req, res) {
+        var db = req.db;
+        var collection = db.get('uploadedSets');
+        var comicSetTitle = req.params.comic_set_title;
+        collection.find({}, {}, function(err,docs) {
+            var nextSet = undefined;
+            var prevSet = undefined;
+            for(var i =0; i<docs.length; i++) {
+                var comicSet = docs[i];
+                if (comicSet.title === comicSetTitle) {
+                    var imageList = comicSet.imageList;
+                    for (var k = 0; k < imageList.length; k++) {
+                        var image = imageList[k];
+                        var imageUrl = image.imageUrl;
+                        image.imageUrl = "../" + imageUrl;
+                    }
+                    var title = comicSet.title;
+                    if (i > 0) {prevSet = docs[i-1].title}
+                    if (i < docs.length - 1) {nextSet = docs[i + 1].title}
+                    break;
+                }
+            }
+            res.render('edit_comic', {
+                "title":title,
+                "imageList" : imageList
+            });
+        });
+    });
 
     /* Get Manage Comics page. */
     router.get('/manage_comics', function (req, res) {
