@@ -19,7 +19,26 @@ var Router = (function () {
         var router = express.Router();
         var multer = require('multer');
         var upload = multer({ dest: './public/uploads' });
-        /* GET login page. */
+        var session = require('express-session');
+        
+       
+        router.use(session({secret: 'foen6erg6ds3sggk52dfs',
+                            saveUninitialized: true,
+                            resave: true}))
+
+         /* Get Cookie Test Page. */
+         // Displays a page with the username of the user, blank if user is not logged in
+        router.get('/session_test', function (req, res) {
+            res.send(req.session.username)});
+
+        router.get('/log_out', function(req, res) {
+            req.session.destroy();
+            res.send("logout success!");
+        });
+
+
+
+        /* GET sign_in page. */
         router.get('/sign_in', function (req, res, next) {
             res.render('sign_in', { title: 'sign in' });
         });
@@ -32,7 +51,13 @@ var Router = (function () {
                 }
                 else {
                     if (req.body.userpassword === user.password) {
+                        if (req.session.loggedin === "true"){
+                            res.send("Please Logout before signing in")}
+                        else {
+                        req.session.loggedin = "true"    
+                        req.session.username = user.username;
                         res.redirect('/');
+                    }
                     }
                     else {
                         res.send('Invalid username or password');
@@ -44,10 +69,7 @@ var Router = (function () {
         router.get('/sign_up', function (req, res, next) {
             res.render('sign_up', { title: 'sign up' });
         });
-        /* GET Hello World page. */
-        router.get('/helloworld', function (req, res) {
-            res.render('helloworld', { title: 'Hello, World!' });
-        });
+       
         /* GET Userlist page. */
         router.get('/userlist', function (req, res) {
             var db = req.db;
