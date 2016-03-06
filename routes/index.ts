@@ -28,64 +28,51 @@ class Router {
   router;
 
   constructor() {
-
     var express = require('express');
     var router = express.Router();
-
+    var session = require('express-session');
     var multer = require('multer');
     var upload = multer({ dest: './public/uploads'});
 
-    /* GET login page. */
-    router.get('/sign_in', function(req, res, next) {
-      res.render('sign_in', { title: 'sign in' });
-    });
 
-    router.post('/sign_in', function (req, res) {
+    /*Middlewear for Session */
+     router.use(session({secret: 'randomstring',
+                         saveUninitialized: true,
+                         resave: true}))
+
+    /* GET login page. */
+    router.get('/login', function(req, res, next) {
+      res.render('login', { title: 'Login' });
+    });
+                            
+    router.post('/login', function (req, res) {
             var db = req.db;
             var collection = db.get('usercollection');
  
              collection.findOne({ username: req.body.username}, function(err, user) {
                  if (!user) {
-                     res.send( 'Invalid username or password');
-                 }   else {
+                     res.send( 'Invalid username or password');} 
+                 else {
                      if (req.body.userpassword === user.password) {
-                         res.redirect('/');
-                     } else {
+                        if (req.session.loggedin === 1){
+                            res.send("Please Logout before signing in")}
+                        else {
+                        req.session.loggedin = 1;    
+                        req.session.username = user.username;
+                         res.redirect('/');}}
+                     else {
 
                          res.send('Invalid username or password');
-                     }
-                 }
-                 });
-                 });
+                     }}
+              });
+            });
+
 
     /* GET signup page. */
     router.get('/sign_up', function(req, res, next) {
-      res.render('sign_up', { title: 'sign up' });
+      res.render('sign_up', { title: 'Sign Up' });
     });
-
-    /* GET Hello World page. */
-    router.get('/helloworld', function(req, res) {
-      res.render('helloworld', { title: 'Hello, World!' });
-    });
-
-
-    /* GET Userlist page. */
-    router.get('/userlist', function(req, res) {
-      var db = req.db;
-      var collection = db.get('usercollection');
-      collection.find({},{},function(e,docs){
-        res.render('userlist', {
-          "userlist" : docs,
-        });
-      });
-    });
-
-
-    /* GET New User page. */
-    router.get('/newuser', function(req, res) {
-      res.render('newuser', { title: 'Add New User' });
-    });
-
+    
 
     /* POST to Add User Service */
     router.post('/sign_up', function(req, res) {
@@ -116,6 +103,8 @@ class Router {
                     }
                     else {
                         // And forward to success page
+                        req.session.loggedin = 1;    
+                        req.session.username = user.username;
                         res.redirect('/');
                     }
                 });
@@ -123,6 +112,24 @@ class Router {
         });
     });
 
+    /* GET Userlist page. */
+    router.get('/userlist', function(req, res) {
+      var db = req.db;
+      var collection = db.get('usercollection');
+      collection.find({},{},function(e,docs){
+        res.render('userlist', {
+          "userlist" : docs,
+        });
+      });
+    });
+
+     /*Get Log_out page */
+         router.get('/logout', function(req, res) {
+            req.session.destroy();
+            res.redirect('/');
+        });
+
+   
 
 
       /* GET Home page. */
@@ -132,7 +139,9 @@ class Router {
           collection.find({},{},function(e,docs){
               res.render('home_page', {
                   "comicSets":docs,
-                  "indicator": 0
+                  "indicator": 0,
+                  "loggedin": req.session.loggedin,
+                  "username": req.session.username
               });
           });
       });
