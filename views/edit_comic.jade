@@ -3,12 +3,14 @@ extends layout
 block scripts
     script(type='text/javascript').
       var uploadImageList = !{JSON.stringify(imageList)};
+      var title = !{JSON.stringify(title)};
       var imageList = imageList || {};
 
     script(src= '/javascript/edit_comic.js')
 
 block content
     form#forUploadImage(name="uploadImage",method="post",action="/upload" enctype="multipart/form-data") Select an image to upload:
+        input#comicSetTitleForImage(type="text", name="title", value="#{title}")
         input#inputImage(type="file", name="image")
         button#btnUpload(type="submit") Upload Image
 
@@ -16,7 +18,7 @@ block content
     ul
         each image, i in imageList
             li
-                input(class="uploadedImagePosition" type='text', name='imagePosition', value = image.imagePosition)
+                input(class="uploadedImagePosition" type='text', name='imagePosition', value = '#{image.imagePosition}')
                 img(class="uploadedImage", src='#{image.imageUrl}')
 
     h1  Enter the comic set name and then save
