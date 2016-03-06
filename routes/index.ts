@@ -254,23 +254,52 @@ class Router {
       var oldPath = req.file.path;
       var newPath = oldPath + '.jpg';
       console.log(newPath);
+        var title = req.body.title == "undefined" ? undefined : req.body.title;
       fs.rename(oldPath, newPath, function() {
 
         var db = req.db;
         // Set our collection
+          var uploadedSets = db.get("uploadedSets");
+          var imageData;
+          if (title) {
+              imageData = {
+                  "isImageInUse" : true,
+                  "imagePosition" : unusedImages + 1,
+                  "imageUrl" : newPath.slice(7, newPath.length)
+              };
+          } else {
+              imageData = {
+                  "isImageInUse" : false,
+                  "imagePosition" : unusedImages + 1,
+                  "imageUrl" : newPath.slice(7, newPath.length)
+              };
+          }
         var collection = db.get('uploadedImages');
         var unusedImages = 0;
         collection.insert({
           "isImageInUse" : false,
           "imagePosition" : unusedImages + 1,
-          "imageUrl" : newPath.slice(7, newPath.length),
+          "imageUrl" : newPath.slice(7, newPath.length)
         }, function (err, doc) {
           if (err) {
             // If it failed, return error
             res.send("There was a problem adding the information to the database.");
           }
           else {
-            res.redirect('edit_comic');
+              if (title) {
+                  uploadedSets.findOne({title: title}, function(err, comicSet) {
+                      if (comicSet) {
+                          var imageList = comicSet.imageList;
+                          imageList.push(imageData);
+                          uploadedSets.update({title: title}, {$set: {imageList: imageList}}, function(err) {
+                              console.log("comic set updated");
+                          });
+                      } else if (err) {
+                          res.send("There was a problem adding the information to the database.");
+                      }
+                  });
+                  res.redirect("edit_comic/" + title);
+              } else res.redirect('edit_comic');
           }
         });
       });
@@ -303,6 +332,19 @@ class Router {
         }
       });
     });
+
+      router.post("/updateComicSet", function(req, res) {
+          var db = req.db;
+          var collection = db.get('uploadedSets');
+          var title = req.body.comicSetTitle;
+          var imageList = req.body.imageList;
+          // Submit to the DB
+          collection.update({title: title}, {$set: {imageList: imageList}}, function(err) {
+              console.log("comic set updated");
+          });
+
+          res.send({redirect: "/"});
+      });
 
     this.router = router;
   }

@@ -13,10 +13,7 @@ jQuery(document).on("click", "#btmSaveComicSet", function () {
 });
 
 var saveComicSet = function () {
-    var title = $("#comicSetTitle").val();
-    if (!title) {
-        alert("You need a title!");
-    } else {
+    if (title) {
         var positions = [];
         jQuery(".uploadedImagePosition").each(function(index, element) {
             positions.push(jQuery(this).val());
@@ -30,7 +27,7 @@ var saveComicSet = function () {
         });
         imageList = sortByKey(imageList, "imagePosition");
         $.ajax({
-            url: '/uploadComicSet',
+            url: '/updateComicSet',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({comicSetTitle: title, imageList: imageList}),
@@ -39,5 +36,34 @@ var saveComicSet = function () {
                     window.location = data.redirect
             }
         })
+    } else {
+        var inputTitle = $("#comicSetTitle").val();
+        if (!inputTitle || inputTitle == "undefined") {
+            alert("You need a title!");
+        } else {
+            var positions = [];
+            jQuery(".uploadedImagePosition").each(function(index, element) {
+                positions.push(jQuery(this).val());
+            });
+            var imageList = uploadImageList;
+            for (var i = 0; i < positions.length; i++) {
+                imageList[i].imagePosition = positions[i];
+            }
+            $.each(imageList, function (index, imageData) {
+                imageData.comicSetTitle = inputTitle;
+            });
+            imageList = sortByKey(imageList, "imagePosition");
+            $.ajax({
+                url: '/uploadComicSet',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({comicSetTitle: inputTitle, imageList: imageList}),
+                success: function (data) {
+                    if (typeof data.redirect == 'string')
+                        window.location = data.redirect
+                }
+            })
+        }
     }
+
 };
