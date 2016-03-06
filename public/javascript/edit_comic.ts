@@ -13,7 +13,7 @@ jQuery(document).on("click", "#btmSaveComicSet", function () {
 });
 
 var saveComicSet = function () {
-    if (title) {
+    if (title != "undefined") {
         var positions = [];
         jQuery(".uploadedImagePosition").each(function(index, element) {
             positions.push(jQuery(this).val());
@@ -25,12 +25,14 @@ var saveComicSet = function () {
         $.each(imageList, function (index, imageData) {
             imageData.comicSetTitle = title;
         });
+
+        var inputTitle = $("#comicSetTitle").val();
         imageList = sortByKey(imageList, "imagePosition");
         $.ajax({
             url: '/updateComicSet',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({comicSetTitle: title, imageList: imageList}),
+            data: JSON.stringify({oldComicSetTitle: title, newComicSetTitle: inputTitle, imageList: imageList}),
             success: function (data) {
                 if (typeof data.redirect == 'string')
                     window.location = data.redirect

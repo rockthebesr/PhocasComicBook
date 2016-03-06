@@ -19,26 +19,7 @@ var Router = (function () {
         var router = express.Router();
         var multer = require('multer');
         var upload = multer({ dest: './public/uploads' });
-        var session = require('express-session');
-        
-       
-        router.use(session({secret: 'foen6erg6ds3sggk52dfs',
-                            saveUninitialized: true,
-                            resave: true}))
-
-         /* Get Cookie Test Page. */
-         // Displays a page with the username of the user, blank if user is not logged in
-        router.get('/session_test', function (req, res) {
-            res.send(req.session.username)});
-
-        router.get('/log_out', function(req, res) {
-            req.session.destroy();
-            res.send("logout success!");
-        });
-
-
-
-        /* GET sign_in page. */
+        /* GET login page. */
         router.get('/sign_in', function (req, res, next) {
             res.render('sign_in', { title: 'sign in' });
         });
@@ -51,13 +32,7 @@ var Router = (function () {
                 }
                 else {
                     if (req.body.userpassword === user.password) {
-                        if (req.session.loggedin === "true"){
-                            res.send("Please Logout before signing in")}
-                        else {
-                        req.session.loggedin = "true"    
-                        req.session.username = user.username;
                         res.redirect('/');
-                    }
                     }
                     else {
                         res.send('Invalid username or password');
@@ -69,7 +44,10 @@ var Router = (function () {
         router.get('/sign_up', function (req, res, next) {
             res.render('sign_up', { title: 'sign up' });
         });
-       
+        /* GET Hello World page. */
+        router.get('/helloworld', function (req, res) {
+            res.render('helloworld', { title: 'Hello, World!' });
+        });
         /* GET Userlist page. */
         router.get('/userlist', function (req, res) {
             var db = req.db;
@@ -200,6 +178,7 @@ var Router = (function () {
                         imageList.push(image);
                 }
                 res.render('edit_comic', {
+                    "title": "undefined",
                     "imageList": imageList
                 });
             });
@@ -247,9 +226,26 @@ var Router = (function () {
             var oldPath = req.file.path;
             var newPath = oldPath + '.jpg';
             console.log(newPath);
+            var title = req.body.title == "undefined" ? undefined : req.body.title;
             fs.rename(oldPath, newPath, function () {
                 var db = req.db;
                 // Set our collection
+                var uploadedSets = db.get("uploadedSets");
+                var imageData;
+                if (title) {
+                    imageData = {
+                        "isImageInUse": true,
+                        "imagePosition": unusedImages + 1,
+                        "imageUrl": newPath.slice(7, newPath.length)
+                    };
+                }
+                else {
+                    imageData = {
+                        "isImageInUse": false,
+                        "imagePosition": unusedImages + 1,
+                        "imageUrl": newPath.slice(7, newPath.length)
+                    };
+                }
                 var collection = db.get('uploadedImages');
                 var unusedImages = 0;
                 collection.insert({
@@ -262,7 +258,23 @@ var Router = (function () {
                         res.send("There was a problem adding the information to the database.");
                     }
                     else {
-                        res.redirect('edit_comic');
+                        if (title) {
+                            uploadedSets.findOne({ title: title }, function (err, comicSet) {
+                                if (comicSet) {
+                                    var imageList = comicSet.imageList;
+                                    imageList.push(imageData);
+                                    uploadedSets.update({ title: title }, { $set: { imageList: imageList } }, function (err) {
+                                        console.log("comic set updated");
+                                    });
+                                }
+                                else if (err) {
+                                    res.send("There was a problem adding the information to the database.");
+                                }
+                            });
+                            res.redirect("edit_comic/" + title);
+                        }
+                        else
+                            res.redirect('edit_comic');
                     }
                 });
             });
@@ -294,9 +306,22 @@ var Router = (function () {
                 }
             });
         });
+        router.post("/updateComicSet", function (req, res) {
+            var db = req.db;
+            var collection = db.get('uploadedSets');
+            var oldTitle = req.body.oldComicSetTitle;
+            var newTitle = req.body.newComicSetTitle;
+            var imageList = req.body.imageList;
+            // Submit to the DB
+            collection.update({ title: oldTitle }, { $set: { title: newTitle, imageList: imageList } }, function (err) {
+                console.log("comic set updated");
+            });
+            res.send({ redirect: "/" });
+        });
         this.router = router;
     }
     return Router;
 })();
 var router = new Router();
 module.exports = router.router;
+//# sourceMappingURL=index.js.map

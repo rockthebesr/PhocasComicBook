@@ -208,6 +208,7 @@ class Router {
           if (!image.isImageInUse) imageList.push(image);
         }
         res.render('edit_comic', {
+          "title": "undefined",
           "imageList" : imageList
         });
       });
@@ -336,10 +337,11 @@ class Router {
       router.post("/updateComicSet", function(req, res) {
           var db = req.db;
           var collection = db.get('uploadedSets');
-          var title = req.body.comicSetTitle;
+          var oldTitle = req.body.oldComicSetTitle;
+          var newTitle = req.body.newComicSetTitle;
           var imageList = req.body.imageList;
           // Submit to the DB
-          collection.update({title: title}, {$set: {imageList: imageList}}, function(err) {
+          collection.update({title: oldTitle}, {$set: {title: newTitle, imageList: imageList}}, function(err) {
               console.log("comic set updated");
           });
 

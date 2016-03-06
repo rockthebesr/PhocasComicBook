@@ -10,11 +10,7 @@ jQuery(document).on("click", "#btmSaveComicSet", function () {
     saveComicSet();
 });
 var saveComicSet = function () {
-    var title = $("#comicSetTitle").val();
-    if (!title) {
-        alert("You need a title!");
-    }
-    else {
+    if (title != "undefined") {
         var positions = [];
         jQuery(".uploadedImagePosition").each(function (index, element) {
             positions.push(jQuery(this).val());
@@ -26,17 +22,48 @@ var saveComicSet = function () {
         $.each(imageList, function (index, imageData) {
             imageData.comicSetTitle = title;
         });
+        var inputTitle = $("#comicSetTitle").val();
         imageList = sortByKey(imageList, "imagePosition");
         $.ajax({
-            url: '/uploadComicSet',
+            url: '/updateComicSet',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ comicSetTitle: title, imageList: imageList }),
+            data: JSON.stringify({ oldComicSetTitle: title, newComicSetTitle: inputTitle, imageList: imageList }),
             success: function (data) {
                 if (typeof data.redirect == 'string')
                     window.location = data.redirect;
             }
         });
+    }
+    else {
+        var inputTitle = $("#comicSetTitle").val();
+        if (!inputTitle || inputTitle == "undefined") {
+            alert("You need a title!");
+        }
+        else {
+            var positions = [];
+            jQuery(".uploadedImagePosition").each(function (index, element) {
+                positions.push(jQuery(this).val());
+            });
+            var imageList = uploadImageList;
+            for (var i = 0; i < positions.length; i++) {
+                imageList[i].imagePosition = positions[i];
+            }
+            $.each(imageList, function (index, imageData) {
+                imageData.comicSetTitle = inputTitle;
+            });
+            imageList = sortByKey(imageList, "imagePosition");
+            $.ajax({
+                url: '/uploadComicSet',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ comicSetTitle: inputTitle, imageList: imageList }),
+                success: function (data) {
+                    if (typeof data.redirect == 'string')
+                        window.location = data.redirect;
+                }
+            });
+        }
     }
 };
 //# sourceMappingURL=edit_comic.js.map
