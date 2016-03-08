@@ -11,9 +11,10 @@ var Application = (function () {
         // New Code
         var mongo = require('mongodb');
         //var uri = 'mongodb://heroku_r774rtpz:pstcp2u20hiip964460qsrl1o@ds061385.mongolab.com:61385/heroku_r774rtpz';
+        var uri ='mongodb://heroku_csl0c7s6:l4i1cqtj4ldnmvocaksdq1rvnn@ds023478.mlab.com:23478/heroku_csl0c7s6';
         var monk = require('monk');
         var db = monk('mongodb://localhost:27017/phocas');
-        var uri 'mongodb://heroku_csl0c7s6:l4i1cqtj4ldnmvocaksdq1rvnn@ds023478.mlab.com:23478/heroku_csl0c7s6'
+        
         //var db = monk("mongodb://heroku_x1w4rl5d:Rockluo66!!@ds061375.mongolab.com:61375/heroku_x1w4rl5d");
         //var db = monk(uri);
         var routes = require('./routes/index');
