@@ -18,7 +18,7 @@ var Router = (function () {
         var express = require('express');
     var router = express.Router();
     var session = require('express-session');
-    
+    var mongodb = require('mongodb');
     var multer = require('multer');
     var upload = multer({ dest: './public/uploads'});
     
