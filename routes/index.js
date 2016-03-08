@@ -18,14 +18,23 @@ var Router = (function () {
         var express = require('express');
     var router = express.Router();
     var session = require('express-session');
+    var MongoDBStore = require('connect-mongodb-session')(session);
     var multer = require('multer');
     var upload = multer({ dest: './public/uploads'});
-
+    var store = new MongoDBStore(
+      {
+        uri: 'mongodb://localhost:27017/connect_mongodb_session_test',
+        collection: 'mySessions'
+      });
 
     /*Middlewear for Session */
      router.use(session({secret: 'randomstring',
                          saveUninitialized: true,
-                         resave: true}))
+                         resave: true,
+                         cookie: {
+                         maxAge: 1000 * 60 * 60 * 24 },
+                         store: store
+                      }))
 
     /* GET login page. */
     router.get('/login', function(req, res, next) {
