@@ -20,7 +20,7 @@ var Application = (function () {
          }
         });
         var monk = require('monk');
-        var db = monk('mongodb://localhost:27017/phocas');
+        var db = monk('mongodb://heroku_csl0c7s6:l4i1cqtj4ldnmvocaksdq1rvnn@ds023478.mlab.com:23478/heroku_csl0c7s6');
         //var db = monk("mongodb://heroku_x1w4rl5d:Rockluo66!!@ds061375.mongolab.com:61375/heroku_x1w4rl5d");
         //var db = monk(uri);
         var routes = require('./routes/index');
