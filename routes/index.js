@@ -23,7 +23,7 @@ var Router = (function () {
     var upload = multer({ dest: './public/uploads'});
     var store = new MongoDBStore(
       {
-        uri: 'mongodb://localhost:27017/connect_mongodb_session_test',
+        uri: 'https://git.heroku.com/phocas3.git',
         collection: 'mySessions'
       });
 
