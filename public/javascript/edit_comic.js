@@ -9,6 +9,23 @@ var sortByKey = function (array, key) {
 jQuery(document).on("click", "#btmSaveComicSet", function () {
     saveComicSet();
 });
+jQuery(document).on("click", ".deleteImageButton", function () {
+    var imageIndex = $('.deleteImageButton').index(this);
+    var imageUrl = uploadImageList[imageIndex].imageUrl;
+    deleteComicImage(imageUrl);
+});
+var deleteComicImage = function (imageUrl) {
+    $.ajax({
+        url: '/deleteComicImage',
+        type: 'DELETE',
+        contentType: 'application/json',
+        data: JSON.stringify({ imageUrl: imageUrl, comicSetTitle: title }),
+        success: function (data) {
+            if (typeof data.redirect == 'string')
+                window.location = data.redirect;
+        }
+    });
+};
 var saveComicSet = function () {
     if (title != "undefined") {
         var positions = [];
