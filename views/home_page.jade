@@ -8,7 +8,6 @@ block scripts
 
 
 block content
-
     h1= username
     if (loggedin === 1)
         #login
@@ -19,13 +18,6 @@ block content
         #login
             a(href = '/login')
                 img(src="images/login.jpg", style='height:30px;width=50px;')
-    #login
-        a(href = '/sign_in')
-            img(src="images/signin.jpg", style='height:30px;width=50px;')
-
-    #signup
-        a(href = '/sign_up')
-            img(src="images/signup.png", style='height:35px;width=50px;')
 
     #manage
         a(href = '/manage_comics') Manage comics
