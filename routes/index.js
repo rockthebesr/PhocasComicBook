@@ -42,7 +42,7 @@ var Router = (function () {
                         }
                         else {
                             req.session.loggedin = 1;
-                            req.session.username = user.username;
+                            req.session.username = req.body.username;
                             res.redirect('/');
                         }
                     }
@@ -84,7 +84,7 @@ var Router = (function () {
                         else {
                             // And forward to success page
                             req.session.loggedin = 1;
-                            req.session.username = user.username;
+                            req.session.username = req.body.username;
                             res.redirect('/');
                         }
                     });
