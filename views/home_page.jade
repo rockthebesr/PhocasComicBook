@@ -1,9 +1,8 @@
 extends layout
 
-// temporary
 block scripts
     script(type='text/javascript').
-
+        var titleList = !{JSON.stringify(titleList)};
     script(src='/javascript/home_page.js')
 
 

@@ -19,9 +19,7 @@ var imgRedirect = function(){
     });
 });*/
 $(function () {
-    var availableTags = [
-        "comicSet1",
-    ];
+    var availableTags = titleList;
     var NoResultsLabel = "No Results";
     $("#input").autocomplete({
         source: function (request, response) {

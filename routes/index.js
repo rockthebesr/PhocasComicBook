@@ -110,10 +110,15 @@ var Router = (function () {
         router.get('/', function (req, res) {
             var db = req.db;
             var collection = db.get('uploadedSets');
+            var titles = [];
             collection.find({}, {}, function (e, docs) {
+                for (var i = 0; i < docs.length; i++) {
+                    titles[i] = docs[i].title;
+                }
                 res.render('home_page', {
                     "comicSets": docs,
                     "indicator": "back",
+                    "titleList": titles,
                     "loggedin": req.session.loggedin,
                     "username": req.session.username
                 });
@@ -123,10 +128,12 @@ var Router = (function () {
         router.post('/', function (req, res) {
             var db = req.db;
             var collection = db.get('uploadedSets');
+            var titles = [];
             collection.find({}, {}, function (e, docs) {
                 var index = 0;
                 var indicator = "back";
                 for (var i = 0; i < docs.length; i++) {
+                    titles[i] = docs[i].title;
                     if (req.body.search === docs[i].title) {
                         index = i;
                         indicator = "found";
@@ -139,6 +146,7 @@ var Router = (function () {
                     "comicSets": docs,
                     "matched": index,
                     "indicator": indicator,
+                    "titleList": titles,
                     "result": req.body.search
                 });
             });
@@ -358,4 +366,3 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
-//# sourceMappingURL=index.js.map

@@ -23,9 +23,7 @@
 
 
 $(function() {
-    var availableTags = [
-        "comicSet1",
-    ];
+    var availableTags = titleList;
 
     var NoResultsLabel = "No Results";
 
