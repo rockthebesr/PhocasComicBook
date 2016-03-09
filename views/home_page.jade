@@ -1,48 +1,59 @@
 extends layout
 
+// temporary
+block scripts
+    script(type='text/javascript').
+
+    script(src='/javascript/home_page.js')
+
+
 block content
+
     h1= username
     if (loggedin === 1)
-            #login
-                a(href = '/logout')
-                    img(src="images/logout.jpg", style='height:35px;width=50px;') 
+        #login
+            a(href = '/logout')
+                img(src="images/logout.jpg", style='height:35px;width=50px;')
 
-        else
-            #login
-                a(href = '/login')
-                    img(src="images/login.jpg", style='height:30px;width=50px;')    
+    else
+        #login
+            a(href = '/login')
+                img(src="images/login.jpg", style='height:30px;width=50px;')
+    #login
+        a(href = '/sign_in')
+            img(src="images/signin.jpg", style='height:30px;width=50px;')
 
-    
+    #signup
+        a(href = '/sign_up')
+            img(src="images/signup.png", style='height:35px;width=50px;')
 
     #manage
         a(href = '/manage_comics') Manage comics
 
+    form#form.form(name="adduser",method="post",action="/")
+        input#input.search(type="search", size = 25, placeholder="Find a comic", name="search")
+        button#button.searchbutton(type="submit", value = "Search") Search
 
-    form#formSearch.form(name="adduser",method="post",action="/")
-        input#UserInput.search(type="search", size = 25, placeholder="Find a comic", name="search")
-        button#btnSubmit.searchbutton(type="submit") search
-    
     ul
         if comicSets.length
-            if (indicator === 1)
-                li
-                    p #{title}
-                        each image in animagelist
+            case indicator
+                when "found"
+                    p #{comicSets[matched].title}
+                        each image in comicSets[matched].imageList
                             a(href='/comic_page/' + image.comicSetTitle)
                                 img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
-            else if (indicator === 2)
-                p.resultfont No Result for "#{result}"
-                p.resultfont #[span Back to] #[a(href='/') All Comics]
 
-            else
-                each comicSet, c in comicSets
-                    li
-                        p #{comicSet.title}
-                            each image, i in comicSet.imageList
-                                a(href='/comic_page/' + comicSet.title)
-                                    img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
+                when "not found"
+                    p.resultfont No Result for "#{result}"
+                    p.resultfont #[span Back to] #[a(href='/') All Comics]
+
+                when "back"
+                    each comicSet, c in comicSets
+                        li
+                            p #{comicSet.title}
+                                each image, i in comicSet.imageList
+                                    a(href='/comic_page/' + comicSet.title)
+                                        img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
+
         else
             p empty comicSet
-
-         
-

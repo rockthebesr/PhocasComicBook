@@ -113,32 +113,31 @@ var Router = (function () {
             collection.find({}, {}, function (e, docs) {
                 res.render('home_page', {
                     "comicSets": docs,
-                    "indicator": 0,
+                    "indicator": "back",
                     "loggedin": req.session.loggedin,
                     "username": req.session.username
                 });
             });
         });
-        /* GET Home page. */
+        /* Filter Home page. */
         router.post('/', function (req, res) {
             var db = req.db;
             var collection = db.get('uploadedSets');
             collection.find({}, {}, function (e, docs) {
                 var index = 0;
-                var indicator = 0;
+                var indicator = "back";
                 for (var i = 0; i < docs.length; i++) {
                     if (req.body.search === docs[i].title) {
                         index = i;
-                        indicator = 1;
+                        indicator = "found";
                     }
                 }
-                if (indicator === 0) {
-                    indicator = 2;
+                if (indicator === "back") {
+                    indicator = "not found";
                 }
                 res.render('home_page', {
                     "comicSets": docs,
-                    "title": docs[index].title,
-                    "animagelist": docs[index].imageList,
+                    "matched": index,
                     "indicator": indicator,
                     "result": req.body.search
                 });
