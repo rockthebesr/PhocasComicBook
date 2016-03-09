@@ -286,11 +286,7 @@ class Router {
           }
         var collection = db.get('uploadedImages');
         var unusedImages = 0;
-        collection.insert({
-          "isImageInUse" : false,
-          "imagePosition" : unusedImages + 1,
-          "imageUrl" : newPath.slice(7, newPath.length)
-        }, function (err, doc) {
+        collection.insert(imageData, function (err, doc) {
           if (err) {
             // If it failed, return error
             res.send("There was a problem adding the information to the database.");
@@ -355,6 +351,33 @@ class Router {
           });
 
           res.send({redirect: "/"});
+      });
+
+      router.delete('/deleteComicImage', function(req, res){
+          var db = req.db;
+          var collection = db.get('uploadedSets');
+          var title = req.body.comicSetTitle;
+          var imageUrl = req.body.imageUrl;
+          var comicSet = collection.findOne({title: title}, function(err, comicSet) {
+              if (comicSet) {
+                  var imageToDelete;
+                  var imageList = comicSet.imageList;
+                  for (var i = 0; i < imageList.length; i++) {
+                      if (imageList[i].imageUrl.indexOf(imageUrl) > -1){
+                          imageToDelete = i ;
+                          break;
+                      }
+                  }
+                  imageList.splice(imageToDelete, 1);
+                  collection.update({title: title}, {$set: {imageList: imageList}}, function(err) {
+                      console.log("comic set updated");
+                      res.send({redirect: title});
+                  });
+              } else if (err) {
+                  res.send("There was a problem deleting the image");
+              }
+          });
+
       });
 
     this.router = router;

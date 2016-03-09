@@ -16,110 +16,96 @@ var User = (function () {
 var Router = (function () {
     function Router() {
         var express = require('express');
-    var router = express.Router();
-    var session = require('express-session');
-    var mongodb = require('mongodb');
-    var multer = require('multer');
-    var upload = multer({ dest: './public/uploads'});
-    
-
-    /*Middlewear for Session */
-     router.use(session({secret: 'randomstring',
-                         saveUninitialized: true,
-                         resave: true,
-                         
-                      }))
-
-    /* GET login page. */
-    router.get('/login', function(req, res, next) {
-      res.render('login', { title: 'Login' });
-    });
-                            
-    router.post('/login', function (req, res) {
+        var router = express.Router();
+        var session = require('express-session');
+        var multer = require('multer');
+        var upload = multer({ dest: './public/uploads' });
+        /*Middlewear for Session */
+        router.use(session({ secret: 'randomstring',
+            saveUninitialized: true,
+            resave: true }));
+        /* GET login page. */
+        router.get('/login', function (req, res, next) {
+            res.render('login', { title: 'Login' });
+        });
+        router.post('/login', function (req, res) {
             var db = req.db;
             var collection = db.get('usercollection');
- 
-             collection.findOne({ username: req.body.username}, function(err, user) {
-                 if (!user) {
-                     res.send( 'Invalid username or password');} 
-                 else {
-                     if (req.body.userpassword === user.password) {
-                        if (req.session.loggedin === 1){
-                            res.send("Please Logout before signing in")}
+            collection.findOne({ username: req.body.username }, function (err, user) {
+                if (!user) {
+                    res.send('Invalid username or password');
+                }
+                else {
+                    if (req.body.userpassword === user.password) {
+                        if (req.session.loggedin === 1) {
+                            res.send("Please Logout before signing in");
+                        }
                         else {
-                        req.session.loggedin = 1;    
-                        req.session.username = user.username;
-                         res.redirect('/');
-                     }}
-                     else {
-
-                         res.send('Invalid username or password');
-                     }}
-              });
-            });
-
-
-    /* GET signup page. */
-    router.get('/sign_up', function(req, res, next) {
-      res.render('sign_up', { title: 'Sign Up' });
-    });
-    
-
-    /* POST to Add User Service */
-    router.post('/sign_up', function(req, res) {
-
-        // Set our internal DB variable
-        var db = req.db;
-
-        // Get our form values. These rely on the "name" attributes
-        var newUser = new User(req.body.username, req.body.userpassword);
-
-        // Set our collection
-        var collection = db.get('usercollection');
-
-        // Submit to the DB
-        collection.findOne({username: req.body.username}, function (err, user) {
-            if (user) {
-                res.send('Username exists');
-            } else if (req.body.userpassword.length < 8) {
-                res.send('Password is too short');
-            } else {
-                collection.insert({
-                    "username": newUser.getName(),
-                    "password": newUser.getPassword()
-                }, function (err, doc) {
-                    if (err) {
-                        // If it failed, return error
-                        res.send("There was a problem adding the information to the database.");
+                            req.session.loggedin = 1;
+                            req.session.username = user.username;
+                            res.redirect('/');
+                        }
                     }
                     else {
-                        // And forward to success page
-                        req.session.loggedin = 1;    
-                        req.session.username = req.body.username;
-                        res.redirect('/');
+                        res.send('Invalid username or password');
                     }
+                }
+            });
+        });
+        /* GET signup page. */
+        router.get('/sign_up', function (req, res, next) {
+            res.render('sign_up', { title: 'Sign Up' });
+        });
+        /* POST to Add User Service */
+        router.post('/sign_up', function (req, res) {
+            // Set our internal DB variable
+            var db = req.db;
+            // Get our form values. These rely on the "name" attributes
+            var newUser = new User(req.body.username, req.body.userpassword);
+            // Set our collection
+            var collection = db.get('usercollection');
+            // Submit to the DB
+            collection.findOne({ username: req.body.username }, function (err, user) {
+                if (user) {
+                    res.send('Username exists');
+                }
+                else if (req.body.userpassword.length < 8) {
+                    res.send('Password is too short');
+                }
+                else {
+                    collection.insert({
+                        "username": newUser.getName(),
+                        "password": newUser.getPassword()
+                    }, function (err, doc) {
+                        if (err) {
+                            // If it failed, return error
+                            res.send("There was a problem adding the information to the database.");
+                        }
+                        else {
+                            // And forward to success page
+                            req.session.loggedin = 1;
+                            req.session.username = user.username;
+                            res.redirect('/');
+                        }
+                    });
+                }
+            });
+        });
+        /* GET Userlist page. */
+        router.get('/userlist', function (req, res) {
+            var db = req.db;
+            var collection = db.get('usercollection');
+            collection.find({}, {}, function (e, docs) {
+                res.render('userlist', {
+                    "userlist": docs
                 });
-            }
+            });
         });
-    });
-
-    /* GET Userlist page. */
-    router.get('/userlist', function(req, res) {
-      var db = req.db;
-      var collection = db.get('usercollection');
-      collection.find({},{},function(e,docs){
-        res.render('userlist', {
-          "userlist" : docs,
-        });
-      });
-    });
-
-     /*Get Log_out page */
-         router.get('/logout', function(req, res) {
+        /*Get Log_out page */
+        router.get('/logout', function (req, res) {
             req.session.destroy();
             res.redirect('/');
         });
-       
         /* GET Home page. */
         router.get('/', function (req, res) {
             var db = req.db;
@@ -275,11 +261,7 @@ var Router = (function () {
                 }
                 var collection = db.get('uploadedImages');
                 var unusedImages = 0;
-                collection.insert({
-                    "isImageInUse": false,
-                    "imagePosition": unusedImages + 1,
-                    "imageUrl": newPath.slice(7, newPath.length)
-                }, function (err, doc) {
+                collection.insert(imageData, function (err, doc) {
                     if (err) {
                         // If it failed, return error
                         res.send("There was a problem adding the information to the database.");
@@ -344,6 +326,32 @@ var Router = (function () {
                 console.log("comic set updated");
             });
             res.send({ redirect: "/" });
+        });
+        router.delete('/deleteComicImage', function (req, res) {
+            var db = req.db;
+            var collection = db.get('uploadedSets');
+            var title = req.body.comicSetTitle;
+            var imageUrl = req.body.imageUrl;
+            var comicSet = collection.findOne({ title: title }, function (err, comicSet) {
+                if (comicSet) {
+                    var imageToDelete;
+                    var imageList = comicSet.imageList;
+                    for (var i = 0; i < imageList.length; i++) {
+                        if (imageList[i].imageUrl.indexOf(imageUrl) > -1) {
+                            imageToDelete = i;
+                            break;
+                        }
+                    }
+                    imageList.splice(imageToDelete, 1);
+                    collection.update({ title: title }, { $set: { imageList: imageList } }, function (err) {
+                        console.log("comic set updated");
+                        res.send({ redirect: title });
+                    });
+                }
+                else if (err) {
+                    res.send("There was a problem deleting the image");
+                }
+            });
         });
         this.router = router;
     }

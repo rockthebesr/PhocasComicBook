@@ -20,6 +20,8 @@ block content
             li
                 input(class="uploadedImagePosition" type='text', name='imagePosition', value = '#{image.imagePosition}')
                 img(class="uploadedImage", src='#{image.imageUrl}')
+                button(class="deleteImageButton") Delete this image
+
 
     h1  Enter the comic set name and then save
         input#comicSetTitle(type="text", value="#{title}")
