@@ -42,6 +42,7 @@ block content
                         each image in comicSets[matched].imageList
                             a(href='/comic_page/' + image.comicSetTitle)
                                 img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
+                    p.resultfont #[span Back to] #[a(href='/') All Comics]
 
                 when "not found"
                     p.resultfont No Result for "#{result}"

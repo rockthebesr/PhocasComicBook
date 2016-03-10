@@ -36,8 +36,8 @@ $(function() {
             }
 
             response(results);
-        },
-        select: function (event, ui) {
+        }//,
+        /*select: function (event, ui) {
             if (ui.item.label === NoResultsLabel) {
                 event.preventDefault();
             }
@@ -46,6 +46,6 @@ $(function() {
             if (ui.item.label === NoResultsLabel) {
                 event.preventDefault();
             }
-        }
+        }*/
     });
 });

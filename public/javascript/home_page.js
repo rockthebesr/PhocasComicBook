@@ -28,16 +28,6 @@ $(function () {
                 results = [NoResultsLabel];
             }
             response(results);
-        },
-        select: function (event, ui) {
-            if (ui.item.label === NoResultsLabel) {
-                event.preventDefault();
-            }
-        },
-        focus: function (event, ui) {
-            if (ui.item.label === NoResultsLabel) {
-                event.preventDefault();
-            }
-        }
+        } //,
     });
 });
