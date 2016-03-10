@@ -1,8 +1,13 @@
-#header {
+div#header {
     background-color:black;
     color:white;
     text-align:center;
     padding:5px;
+    /*position:absolute;*/
+    width:100%;
+    /*padding:5px 0 10px;*/
+    /*overflow: auto;*/
+    zoom:1;
 }
 #prev {
     line-height:30px;
@@ -64,7 +69,7 @@
     color:white;
     clear:both;
     text-align:center;
-    padding:5px;
+    /*padding:5px;*/
 }
 .nextButton {
   display: inline-block;
@@ -213,3 +218,16 @@ input:-webkit-autofill {
     cursor: pointer;
 }
 
+#nav {
+  text-align:right;
+}
+
+#nav li {
+  display:inline;
+  margin: 0 0 0 5px;
+}
+
+#nav li a {
+  padding: 5px 15px;
+  font-weight: bold;
+}

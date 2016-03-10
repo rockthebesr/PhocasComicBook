@@ -1,19 +1,28 @@
 extends layout
 
 block content
-    h1= title
+    #header
+        h1= title
+        ul#nav
+            li
+                a(href = '/sign_up')
+                    img(src="images/signup.jpg", style='height:35px;width=50px;')
 
     form#formSignIn(name="adduser",method="post",action="/login")
         input#inputUserName(type="text", placeholder="username", name="username")
         input#inputPassword(type="password", placeholder="password", name="userpassword")
         button#btnSubmit(type="submit") submit
+        
+
+    #footer
+        | Copyright © Phocas
 
     
 
 
-    #signup
-        a(href = '/sign_up')
-            img(src="images/signup.jpg", style='height:35px;width=50px;')
+    // #signup
+    //     a(href = '/sign_up')
+    //         img(src="images/signup.jpg", style='height:35px;width=50px;')
 
 
         

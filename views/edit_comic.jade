@@ -9,6 +9,11 @@ block scripts
     script(src= '/javascript/edit_comic.js')
 
 block content
+
+    #header
+        h2 Phocas
+        
+    
     form#forUploadImage(name="uploadImage",method="post",action="/upload" enctype="multipart/form-data") Select an image to upload:
         input#comicSetTitleForImage(type="text", name="title", value="#{title}")
         input#inputImage(type="file", name="image")
@@ -24,7 +29,11 @@ block content
 
 
     h1  Enter the comic set name and then save
-        input#comicSetTitle(type="text", value="#{title}")
-        button#btmSaveComicSet Save comic set
+    input#comicSetTitle(type="text", value="#{title}")
+    button#btmSaveComicSet Save comic set
+        
+        
+    #footer
+        | Copyright © Phocas
 
 

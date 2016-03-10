@@ -7,16 +7,17 @@ block scripts
 
 
 block content
-    h1= username
-    if (loggedin === 1)
-        #login
-            a(href = '/logout')
-                img(src="images/logout.jpg", style='height:35px;width=50px;')
-
-    else
-        #login
-            a(href = '/login')
-                img(src="images/Login.jpg", style='height:30px;width=50px;')
+    #header
+        h2 Team Phocas here!
+        h1= username
+            if (loggedin === 1)
+                #login
+                    a(href = '/logout')
+                        img(src="images/logout.jpg", style='height:35px;width=50px;')
+            else
+                #login
+                    a(href = '/login')
+                        img(src="images/Login.jpg", style='height:30px;width=50px;')
 
     #manage
         a(href = '/manage_comics') Manage comics
@@ -28,7 +29,7 @@ block content
     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <script src="home_page.js"></script>
     form#form.form(name="adduser",method="post",action="/")
-        input#input.search(type="search", size = 25, placeholder="Find a comic", name="search")
+        input#input.search(type="search", size = 25, placeholder="Find a comic", name="search", background-color="white")
         button#button.searchbutton(type="submit", value = "Search") Search
     </body>
 
@@ -56,3 +57,6 @@ block content
 
         else
             p empty comicSet
+
+     #footer
+        | Copyright © Phocas
