@@ -316,7 +316,8 @@ var Router = (function () {
             // Submit to the DB
             collection.insert({
                 "title": req.body.comicSetTitle,
-                "imageList": req.body.imageList
+                "imageList": req.body.imageList,
+                "uploadedby": req.session.username
             }, function (err, doc) {
                 if (err) {
                     // If it failed, return error
