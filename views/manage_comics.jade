@@ -1,6 +1,15 @@
 extends layout
 
+
 block content
-    
-    a(class="btn" href="/edit_comic") Edit page
-        
+    ul
+        if comicSets.length
+            each comicSet, c in comicSets
+                li
+                    p #{comicSet.title}
+                        each image, i in comicSet.imageList
+                            a(href='/edit_comic/' + comicSet.title)
+                                img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
+        else
+            p empty comicSet
+        a(class="btn" href="/edit_comic") Edit page

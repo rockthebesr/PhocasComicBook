@@ -237,9 +237,23 @@ var Router = (function () {
             });
         });
         /* Get Manage Comics page. */
-        router.get('/manage_comics', function (req, res) {
-            res.render('manage_comics', { title: 'manage_comics' });
-        });
+      router.get('/manage_comics', function(req, res) {
+          var db = req.db;
+          var collection = db.get('uploadedSets');
+          var userloggingin = req.session.username;
+          var comicSets = [];
+          collection.find({},{},function(err,docs){
+              for(var i =0; i<docs.length; i++) {
+                  var comicSet = docs[i];
+                  if (comicSet.uploadedby === userloggingin) {
+                      comicSets.push(comicSet);
+                  }
+              }
+              res.render('manage_comics', {
+                  "comicSets":comicSets
+              });
+          });
+      });
         /* Save image to database*/
         router.post('/upload', upload.single("image"), function (req, res) {
             var fs = require("fs");
