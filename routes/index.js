@@ -242,6 +242,9 @@ var Router = (function () {
           var collection = db.get('uploadedSets');
           var userloggingin = req.session.username;
           var comicSets = [];
+          if (req.session.loggedin === 1) {
+                            res.send("Please login to use Manage Page");
+                        }
           collection.find({},{},function(err,docs){
               for(var i =0; i<docs.length; i++) {
                   var comicSet = docs[i];
