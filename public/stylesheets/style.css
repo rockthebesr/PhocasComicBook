@@ -231,3 +231,11 @@ input:-webkit-autofill {
   padding: 5px 15px;
   font-weight: bold;
 }
+
+#comicSetTitleForImage {
+    display: none;
+}
+
+#allowEditCheckBox {
+    float:left;
+}
