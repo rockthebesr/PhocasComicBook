@@ -143,6 +143,7 @@ class Router {
                   "comicSets":docs,
                   "indicator": "back",
                   "titleList": titles,
+                  "astar": undefined,
                   "loggedin": req.session.loggedin,
                   "username": req.session.username
               });
@@ -337,7 +338,7 @@ class Router {
       // Submit to the DB
       collection.insert({
         "title" : req.body.comicSetTitle,
-        "imageList" : req.body.imageList，
+        "imageList" : req.body.imageList,
         "uploadedby" : req.session.username
       }, function (err, doc) {
         if (err) {

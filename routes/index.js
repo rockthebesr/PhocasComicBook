@@ -42,7 +42,7 @@ var Router = (function () {
                         }
                         else {
                             req.session.loggedin = 1;
-                            req.session.username = req.body.username;
+                            req.session.username = user.username;
                             res.redirect('/');
                         }
                     }
@@ -84,7 +84,7 @@ var Router = (function () {
                         else {
                             // And forward to success page
                             req.session.loggedin = 1;
-                            req.session.username = req.body.username;
+                            req.session.username = user.username;
                             res.redirect('/');
                         }
                     });
@@ -119,6 +119,7 @@ var Router = (function () {
                     "comicSets": docs,
                     "indicator": "back",
                     "titleList": titles,
+                    "astar": undefined,
                     "loggedin": req.session.loggedin,
                     "username": req.session.username
                 });
@@ -237,26 +238,23 @@ var Router = (function () {
             });
         });
         /* Get Manage Comics page. */
-      router.get('/manage_comics', function(req, res) {
-          var db = req.db;
-          var collection = db.get('uploadedSets');
-          var userloggingin = req.session.username;
-          var comicSets = [];
-          if (req.session.loggedin != 1) {
-                            res.send("Please login to use Manage Page");
-                        }
-          collection.find({},{},function(err,docs){
-              for(var i =0; i<docs.length; i++) {
-                  var comicSet = docs[i];
-                  if (comicSet.uploadedby === userloggingin) {
-                      comicSets.push(comicSet);
-                  }
-              }
-              res.render('manage_comics', {
-                  "comicSets":comicSets
-              });
-          });
-      });
+        router.get('/manage_comics', function (req, res) {
+            var db = req.db;
+            var collection = db.get('uploadedSets');
+            var userloggingin = req.session.username;
+            var comicSets = [];
+            collection.find({}, {}, function (err, docs) {
+                for (var i = 0; i < docs.length; i++) {
+                    var comicSet = docs[i];
+                    if (comicSet.uploadedby === userloggingin) {
+                        comicSets.push(comicSet);
+                    }
+                }
+                res.render('manage_comics', {
+                    "comicSets": comicSets
+                });
+            });
+        });
         /* Save image to database*/
         router.post('/upload', upload.single("image"), function (req, res) {
             var fs = require("fs");
