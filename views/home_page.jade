@@ -8,14 +8,24 @@ block scripts
 
 block content
     head
-        link(rel='stylesheet', href='/stylesheets/style-star.css')
+        link(rel='stylesheet', href='/stylesheets/style-page.css')
+        link(rel='stylesheet', href='/stylesheets/rating.css')
+        link(rel='stylesheet', href='/stylesheets/font-awesome.css')
+        script(src='/javascript/rating.js')
         title Five Star Rating
-    #login
-        a(href = '/login') Login
-    #edit     
+
+    //#edit
         a(href = '/comic_page/comicSet1') Comic Page
+
     body
-        a(href = '/manage_comics') Manage comics
+        nav.o-header-nav
+            a.o-header-nav__link(href='/manage_comics')
+                //i.fa.fa-arrow-left
+                .fa-1x Manage My Comics
+            a.o-header-nav__link(href='/login')
+                .fa-1x Login
+                //i.fa.fa-star
+
         header.o-header
             .o-container
                 h1.o-header__title Phocas
