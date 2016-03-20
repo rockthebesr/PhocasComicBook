@@ -1,4 +1,6 @@
-
+/**
+ * Demo in action!
+ */
 $(function () {
     'use strict';
     // SHOP ELEMENT
@@ -8,7 +10,8 @@ $(function () {
         {
             title: "Dope Hat",
             description: "Dope hat dolor sit amet, consectetur adipisicing elit. Commodi consectetur similique ullam natus ut debitis praesentium.",
-            rating: 3
+            rating: 3,
+            link: '/comic_page/comicSet1'
         },
         {
             title: "Hot Top",
@@ -29,13 +32,25 @@ $(function () {
     })();
     // BUILD SHOP ITEM
     function buildShopItem(data) {
-        var shopItem = document.createElement('div');
-        var html = '<div class="c-shop-item__img"></div>' +
-            '<div class="c-shop-item__details">' +
+        var shopItem = document.createElement('a');
+        var html = '<div class="c-shop-item__details">' +
             '<h3 class="c-shop-item__title">' + data.title + '</h3>' +
             '<p class="c-shop-item__description">' + data.description + '</p>' +
-            '<ul class="c-rating"></ul>' +
-            '</div>';
+            '<a href="/comic_page/comicSet1">' +
+            '<img src="./uploads/65c725ece0f433294dd96d12d07e1d1a.jpg" style="width:200px;height:200px;border:0;">' + '</a>' +
+            '&nbsp' + '&nbsp' +
+            '<a href="/comic_page/comicSet1">' +
+            '<img src="./uploads/65c725ece0f433294dd96d12d07e1d1a.jpg" style="width:200px;height:200px;border:0;">' + '</a>' +
+            '&nbsp' + '&nbsp' +
+            '<a href="/comic_page/comicSet1">' +
+            '<img src="./uploads/65c725ece0f433294dd96d12d07e1d1a.jpg" style="width:200px;height:200px;border:0;">' + '</a>' +
+            '<ul class="c-rating"></ul>' + '</div>';
+        /*var html = '<div class="c-shop-item__img"></div>' +
+                '<div class="c-shop-item__details">' +
+                '<h3 class="c-shop-item__title">' + data.title + '</h3>' +
+                '<p class="c-shop-item__description">' + data.description + '</p>' +
+                '<ul class="c-rating"></ul>' +
+                '</div>';*/
         shopItem.classList.add('c-shop-item');
         shopItem.innerHTML = html;
         shop.appendChild(shopItem);
