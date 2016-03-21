@@ -129,80 +129,30 @@ class Router {
             res.redirect('/');
         });
 
-
-
+      
       /* GET Home page. */
       router.get('/', function(req, res) {
           var db = req.db;
           var collection = db.get('uploadedSets');
-          var imgList = [];
+          var titles = [];
           collection.find({},{},function(e,docs){
               for(var i = 0; i < docs.length; i++){
-                  imgList[i] = docs[i].imageList;
+                  titles[i] = docs[i].title;
               }
               res.render('home_page', {
-                  //"comicSets":docs,
-                  //"astar": undefined,
-                  "imageList": imgList,
+                  "comicSets":docs,
+                  "indicator": "back",
+                  "titleList": titles,
+                  "astar": undefined,
                   "loggedin": req.session.loggedin,
                   "username": req.session.username
               });
           });
       });
 
-
-      /* Home Page Searching */
-      router.post('/', function(req, res) {
-          //var db = req.db;
-          //var collection = db.get('uploadedSets');
-          //collection.find({},{},function(e,docs){
-              var searchComic = req.body.searchComic;
-              console.log(searchComic);
-              res.send({redirect: '/home/' + searchComic});
-
-              res.render('home_page', {
-                  //"comicSets":docs,
-                  //"astar": undefined,
-                  "loggedin": req.session.loggedin,
-                  "username": req.session.username
-              });
-          //});
-      });
-
-
-      /* Get Home Page after Searching. */
-      router.get('/home/:comic_set_title', function(req, res) {
-          var db = req.db;
-          var collection = db.get('uploadedSets');
-          var comicSetTitle = req.params.comic_set_title;
-          var imgList = [];
-          collection.find({}, {}, function(err,docs) {
-              var i = 0;
-              for(i; i<docs.length; i) {
-                  var comicSet = docs[i];
-                  if (comicSet.title === comicSetTitle) {
-                      imgList[0] = comicSet.imageList;
-                      break;
-                  }
-                  i++;
-              }
-              if(i == docs.length){
-                  res.render('home_page', {
-                      "indicator" : 1,
-                      "imageList": imgList
-                  });
-              }
-              else{
-                  res.render('home_page', {
-                      "indicator": 0,
-                      "imageList" : imgList
-                  });
-              }
-          });
-      });
 
       /* Filter Home page. */
-      /*router.post('/', function(req, res) {
+      router.post('/', function(req, res) {
           var db = req.db;
           var collection = db.get('uploadedSets');
           var titles = [];
@@ -227,7 +177,7 @@ class Router {
                   "result": req.body.search
               });
           });
-      });*/
+      });
 
 
     /* Get Comic page. */

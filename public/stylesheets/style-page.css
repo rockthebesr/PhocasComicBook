@@ -52,7 +52,7 @@ body {
   margin: 0;
   padding: 0;
   height: 30%;
-  background-image: url("/images/bg3.jpg");
+  background-image: url("/images/bg0.jpg");
   /*background-size: cover;*/
 }
 
@@ -63,8 +63,8 @@ body {
   font-family: "Oxygen", Helvetica, sans-serif;
   font-size: 16px;
   line-height: 1.3;
-  margin-bottom:50px;
 }
+
 
 
 /* -----------------------------------------------------------------------------
@@ -303,7 +303,7 @@ img {
           align-items: center;
   margin-bottom: 12px;
   padding: 12px;
-  border: solid 0px dodgerblue;
+  border: solid 1px #e7e7e7;
 }
 
 .c-shop-item:last-child {
