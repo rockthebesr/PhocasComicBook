@@ -10,9 +10,9 @@ var Application = (function () {
         var bodyParser = require('body-parser');
         // New Code
         var mongo = require('mongodb');
-        var uri = 'mongodb://heroku_r774rtpz:pstcp2u20hiip964460qsrl1o@ds061385.mongolab.com:61385/heroku_r774rtpz';
+        //var uri = 'mongodb://heroku_r774rtpz:pstcp2u20hiip964460qsrl1o@ds061385.mongolab.com:61385/heroku_r774rtpz';
         var monk = require('monk');
-        //var db = monk('mongodb://localhost:27017/phocas');
+        var db = monk('mongodb://localhost:27017/phocas');
         //var db = monk("mongodb://heroku_x1w4rl5d:Rockluo66!!@ds061375.mongolab.com:61375/heroku_x1w4rl5d");
         var db = monk(uri);
         var routes = require('./routes/index');

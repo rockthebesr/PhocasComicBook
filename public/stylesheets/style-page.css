@@ -1,7 +1,6 @@
 /* -----------------------------------------------------------------------------
-
   FONTS
-  
+
 ----------------------------------------------------------------------------- */
 @font-face {
   font-family: 'Oxygen';
@@ -28,9 +27,8 @@
 }
 
 /* -----------------------------------------------------------------------------
-
   BOX SIZING RESET
-  
+
 ----------------------------------------------------------------------------- */
 *,
 *::before,
@@ -43,16 +41,15 @@ html {
 }
 
 /* -----------------------------------------------------------------------------
-
   ROOT ELEMENTS
-  
+
 ----------------------------------------------------------------------------- */
 html,
 body {
   margin: 0;
   padding: 0;
   height: 30%;
-  background-image: url("/images/bg0.jpg");
+  background-image: url("/images/bg3.jpg");
   /*background-size: cover;*/
 }
 
@@ -63,14 +60,13 @@ body {
   font-family: "Oxygen", Helvetica, sans-serif;
   font-size: 16px;
   line-height: 1.3;
+  margin-bottom:50px;
 }
 
 
-
 /* -----------------------------------------------------------------------------
-
   HEADING ELEMENTS
-  
+
 ----------------------------------------------------------------------------- */
 h1,
 h2,
@@ -84,9 +80,8 @@ h6 {
 }
 
 /* -----------------------------------------------------------------------------
-
   TEXT ELEMENTS
-  
+
 ----------------------------------------------------------------------------- */
 a {
   color: #28aadc;
@@ -108,9 +103,8 @@ em {
 }
 
 /* -----------------------------------------------------------------------------
-
   MEDIA ELEMENTS
-  
+
 ----------------------------------------------------------------------------- */
 img {
   max-width: 100%;
@@ -118,9 +112,8 @@ img {
 }
 
 /* -----------------------------------------------------------------------------
-
   CONTAINER OBJECTS
-  
+
 ----------------------------------------------------------------------------- */
 .o-container {
   margin: 0 auto;
@@ -141,9 +134,8 @@ img {
 }
 
 /* -----------------------------------------------------------------------------
-
   HEADER OBJECT
-  
+
 ----------------------------------------------------------------------------- */
 .o-header {
   margin: 0;
@@ -157,8 +149,8 @@ img {
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   background-color: #28aadc;
   padding-right: 10%;
   font-size: 13px;
@@ -192,18 +184,16 @@ img {
 }
 
 /* -----------------------------------------------------------------------------
-
   MAIN OBJECT
-  
+
 ----------------------------------------------------------------------------- */
 .o-main {
   /**/
 }
 
 /* -----------------------------------------------------------------------------
-
   SECTION OBJECT
-  
+
 ----------------------------------------------------------------------------- */
 .o-section {
   margin-bottom: 24px;
@@ -220,9 +210,8 @@ img {
 }
 
 /* -----------------------------------------------------------------------------
-
   SUB-NAVIGATION OBJECT
-  
+
 ----------------------------------------------------------------------------- */
 .o-sub-nav {
   margin: 0;
@@ -235,12 +224,12 @@ img {
   display: -ms-flexbox;
   display: flex;
   -webkit-flex-flow: row wrap;
-      -ms-flex-flow: row wrap;
-          flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -265,9 +254,8 @@ img {
 }
 
 /* -----------------------------------------------------------------------------
-
   FOOTER OBJECT
-  
+
 ----------------------------------------------------------------------------- */
 .o-footer {
   padding: 12px 0;
@@ -288,9 +276,8 @@ img {
 
 
 /* -----------------------------------------------------------------------------
-
   COMPENENTS - SHOP ITEM
-  
+
 ----------------------------------------------------------------------------- */
 .c-shop-item {
   display: -webkit-box;
@@ -299,11 +286,11 @@ img {
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   margin-bottom: 12px;
   padding: 12px;
-  border: solid 1px #e7e7e7;
+  border: solid 0px dodgerblue;
 }
 
 .c-shop-item:last-child {
@@ -319,8 +306,8 @@ img {
 .c-shop-item__img {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 96px;
-      -ms-flex: 0 0 96px;
-          flex: 0 0 96px;
+  -ms-flex: 0 0 96px;
+  flex: 0 0 96px;
   height: 96px;
   background-color: #e7e7e7;
   border-radius: 100%;
@@ -340,9 +327,8 @@ img {
 }
 
 /* -----------------------------------------------------------------------------
-
   CARBON AD COMPONENT
-  
+
 ----------------------------------------------------------------------------- */
 #carbonads {
   position: fixed;
