@@ -158,7 +158,7 @@ class Router {
             //collection.find({},{},function(e,docs){
             var searchComic = req.body.searchComic;
             console.log(searchComic);
-            res.send({redirect: '/home/' + searchComic});
+            res.send({redirect: '/' + searchComic});
 
             res.render('home_page', {
                 //"comicSets":docs,
@@ -171,7 +171,7 @@ class Router {
 
 
         /* Get Home Page after Searching. */
-        router.get('/home/:comic_set_title', function(req, res) {
+        router.get('/:comic_set_title', function(req, res) {
             var db = req.db;
             var collection = db.get('uploadedSets');
             var comicSetTitle = req.params.comic_set_title;

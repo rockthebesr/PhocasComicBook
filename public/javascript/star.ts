@@ -39,17 +39,26 @@ $(function() {
         if(data.length === 0) return '';
         else
             var title = data[0].comicSetTitle;
+
         var before = '<div class="c-shop-item__details">' +
             '<h3 class="c-shop-item__title">' + title + '</h3>' +
             '<p class="c-shop-item__description">' + 'Fresh kicks dolor sit amet, consectetur adipisicing elit.' +
             'Commodi consectetur similique ullam natus ut debitis praesentium. Commodi consectetur similique ullam natus ut debitis praesentium.' + '</p>';
 
         var link = '';
-        for(var i = 0; i < data.length; i++){
+        for(var i = 0; i < Math.min(4, data.length); i++){
             link += '<a href="/comic_page/' + title + '">';
-            link += '<img src=' + '../'+ data[0].imageUrl + ' style="width:200px;height:200px;border:0;">' + '</a>';
+            link += '<img src=' + './'+ data[i].imageUrl + ' style="width:200px;height:200px;border:0;">' + '</a>';
             link += '&nbsp'+ '&nbsp'+'&nbsp'+ '&nbsp';
         }
+        if(data.length < 4){
+            for(var i = 4; i > data.length; i--){
+                link += '<a href="/edit_comic/' + title + '">';
+                link += '<img src=' + './images'+ '/add.jpg' + ' style="width:200px;height:200px;border:0;">' + '</a>';
+                link += '&nbsp'+ '&nbsp'+'&nbsp'+ '&nbsp';
+            }
+        }
+
 
         var after = '<ul class="c-rating"></ul>' + '</div>';
 
