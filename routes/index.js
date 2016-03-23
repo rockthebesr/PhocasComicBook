@@ -25,13 +25,7 @@ var Router = (function () {
             saveUninitialized: true,
             resave: true }));
         /* GET login page. */
-        router.get('/ui_test', function (req, res, next) {
-            res.render('/ui_test', { title: 'UI_test' });
-        });
-
-        router.get('/ui_test', function (req, res, next) {
-            res.render('ui_test', { title: 'Ui_Test' });
-        });
+    
 
         router.get('/login', function (req, res, next) {
             res.render('login', { title: 'Login' });
