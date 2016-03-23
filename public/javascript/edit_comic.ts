@@ -32,6 +32,7 @@ var deleteComicImage = function(imageUrl) {
 };
 
 var saveComicSet = function () {
+    var allowOthersToEdit = $('#allowEditCheckBox').is(':checked');
     if (title != "undefined") {
         var positions = [];
         jQuery(".uploadedImagePosition").each(function(index, element) {
@@ -51,7 +52,11 @@ var saveComicSet = function () {
             url: '/updateComicSet',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({oldComicSetTitle: title, newComicSetTitle: inputTitle, imageList: imageList}),
+            data: JSON.stringify({
+                oldComicSetTitle: title,
+                newComicSetTitle: inputTitle,
+                allowOthersToEdit: allowOthersToEdit,
+                imageList: imageList}),
             success: function (data) {
                 if (typeof data.redirect == 'string')
                     window.location = data.redirect
@@ -78,7 +83,10 @@ var saveComicSet = function () {
                 url: '/uploadComicSet',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({comicSetTitle: inputTitle, imageList: imageList}),
+                data: JSON.stringify({
+                    comicSetTitle: inputTitle,
+                    allowOthersToEdit: allowOthersToEdit,
+                    imageList: imageList}),
                 success: function (data) {
                     if (typeof data.redirect == 'string')
                         window.location = data.redirect

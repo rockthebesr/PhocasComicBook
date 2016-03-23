@@ -1,0 +1,66 @@
+extends layout
+//.star coverd width={{percent}}
+block scripts
+    script(type='text/javascript').
+        var titleList = !{JSON.stringify(titleList)};
+        var star = #{astar};
+    script(src='/javascript/home_page.js')
+
+
+block content
+    #header
+        h2 Team Phocas here!
+        h1= username
+            if (loggedin === 1)
+                #login
+                    a(href = '/logout')
+                        img(src="images/logout.jpg", style='height:35px;width=50px;')
+            else
+                #login
+                    a(href = '/login')
+                        img(src="images/Login.jpg", style='height:30px;width=50px;')
+
+    #manage
+        a(href = '/manage_comics') Manage comics
+
+
+    form#form.form(name="adduser",method="post",action="/")
+        input#input.search(type="search", size = 25, placeholder="Find a comic", name="search", background-color="white")
+        button#button.searchbutton(type="submit", value = "Search") Search
+
+
+    input.star(type='radio', name='rating', value='5')
+    input.star(type='radio', name='rating', value='4')
+    input.star(type='radio', name='rating', value='3')
+    input.star(type='radio', name='rating', value='2')
+    input.star(type='radio', name='rating', value='1')
+
+
+
+    ul
+        if comicSets.length
+            case indicator
+                when "found"
+                    p #{comicSets[matched].title}
+                        each image in comicSets[matched].imageList
+                            a(href='/comic_page/' + image.comicSetTitle)
+                                img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
+                    p.resultfont #[span Back to] #[a(href='/') All Comics]
+
+                when "not found"
+                    p.resultfont No Result for "#{result}"
+                    p.resultfont #[span Back to] #[a(href='/') All Comics]
+
+                when "back"
+                    each comicSet, c in comicSets
+                        li
+                            p #{comicSet.title}
+                                each image, i in comicSet.imageList
+                                    a(href='/comic_page/' + comicSet.title)
+                                        img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
+
+        else
+            p empty comicSet
+
+    #footer
+        | Copyright © Phocas

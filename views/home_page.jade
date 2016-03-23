@@ -2,62 +2,50 @@ extends layout
 
 block scripts
     script(type='text/javascript').
-        var titleList = !{JSON.stringify(titleList)};
-    script(src='/javascript/home_page.js')
+        var imgdata = !{JSON.stringify(imageList)};
+                //var star = #{astar};
+    script(src='/javascript/star.js')
+
+    script(type='text/javascript').
+        //...
+    script(src='/javascript/search.js')
 
 
 block content
-    #header
-        h2 Team Phocas here!
-        h1= username
-            if (loggedin === 1)
-                #login
-                    a(href = '/logout')
-                        img(src="images/logout.jpg", style='height:35px;width=50px;')
-            else
-                #login
-                    a(href = '/login')
-                        img(src="images/Login.jpg", style='height:30px;width=50px;')
+    head
+        link(rel='stylesheet', href='/stylesheets/style-page.css')
+        link(rel='stylesheet', href='/stylesheets/rating.css')
+        link(rel='stylesheet', href='/stylesheets/font-awesome.css')
+        script(src='/javascript/rating.js')
+        title Phocas Star Rating
 
-    #manage
-        a(href = '/manage_comics') Manage comics
+    body
+        nav.o-header-nav
+            a.o-header-nav__link(href='/manage_comics')
+                //i.fa.fa-arrow-left
+                .fa-1x Manage My Comics
 
+            form#form
+                input#search-input(type='text', placeholder='Find a Comic', autocomplete = "off")
+                #button-holder
+                    img(src='/images/mag.png')
 
+            a.o-header-nav__link(href='/login')
+                .fa-1x Login
+                //i.fa.fa-star
+        header.o-header
+            .o-container
+                a(href='/')
+                    h1.o-header__title Phocas
+        main
+            if (indicator === 1)
+                p.fa-1x No result
+                p.fa-1x Back to #[a(href='/') All Comics]
 
-    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
-    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-    <script src="home_page.js"></script>
-    form#form.form(name="adduser",method="post",action="/")
-        input#input.search(type="search", size = 25, placeholder="Find a comic", name="search", background-color="white")
-        button#button.searchbutton(type="submit", value = "Search") Search
-
-
-
-    ul
-        if comicSets.length
-            case indicator
-                when "found"
-                    p #{comicSets[matched].title}
-                        each image in comicSets[matched].imageList
-                            a(href='/comic_page/' + image.comicSetTitle)
-                                img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
-                    p.resultfont #[span Back to] #[a(href='/') All Comics]
-
-                when "not found"
-                    p.resultfont No Result for "#{result}"
-                    p.resultfont #[span Back to] #[a(href='/') All Comics]
-
-                when "back"
-                    each comicSet, c in comicSets
-                        li
-                            p #{comicSet.title}
-                                each image, i in comicSet.imageList
-                                    a(href='/comic_page/' + comicSet.title)
-                                        img#comicSetImage(class="uploadedImage", src= '#{image.imageUrl}')
-
-        else
-            p empty comicSet
-
-     #footer
-        | Copyright © Phocas
+        main.o-content
+            .o-container
+                .o-section
+                    #shop
+        footer.o-footer
+            .o-container
+                small © 2016, Phocas
