@@ -25,7 +25,7 @@ $(function() {
         var link = '';
         for(var i = 0; i < Math.min(4, data.length); i++){
             link += '<a href="/comic_page/' + title + '">';
-            link += '<img src=' + '../'+ data[i].imageUrl + ' style="width:200px;height:200px;border:0;">' + '</a>';
+            link += '<img src=' + './'+ data[i].imageUrl + ' style="width:200px;height:200px;border:0;">' + '</a>';
             link += '&nbsp'+ '&nbsp'+'&nbsp'+ '&nbsp';
         }
         if(data.length < 4){
@@ -54,11 +54,9 @@ $(function() {
     // ADD RATING WIDGET
     function addRatingWidget(shopItem, data) {
         var ratingElement = shopItem.querySelector('.c-rating');
-        var currentRating = 4; //data.rating;
+        var currentRating = data.rating;
         var maxRating = 5;
         var callback = function(rating) { alert(rating); };
         var r = rating(ratingElement, currentRating, maxRating, callback);
     }
-    //$('#form').html('Hello World!');
 });
-

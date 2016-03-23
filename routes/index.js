@@ -120,7 +120,6 @@ var Router = (function () {
                 res.render('home_page', {
                     //"comicSets":docs,
                     //"astar": undefined,
-                    "indicator": 0,
                     "imageList": imgList,
                     "loggedin": req.session.loggedin,
                     //"username": req.session.username
@@ -133,11 +132,8 @@ var Router = (function () {
             //var collection = db.get('uploadedSets');
             //collection.find({},{},function(e,docs){
             var searchComic = req.body.searchComic;
-            console.log("UserInput is: " + searchComic);
-            if (searchComic !== '')
-                res.send({ redirect: '/home/' + searchComic });
-            else
-                res.redirect('/');
+            console.log(searchComic);
+            res.send({ redirect: '/home/' + searchComic });
             res.render('home_page', {
                 //"comicSets":docs,
                 //"astar": undefined,
@@ -164,7 +160,6 @@ var Router = (function () {
                 }
                 if (i == docs.length) {
                     res.render('home_page', {
-                        "userInput": comicSetTitle,
                         "indicator": 1,
                         "imageList": imgList
                     });
