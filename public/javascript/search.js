@@ -1,9 +1,14 @@
 ///<reference path='../../types/DefinitelyTyped/jquery/jquery.d.ts'/>
-jQuery(document).on("click", "#btnForsearch", function () {
+/*$( "#button-holder" ).keypress(function(event) {
+  if (event.which == 13) {
+    searchComicSet();
+  }
+});*/
+jQuery(document).on("click", "#button-holder", function () {
     searchComicSet();
 });
 var searchComicSet = function () {
-    var text = $("#input").val();
+    var text = $("#search-input").val();
     $.ajax({
         url: '/',
         type: 'POST',

@@ -254,6 +254,41 @@ img {
 }
 
 /* -----------------------------------------------------------------------------
+  SEARCH
+
+----------------------------------------------------------------------------- */
+#form {
+  align-self: flex-end;
+}
+
+#search-input{
+  background-color: transparent;
+  color: white;
+  font-size: 20px;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom-color: #330033;
+  height:30px;
+  padding:.4em 0 .4em .6em;
+  width:283px;
+}
+
+#button-holder{
+  cursor:pointer;
+  float:left;
+  height:27px;
+  margin:1px 0 0 0;
+  text-align: start;
+  width:50px;
+}
+
+#button-holder img {
+  width:30px;
+}
+
+
+/* -----------------------------------------------------------------------------
   FOOTER OBJECT
 
 ----------------------------------------------------------------------------- */
@@ -380,3 +415,7 @@ img {
     display: none;
   }
 }
+
+
+
+

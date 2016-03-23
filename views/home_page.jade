@@ -19,24 +19,28 @@ block content
         script(src='/javascript/rating.js')
         title Phocas Star Rating
 
-    input#input(type="text")
-    button#btnForsearch Search
-
     body
         nav.o-header-nav
             a.o-header-nav__link(href='/manage_comics')
                 //i.fa.fa-arrow-left
                 .fa-1x Manage My Comics
+
+            form#form
+                input#search-input(type='text', placeholder='Find a Comic', autocomplete = "off")
+                #button-holder
+                    img(src='/images/mag.png')
+
             a.o-header-nav__link(href='/login')
                 .fa-1x Login
                 //i.fa.fa-star
         header.o-header
             .o-container
-                h1.o-header__title Phocas
-
-        if (indicator === 1)
-            p No result
-            p Back to #[a(href='/') All Comics]
+                a(href='/')
+                    h1.o-header__title Phocas
+        main
+            if (indicator === 1)
+                p.fa-1x No result
+                p.fa-1x Back to #[a(href='/') All Comics]
 
         main.o-content
             .o-container
