@@ -1,28 +1,60 @@
 extends layout
 
+block scripts
+    script(type='text/javascript').
+        var imgdata = !{JSON.stringify(imageList)};
+                //var star = #{astar};
+    script(src='/javascript/star.js')
+
+    script(type='text/javascript').
+        //...
+    script(src='/javascript/search.js')
+
+
 block content
-    #header
-        h1= title
-        ul#nav
-            li
-                a(href = '/sign_up')
-                    img(src="images/signup.jpg", style='height:35px;width=50px;')
+    head
+        link(rel='stylesheet', href='/stylesheets/style-page.css')
+        link(rel='stylesheet', href='/stylesheets/rating.css')
+        link(rel='stylesheet', href='/stylesheets/font-awesome.css')
+        script(src='/javascript/rating.js')
+        title Phocas Star Rating
+
+    body
+
+        nav.o-header-nav
+            a.o-header-nav__link(href='/manage_comics')
+                //i.fa.fa-arrow-left
+                .fa-1x Manage
+
+        
+            
+            form#form
+                input#search-input(type='text', placeholder='Find a Comic', autocomplete = "off")
+                #button-holder
+                    img(src='/images/mag.png')
+
+            a.o-header-nav__link(href='/sign_up')
+                .fa-1x Sign Up
+                //i.fa.fa-star
+        header.o-header
+            .o-container
+                a(href='/')
+                    h1.o-header__title Phocas
 
     form#formSignIn(name="adduser",method="post",action="/login")
         input#inputUserName(type="text", placeholder="username", name="username")
         input#inputPassword(type="password", placeholder="password", name="userpassword")
         button#btnSubmit(type="submit") submit
-        
+          
 
-    #footer
-        | Copyright © Phocas
+        footer.o-footer
+            .o-container
+                small © 2016, Phocas
 
     
 
 
-    // #signup
-    //     a(href = '/sign_up')
-    //         img(src="images/signup.jpg", style='height:35px;width=50px;')
+ 
 
 
         
