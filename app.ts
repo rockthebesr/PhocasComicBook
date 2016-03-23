@@ -17,6 +17,8 @@ class Application {
     var cookieParser = require('cookie-parser');
     var bodyParser = require('body-parser');
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 // New Code
     var mongo = require('mongodb');
     var uri = 'mongodb://heroku_r774rtpz:pstcp2u20hiip964460qsrl1o@ds061385.mongolab.com:61385/heroku_r774rtpz';
@@ -29,6 +31,24 @@ class Application {
     var users = require('./routes/users');
 
     var app = express();
+=======
+=======
+>>>>>>> Stashed changes
+
+    var mongo = require('mongodb');
+    //var uri = 'mongodb://heroku_r774rtpz:pstcp2u20hiip964460qsrl1o@ds061385.mongolab.com:61385/heroku_r774rtpz';
+    var monk = require('monk');
+    var db = monk('mongodb://localhost:27017/phocas');
+    //var db = monk("mongodb://heroku_x1w4rl5d:Rockluo66!!@ds061375.mongolab.com:61375/heroku_x1w4rl5d");
+    var db = monk(uri);
+
+      var routes = require('./routes/index');
+      var users = require('./routes/users');
+      var app = express();
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
 
     app.use(express.static(path.join(__dirname, 'public/')));
@@ -88,4 +108,12 @@ class Application {
   }
 }
 var application = new Application();
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 module.exports = application.app;
+=======
+module.exports = application.app;
+>>>>>>> Stashed changes
+=======
+module.exports = application.app;
+>>>>>>> Stashed changes

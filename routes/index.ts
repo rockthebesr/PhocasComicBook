@@ -143,6 +143,7 @@ class Router {
                 res.render('home_page', {
                     //"comicSets":docs,
                     //"astar": undefined,
+                    "indicator": 0,
                     "imageList": imgList,
                     "loggedin": req.session.loggedin,
                     "username": req.session.username
@@ -157,8 +158,11 @@ class Router {
             //var collection = db.get('uploadedSets');
             //collection.find({},{},function(e,docs){
             var searchComic = req.body.searchComic;
-            console.log(searchComic);
-            res.send({redirect: '/home/' + searchComic});
+            console.log("UserInput is: " + searchComic);
+            if(searchComic !== '')
+                res.send({redirect: '/home/' + searchComic});
+            else
+                res.redirect('/');
 
             res.render('home_page', {
                 //"comicSets":docs,
@@ -188,6 +192,7 @@ class Router {
                 }
                 if(i == docs.length){
                     res.render('home_page', {
+                        "userInput": comicSetTitle,
                         "indicator" : 1,
                         "imageList": imgList
                     });
