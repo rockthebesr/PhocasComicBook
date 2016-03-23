@@ -39,16 +39,16 @@ block content
                     h1.o-header__title Phocas
         main
             if (indicator === 1)
-                p.fa-1x No result
-                p.fa-1x Back to #[a(href='/') All Comics]
+                p.fa-1x.blocktext No result for '#{userInput}'...
+                p.fa-1x.blocktext Back to #[a(href='/') All Comics]
+
 
         main.o-content
             .o-container
                 .o-section
                     #shop
 
-    
-
-        footer.o-footer
-            .o-container
-                small © 2016, Phocas
+        if (indicator === 0)
+            footer.o-footer
+                .o-container
+                    small © 2016, Phocas
