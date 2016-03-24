@@ -8,18 +8,39 @@ block scripts
     script(src='/javascript/comic_page.js')
 
 block content
-    #header
-        h1 Team Phocas here!
-        #btnBack
-            a(href='/')
-                button.btn Back
+    head
+        link(rel='stylesheet', href='/stylesheets/style-page.css')
+        link(rel='stylesheet', href='/stylesheets/rating.css')
+        link(rel='stylesheet', href='/stylesheets/font-awesome.css')
+        script(src='/javascript/rating.js')
+        title Phocas Star Rating
+        
+    body
+
+        nav.o-header-nav
+            a.o-header-nav__link(href='/manage_comics')
+                //i.fa.fa-arrow-left
+                .fa-1x Manage
+ 
+            form#form
+                input#search-input(type='text', placeholder='Find a Comic', autocomplete = "off")
+                #button-holder
+                    img(src='/images/mag.png')
+
+            a.o-header-nav__link(href='/sign_up')
+                .fa-1x Sign Up
+                //i.fa.fa-star
+        header.o-header
+            .o-container
+                a(href='/')
+                    h1.o-header__title Phocas
              
-    #next
-        #btnNext.nextButton
-            span Next
-    #prev
-        #btnPrev.prevButton
-            span Previous
+    #btnPrev 
+        button(class="btn") Previous
+    
+    #btnNext
+        button(class="btn") Next
+    
     #section
         h2 #{title}
         #editComicBottom
@@ -28,7 +49,8 @@ block content
             each image, i in imageList
                 li
                     img(class="uploadedImage", src='#{image.imageUrl}')
-    #footer
-        | Copyright © Phocas
+        footer.o-footer
+            .o-container
+                small © 2016, Phocas
   
   
