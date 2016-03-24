@@ -11,18 +11,18 @@ div#header {
 }
 #prev {
     line-height:30px;
-    background-color:#eeeeee;
-    height:600px;
-    width:100px;
+    /*background-color:#eeeeee;*/
+    /*height:600px;*/
+    /*width:100px;*/
     float:left;
     padding:5px;
     vertical-align: middle;
 }
 #next {
     line-height:30px;
-    background-color:#eeeeee;
-    height:600px;
-    width:100px;
+    /*background-color:#eeeeee;*/
+    /*height:600px;*/
+    /*width:100px;*/
     float:right;
     padding:5px;
     text-align: center;
@@ -63,6 +63,7 @@ div#header {
     width:600px;
     float:left;
     padding:10px;
+    vertical-align: middle;
 }
 #footer {
     background-color:black;
