@@ -43,16 +43,24 @@ block content
         
     
     
-    #section
-        h2 #{title}
-        #editComicBottom
-            a(href='/edit_comic/' + title) Edit this comic!
-        ul
-            each image, i in imageList
-                li
-                    img(class="uploadedImage", src='#{image.imageUrl}')
-        footer.o-footer
-            .o-container
-                small © 2016, Phocas
+     main.o-content
+        .o-container
+            .o-section
+                #section
+                    h2 #{title}
+                    #editComicBottom
+                        a(href='/edit_comic/' + title) Edit this comic!
+                    ul
+                        each image, i in imageList
+                            li
+                                img(class="uploadedImage", src='#{image.imageUrl}')
+                                    
+
+
+
+    footer.o-footer
+        .o-container
+            small © 2016, Phocas
+
   
   
