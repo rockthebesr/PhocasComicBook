@@ -2,8 +2,7 @@ extends layout
 
 block scripts
     script(type='text/javascript').
-        var imgdata = !{JSON.stringify(imageList)};
-                //var star = #{astar};
+        var comicSetData = !{JSON.stringify(comicSetList)};
     script(src='/javascript/star.js')
 
     script(type='text/javascript').

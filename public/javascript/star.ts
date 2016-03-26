@@ -2,12 +2,12 @@ $(function() {
     'use strict';
     // SHOP ELEMENT
     var shop = document.querySelector('#shop');
-    var data = imgdata;
+    var data = comicSetData;
 
     // INITIALIZE
     (function init() {
         for (var i = 0; i < data.length; i++) {
-            addRatingWidget(buildShopItem(data[i]), data[i]);
+            addRatingWidget(buildShopItem(data[i].imageList), data[i]);
         }
     })();
 
@@ -19,7 +19,7 @@ $(function() {
 
         var before = '<div class="c-shop-item__details">' +
             '<h3 class="c-shop-item__title">' + title + '</h3>' +
-            '<p class="c-shop-item__description">' + 'Fresh kicks dolor sit amet, consectetur adipisicing elit.' +
+            '<p class="c-shop-item__description">' + title + ' dolor sit amet, consectetur adipisicing elit.' +
             'Commodi consectetur similique ullam natus ut debitis praesentium. Commodi consectetur similique ullam natus ut debitis praesentium.' + '</p>';
 
         var link = '';
@@ -43,10 +43,10 @@ $(function() {
 
     // BUILD SHOP ITEM
     function buildShopItem(data) {
-        var shopItem = document.createElement('div');
+        var shopItem = document.createElement('anything');
         var html = createHtml(data);
 
-        shopItem.classList.add('c-shop-item');
+        //shopItem.classList.add('c-shop-item');
         shopItem.innerHTML = html;
         shop.appendChild(shopItem);
         return shopItem;
@@ -54,11 +54,11 @@ $(function() {
     // ADD RATING WIDGET
     function addRatingWidget(shopItem, data) {
         var ratingElement = shopItem.querySelector('.c-rating');
-        var currentRating = 4; //data.rating;
+        var currentRating = data.rating;
         var maxRating = 5;
-        var callback = function(rating) { alert(rating); };
+        var callback = function(rating) { };//alert(rating); };
         var r = rating(ratingElement, currentRating, maxRating, callback);
+        //$('#form').html(r.getRating);
     }
-    //$('#form').html('Hello World!');
 });
 

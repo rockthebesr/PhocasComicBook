@@ -135,16 +135,15 @@ class Router {
         router.get('/', function(req, res) {
             var db = req.db;
             var collection = db.get('uploadedSets');
-            var imgList = [];
+            var comicSetList = [];
             collection.find({},{},function(e,docs){
                 for(var i = 0; i < docs.length; i++){
-                    imgList[i] = docs[i].imageList;
+                    comicSetList[i] = docs[i];
                 }
                 res.render('home_page', {
                     //"comicSets":docs,
-                    //"astar": undefined,
                     "indicator": 0,
-                    "imageList": imgList,
+                    "comicSetList": comicSetList,
                     "loggedin": req.session.loggedin,
                     "username": req.session.username
                 });
@@ -394,7 +393,9 @@ class Router {
             collection.insert({
                 "title" : req.body.comicSetTitle,
                 "imageList" : req.body.imageList,
-                "uploadedby" : req.session.username
+                "uploadedby" : req.session.username,
+                "rating" : 3,
+                "numberofR" : 0
             }, function (err, doc) {
                 if (err) {
                     // If it failed, return error
