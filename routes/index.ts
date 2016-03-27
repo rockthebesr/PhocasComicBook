@@ -213,7 +213,7 @@ class Router {
             collection.find({},{}, function(err, docs){
                 for(var i = 0; i < docs.length; i++){
                     if(title === docs[i].title){
-                        newrating = Math.floor((docs[i].rating + UserRating)/2);
+                        newrating = (docs[i].rating + UserRating)/2;
                         break;
                     }
                 }
@@ -384,7 +384,7 @@ class Router {
                 "title" : req.body.comicSetTitle,
                 "imageList" : req.body.imageList,
                 "uploadedby" : req.session.username,
-                "rating" : 0,
+                "rating" : 3,
                 "numberofR" : 0
             }, function (err, doc) {
                 if (err) {

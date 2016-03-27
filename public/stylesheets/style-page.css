@@ -102,6 +102,10 @@ em {
   font-style: italic;
 }
 
+#prate {
+    margin: 5px 0 2px 0px;
+    color: black;
+}
 /* -----------------------------------------------------------------------------
   MEDIA ELEMENTS
 

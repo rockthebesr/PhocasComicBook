@@ -3,10 +3,11 @@ $(function () {
     // SHOP ELEMENT
     var shop = document.querySelector('#shop');
     var data = comicSetData;
+    var decimal;
     // INITIALIZE
     (function init() {
         for (var i = 0; i < data.length; i++) {
-            addRatingWidget(buildShopItem(data[i].imageList), data[i]);
+            addRatingWidget(buildShopItem(data[i].imageList), data[i], decimal);
         }
     })();
     // Create Html
@@ -32,8 +33,7 @@ $(function () {
                 link += '&nbsp' + '&nbsp' + '&nbsp' + '&nbsp';
             }
         }
-        var after = '<ul class="c-rating"></ul>' + '</div>';
-        ;
+        var after = '<div class="c-rating">' + '<p id = "prate">Rate This Comic: </p>' + '&nbsp' + '&nbsp' + '</div>' + '</div>';
         return before + link + after;
     }
     // BUILD SHOP ITEM
@@ -46,7 +46,7 @@ $(function () {
         return shopItem;
     }
     // ADD RATING WIDGET
-    function addRatingWidget(shopItem, data) {
+    function addRatingWidget(shopItem, data, decimal) {
         var ratingElement = shopItem.querySelector('.c-rating');
         var ratingElementTitle = shopItem.querySelector('.c-rating-title');
         var currentRating = data.rating;
@@ -61,8 +61,9 @@ $(function () {
             });
         };
         //function callback(arg) {alert(arg);}
-        var r = rating(ratingElement, currentRating, maxRating, callback);
+        var r = rating(ratingElement, 0, maxRating, callback);
         var s = rating_title(ratingElementTitle, currentRating, maxRating, null);
         //$('#form').html(r.getRating);
     }
 });
+//# sourceMappingURL=star.js.map

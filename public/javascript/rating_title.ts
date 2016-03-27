@@ -21,6 +21,8 @@
      * @type {Array}
      */
     var stars = [];
+    var decimal = currentRating - Math.floor(currentRating);
+    decimal = decimal.toFixed(2);
 
     /**
      * init
@@ -37,14 +39,20 @@
         var star = document.createElement('li');
         star.setAttribute('data-index', i);
 
-        if (i < currentRating - 1 ) {
+        if (i < Math.floor(currentRating) ) {
           star.classList.add('c-rating__full');
           star.classList.add('is-active');
         }
 
-        if(i === currentRating - 1) {
-          star.classList.add('c-rating__half');
-          star.classList.add('half-active');
+        if(i === Math.floor(currentRating) ) {
+          if(decimal < 0.50 && decimal > 0.00){
+            star.classList.add('c-rating__half');
+            star.classList.add('half-active');
+          }
+          else {
+            star.classList.add('c-rating__full');
+            star.classList.add('is-active');
+          }
         }
         else star.classList.add('c-rating__full');
 

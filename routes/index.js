@@ -180,14 +180,13 @@ var Router = (function () {
             collection.find({}, {}, function (err, docs) {
                 for (var i = 0; i < docs.length; i++) {
                     if (title === docs[i].title) {
-                        newrating = Math.floor((docs[i].rating + UserRating) / 2);
+                        newrating = (docs[i].rating + UserRating) / 2;
                         break;
                     }
                 }
                 collection.update({ title: title }, { $set: { rating: newrating, numberofR: 1 } }, function (err) {
                     console.log("Rating for " + title + " updated");
                 });
-                res.send({ redirect: '/' });
             });
         });
         /* Get Comic page. */
@@ -357,7 +356,7 @@ var Router = (function () {
                 "title": req.body.comicSetTitle,
                 "imageList": req.body.imageList,
                 "uploadedby": req.session.username,
-                "rating": 0,
+                "rating": 3,
                 "numberofR": 0
             }, function (err, doc) {
                 if (err) {
@@ -422,3 +421,4 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
+//# sourceMappingURL=index.js.map
