@@ -9,6 +9,10 @@ block scripts
         //...
     script(src='/javascript/search.js')
 
+    script(type='text/javascript').
+        var titleList = !{JSON.stringify(titleList)};
+    script(src='/javascript/home_page.js')
+
 
 block content
     head

@@ -21,13 +21,23 @@ var imgRedirect = function(){
 $(function () {
     var availableTags = titleList;
     var NoResultsLabel = "No Results";
-    $("#input").autocomplete({
+    $("#search-input").autocomplete({
         source: function (request, response) {
             var results = $.ui.autocomplete.filter(availableTags, request.term);
             if (!results.length) {
                 results = [NoResultsLabel];
             }
             response(results);
-        } //,
+        },
+        select: function (event, ui) {
+            if (ui.item.label === NoResultsLabel) {
+                event.preventDefault();
+            }
+        },
+        focus: function (event, ui) {
+            if (ui.item.label === NoResultsLabel) {
+                event.preventDefault();
+            }
+        }
     });
 });

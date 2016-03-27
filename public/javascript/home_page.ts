@@ -27,7 +27,7 @@ $(function() {
 
     var NoResultsLabel = "No Results";
 
-    $("#input").autocomplete({
+    $("#search-input").autocomplete({
         source: function(request, response) {
             var results = $.ui.autocomplete.filter(availableTags, request.term);
 
