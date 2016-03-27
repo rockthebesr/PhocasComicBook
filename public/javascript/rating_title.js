@@ -51,8 +51,8 @@
                         star.classList.add('half-active');
                     }
                     else {
-                        star.classList.add('c-rating__full');
-                        star.classList.add('is-active');
+                        star.classList.add('c-rating__nearfull');
+                        star.classList.add('near-active');
                     }
                 }
                 else

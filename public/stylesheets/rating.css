@@ -58,12 +58,23 @@
   background-position: -24px 0;
 }
 
-.c-rating__half.is-active {
-  background: url("../images/stars-full.svg");
-  background-position: -24px 0;
-}
-
 /*.c-rating__half:hover {
   background: url("../images/stars-full.svg");
   background-position: -24px 0;
 }*/
+
+
+.c-rating__nearfull {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 24px;
+  -ms-flex: 0 0 24px;
+  flex: 0 0 24px;
+  height: 24px;
+  background: url("../images/stars-nearfull.svg");
+  background-position: 0 0;
+  cursor: pointer;
+}
+
+.c-rating__nearfull.near-active {
+  background-position: -24px 0;
+}
