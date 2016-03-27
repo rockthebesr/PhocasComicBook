@@ -39,7 +39,7 @@ $(function () {
     function buildShopItem(data) {
         var shopItem = document.createElement('anything');
         var html = createHtml(data);
-        //shopItem.classList.add('c-shop-item');
+        shopItem.classList.add('c-shop-item');
         shopItem.innerHTML = html;
         shop.appendChild(shopItem);
         return shopItem;
@@ -49,7 +49,16 @@ $(function () {
         var ratingElement = shopItem.querySelector('.c-rating');
         var currentRating = data.rating;
         var maxRating = 5;
-        var callback = function (rating) { }; //alert(rating); };
+        var callback = function (rating) {
+            $.ajax({
+                url: '/updateRating',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ title: data.title,
+                    UserRating: rating })
+            });
+        };
+        //function callback(arg) {alert(arg);}
         var r = rating(ratingElement, currentRating, maxRating, callback);
         //$('#form').html(r.getRating);
     }

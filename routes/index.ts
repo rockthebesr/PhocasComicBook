@@ -141,7 +141,6 @@ class Router {
                     comicSetList[i] = docs[i];
                 }
                 res.render('home_page', {
-                    //"comicSets":docs,
                     "indicator": 0,
                     "comicSetList": comicSetList,
                     "loggedin": req.session.loggedin,
@@ -157,7 +156,6 @@ class Router {
             //var collection = db.get('uploadedSets');
             //collection.find({},{},function(e,docs){
             var searchComic = req.body.searchComic;
-            console.log("UserInput is: " + searchComic);
             if(searchComic !== '')
                 res.send({redirect: '/home/' + searchComic});
             else
@@ -178,13 +176,12 @@ class Router {
             var db = req.db;
             var collection = db.get('uploadedSets');
             var comicSetTitle = req.params.comic_set_title;
-            var imgList = [];
+            var findComicSet = [];
             collection.find({}, {}, function(err,docs) {
                 var i = 0;
-                for(i; i<docs.length; i) {
-                    var comicSet = docs[i];
-                    if (comicSet.title === comicSetTitle) {
-                        imgList[0] = comicSet.imageList;
+                for(i; i < docs.length; i) {
+                    if (docs[i].title === comicSetTitle) {
+                        findComicSet[0] = docs[i];
                         break;
                     }
                     i++;
@@ -193,45 +190,38 @@ class Router {
                     res.render('home_page', {
                         "userInput": comicSetTitle,
                         "indicator" : 1,
-                        "imageList": imgList
                     });
                 }
                 else{
                     res.render('home_page', {
                         "indicator": 0,
-                        "imageList" : imgList
+                        "comicSetList" : findComicSet
                     });
                 }
             });
         });
 
-        /* Filter Home page. */
-        /*router.post('/', function(req, res) {
-         var db = req.db;
-         var collection = db.get('uploadedSets');
-         var titles = [];
-         collection.find({},{},function(e,docs){
-         var index = 0;
-         var indicator = "back";
-         for(var i = 0; i < docs.length; i++){
-         titles[i] = docs[i].title;
-         if(req.body.search === docs[i].title) {
-         index = i;
-         indicator = "found";
-         }
-         }
-         if(indicator === "back"){
-         indicator = "not found";
-         }
-         res.render('home_page', {
-         "comicSets":docs,
-         "matched": index,
-         "indicator": indicator,
-         "titleList": titles,
-         "result": req.body.search
-         });
-         });
-         });*/
+
+        /* Update ComicSet rating */
+        router.post("/updateRating", function(req, res) {
+            var db = req.db;
+            var collection = db.get('uploadedSets');
+            var UserRating = req.body.UserRating;
+            var title = req.body.title;
+
+            var newrating = 0;
+            collection.find({},{}, function(err, docs){
+                for(var i = 0; i < docs.length; i++){
+                    if(title === docs[i].title){
+                        newrating = Math.floor((docs[i].rating + UserRating)/2);
+                        break;
+                    }
+                }
+                collection.update({title: title}, {$set: {rating: newrating, numberofR: 1}}, function(err) {
+                    console.log("Rating for " + title + " updated");
+                });
+            });
+        });
 
 
         /* Get Comic page. */
@@ -394,7 +384,7 @@ class Router {
                 "title" : req.body.comicSetTitle,
                 "imageList" : req.body.imageList,
                 "uploadedby" : req.session.username,
-                "rating" : 3,
+                "rating" : 0,
                 "numberofR" : 0
             }, function (err, doc) {
                 if (err) {
