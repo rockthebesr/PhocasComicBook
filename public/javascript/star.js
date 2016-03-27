@@ -3,21 +3,30 @@ $(function () {
     // SHOP ELEMENT
     var shop = document.querySelector('#shop');
     var data = comicSetData;
-    var decimal;
     // INITIALIZE
     (function init() {
         for (var i = 0; i < data.length; i++) {
-            addRatingWidget(buildShopItem(data[i].imageList), data[i], decimal);
+            addRatingWidget(buildShopItem(data[i]), data[i]);
         }
     })();
     // Create Html
-    function createHtml(data) {
+    function createHtml(data, statRating) {
         if (data.length === 0)
             return '';
         else
             var title = data[0].comicSetTitle;
+        function plural(numberofR) {
+            if (numberofR < 2)
+                return numberofR + ' rating';
+            else
+                return numberofR + ' ratings';
+        }
         var before = '<div class="c-shop-item__details">' +
-            '<div class = "c-rating-title">' + '<h3 class="c-shop-item__title">' + title + '</h3>' + '&nbsp' + '&nbsp' + '&nbsp' + '&nbsp' + '</div>' +
+            '<div class = "c-rating-title">' + '<h3 class="c-shop-item__title">' + title + '</h3>' +
+            '&nbsp' + '&nbsp' + '&nbsp' + '&nbsp' +
+            '<p id = "rateStat">' + '~ ' + statRating.avgRate.toFixed(2) + ' avg rating' + ' - ' + plural(statRating.numberofR) + ' ~' + '</p>' +
+            '&nbsp' + '&nbsp' + '&nbsp' + '&nbsp' +
+            '</div>' +
             '<p class="c-shop-item__description">' + title + ' dolor sit amet, consectetur adipisicing elit.' +
             'Commodi consectetur similique ullam natus ut debitis praesentium. Commodi consectetur similique ullam natus ut debitis praesentium.' + '</p>';
         var link = '';
@@ -39,17 +48,17 @@ $(function () {
     // BUILD SHOP ITEM
     function buildShopItem(data) {
         var shopItem = document.createElement('anything');
-        var html = createHtml(data);
+        var html = createHtml(data.imageList, data);
         shopItem.classList.add('c-shop-item');
         shopItem.innerHTML = html;
         shop.appendChild(shopItem);
         return shopItem;
     }
     // ADD RATING WIDGET
-    function addRatingWidget(shopItem, data, decimal) {
+    function addRatingWidget(shopItem, data) {
         var ratingElement = shopItem.querySelector('.c-rating');
         var ratingElementTitle = shopItem.querySelector('.c-rating-title');
-        var currentRating = data.rating;
+        var currentRating = data.avgRate;
         var maxRating = 5;
         var callback = function (rating) {
             $.ajax({
@@ -57,7 +66,9 @@ $(function () {
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ title: data.title,
-                    UserRating: rating })
+                    UserRating: rating,
+                    numberOfRate: data.numberofR,
+                    totalRate: data.totalRate })
             });
         };
         //function callback(arg) {alert(arg);}
@@ -66,4 +77,3 @@ $(function () {
         //$('#form').html(r.getRating);
     }
 });
-//# sourceMappingURL=star.js.map

@@ -176,17 +176,11 @@ var Router = (function () {
             var collection = db.get('uploadedSets');
             var UserRating = req.body.UserRating;
             var title = req.body.title;
-            var newrating = 0;
-            collection.find({}, {}, function (err, docs) {
-                for (var i = 0; i < docs.length; i++) {
-                    if (title === docs[i].title) {
-                        newrating = (docs[i].rating + UserRating) / 2;
-                        break;
-                    }
-                }
-                collection.update({ title: title }, { $set: { rating: newrating, numberofR: 1 } }, function (err) {
-                    console.log("Rating for " + title + " updated");
-                });
+            // var newrating = 0;
+            var numberOfRate = req.body.numberOfRate + 1;
+            var totalRate = req.body.totalRate + UserRating;
+            collection.update({ title: title }, { $set: { numberofR: numberOfRate, totalRate: totalRate, avgRate: totalRate / numberOfRate } }, function (err) {
+                console.log("Rating for " + title + " updated");
             });
         });
         /* Get Comic page. */
@@ -356,8 +350,9 @@ var Router = (function () {
                 "title": req.body.comicSetTitle,
                 "imageList": req.body.imageList,
                 "uploadedby": req.session.username,
-                "rating": 3,
-                "numberofR": 0
+                "numberofR": 0,
+                "totalRate": 0,
+                "avgRate": 0
             }, function (err, doc) {
                 if (err) {
                     // If it failed, return error

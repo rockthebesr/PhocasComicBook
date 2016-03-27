@@ -45,38 +45,23 @@
         }
 
         if(i === Math.floor(currentRating) ) {
-          if(decimal < 0.50 && decimal > 0.00){
+          if(decimal <= 0.50 && decimal > 0.00){
             star.classList.add('c-rating__half');
             star.classList.add('half-active');
           }
-          else {
+          else if(decimal < 1.00 && decimal > 0.50){
             star.classList.add('c-rating__nearfull');
             star.classList.add('near-active');
           }
+          else star.classList.add('c-rating__full');
         }
+
         else star.classList.add('c-rating__full');
 
         el.appendChild(star);
         stars.push(star);
       }
     })();
-
-    /**
-     * getRating
-     *
-     * @description Gets the current rating.
-     * @return {Number} The current rating
-     */
-    function getRating() {
-      return currentRating;
-    }
-
-    /**
-     * Returns the setRating and getRating methods
-     */
-    return {
-      getRating: getRating
-    };
 
   }
 
