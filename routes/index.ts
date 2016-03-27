@@ -178,15 +178,13 @@ class Router {
             var comicSetTitle = req.params.comic_set_title;
             var findComicSet = [];
             collection.find({}, {}, function(err,docs) {
-                var i = 0;
-                for(i; i < docs.length; i) {
-                    if (docs[i].title === comicSetTitle) {
-                        findComicSet[0] = docs[i];
-                        break;
+                for(var i = 0, j = 0; i < docs.length; i++) {
+                    if ((docs[i].title).indexOf(comicSetTitle) > -1) {
+                        findComicSet[j] = docs[i];
+                        j++;
                     }
-                    i++;
                 }
-                if(i == docs.length){
+                if(j == 0){
                     res.render('home_page', {
                         "userInput": comicSetTitle,
                         "indicator" : 1,
