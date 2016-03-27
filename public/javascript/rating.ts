@@ -35,9 +35,19 @@
 
       for (var i = 0; i < maxRating; i++) {
         var star = document.createElement('li');
-        star.classList.add('c-rating__item');
         star.setAttribute('data-index', i);
-        if (i < currentRating) { star.classList.add('is-active'); }
+
+        if (i < currentRating - 1 ) {
+          star.classList.add('c-rating__full');
+          star.classList.add('is-active');
+        }
+
+        if(i === currentRating - 1) {
+          star.classList.add('c-rating__half');
+          star.classList.add('half-active');
+        }
+        else star.classList.add('c-rating__full');
+
         el.appendChild(star);
         stars.push(star);
         attachStarEvents(star);
@@ -85,6 +95,7 @@
             item.classList.add('is-active');
           } else {
             item.classList.remove('is-active');
+            item.classList.remove('half-active');
           }
         });
       });

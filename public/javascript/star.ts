@@ -18,7 +18,7 @@ $(function() {
             var title = data[0].comicSetTitle;
 
         var before = '<div class="c-shop-item__details">' +
-            '<h3 class="c-shop-item__title">' + title + '</h3>' +
+            '<div class = "c-rating-title">' + '<h3 class="c-shop-item__title">' + title + '</h3>' + '&nbsp'+ '&nbsp'+'&nbsp'+ '&nbsp' + '</div>' +
             '<p class="c-shop-item__description">' + title + ' dolor sit amet, consectetur adipisicing elit.' +
             'Commodi consectetur similique ullam natus ut debitis praesentium. Commodi consectetur similique ullam natus ut debitis praesentium.' + '</p>';
 
@@ -35,7 +35,7 @@ $(function() {
                 link += '&nbsp'+ '&nbsp'+'&nbsp'+ '&nbsp';
             }
         }
-        var after = '<ul class="c-rating"></ul>' + '</div>';
+        var after = '<ul class="c-rating"></ul>' + '</div>';;
 
         return before + link + after;
     }
@@ -54,6 +54,7 @@ $(function() {
     // ADD RATING WIDGET
     function addRatingWidget(shopItem, data) {
         var ratingElement = shopItem.querySelector('.c-rating');
+        var ratingElementTitle = shopItem.querySelector('.c-rating-title');
         var currentRating = data.rating;
         var maxRating = 5;
         var callback = function(rating) {
@@ -68,6 +69,7 @@ $(function() {
 
         //function callback(arg) {alert(arg);}
         var r = rating(ratingElement, currentRating, maxRating, callback);
+        var s = rating_title(ratingElementTitle, currentRating, maxRating, null);
         //$('#form').html(r.getRating);
     }
 });
