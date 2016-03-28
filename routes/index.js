@@ -294,9 +294,8 @@ var Router = (function () {
         router.post('/upload', upload.single("image"), function (req, res) {
             var fs = require("fs");
             var oldPath = req.file.path;
-            var string = oldPath.substring(25, oldPath.length);
+           
             var newPath = oldPath + '.jpg';
-            
             
             console.log(newPath);
             var title = req.body.title == "undefined" ? undefined : req.body.title;
@@ -305,7 +304,7 @@ var Router = (function () {
              params: {Bucket: 'phocascomicsstorage'}
             });
 
-            var params = {Key: string, Body: ''};
+            var params = {Key: newPath, Body: ''};
             
            
             fs.readFile(req.file.path, function(err, data) {
