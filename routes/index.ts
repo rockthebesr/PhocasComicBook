@@ -274,6 +274,9 @@ class Router {
             var db = req.db;
             var collection = db.get('uploadedSets');
             var comicSetTitle = req.params.comic_set_title;
+            var currentUser = req.session.username;
+            var allowOthersToEdit;
+            var comicSetUser;
             collection.find({}, {}, function(err,docs) {
                 var nextSet = undefined;
                 var prevSet = undefined;
@@ -287,15 +290,19 @@ class Router {
                             image.imageUrl = "../" + imageUrl;
                         }
                         var title = comicSet.title;
+                        allowOthersToEdit = comicSet.allowOthersToEdit;
+                        comicSetUser = comicSet.uploadedby;
                         if (i > 0) {prevSet = docs[i-1].title}
                         if (i < docs.length - 1) {nextSet = docs[i + 1].title}
                         break;
                     }
                 }
-                res.render('edit_comic', {
-                    "title":title,
-                    "imageList" : imageList
-                });
+                if (currentUser == comicSetUser || allowOthersToEdit) {
+                    res.render('edit_comic', {
+                        "title":title,
+                        "imageList" : imageList
+                    });
+                }
             });
         });
 
@@ -379,6 +386,7 @@ class Router {
             collection.insert({
                 "title" : req.body.comicSetTitle,
                 "imageList" : req.body.imageList,
+                "allowOthersToEdit": req.body.allowOthersToEdit,
                 "uploadedby" : req.session.username,
                 "numberofR" : 0,
                 "totalRate": 0,
@@ -408,9 +416,10 @@ class Router {
             var collection = db.get('uploadedSets');
             var oldTitle = req.body.oldComicSetTitle;
             var newTitle = req.body.newComicSetTitle;
+            var allowOthersToEdit = req.body.allowOthersToEdit;
             var imageList = req.body.imageList;
             // Submit to the DB
-            collection.update({title: oldTitle}, {$set: {title: newTitle, imageList: imageList}}, function(err) {
+            collection.update({title: oldTitle}, {$set: {title: newTitle, imageList: imageList, allowOthersToEdit: allowOthersToEdit}}, function(err) {
                 console.log("comic set updated");
             });
 
