@@ -15,7 +15,7 @@ div#header {
     /*height:600px;*/
     /*width:100px;*/
     float:left;
-    padding:5px;
+    padding:15px;
     vertical-align: middle;
 }
 #next {
@@ -24,7 +24,7 @@ div#header {
     /*height:600px;*/
     /*width:100px;*/
     float:right;
-    padding:5px;
+    padding:15px;
     text-align: center;
     vertical-align: middle;
 }
@@ -66,8 +66,8 @@ div#header {
     vertical-align: middle;
 }
 #footer {
-    background-color:black;
-    color:white;
+    /*background-color:black;*/
+    /*color:white;*/
     clear:both;
     text-align:center;
     /*padding:5px;*/
