@@ -34,7 +34,7 @@ $(function() {
         var link = '';
         for(var i = 0; i < Math.min(4, data.length); i++){
             link += '<a href="/comic_page/' + title + '">';
-            link += '<img src=' + '../'+ data[i].imageUrl + ' style="width:200px;height:200px;border:0;">' + '</a>';
+            link += '<img src=' + data[i].imageUrl + ' style="width:200px;height:200px;border:0;">' + '</a>';
             link += '&nbsp'+ '&nbsp'+'&nbsp'+ '&nbsp';
         }
         if(data.length < 4){
