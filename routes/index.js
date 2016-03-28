@@ -296,7 +296,7 @@ var Router = (function () {
             var oldPath = req.file.path;
             var string = oldPath.substring(25, oldPath.length);
             var newPath = oldPath + '.jpg';
-            var string = newPath;
+            
             
             console.log(newPath);
             var title = req.body.title == "undefined" ? undefined : req.body.title;
@@ -322,7 +322,7 @@ var Router = (function () {
       });
     });
 
-            var url = newpath;
+            var url = 'https://s3-us-west-2.amazonaws.com/phocascomicsstorage/' + newPath;
             console.log(url);
             fs.rename(oldPath, newPath, function () {
                 var db = req.db;
