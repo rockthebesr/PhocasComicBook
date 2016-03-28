@@ -202,7 +202,7 @@ var Router = (function () {
                         for (var k = 0; k < imageList.length; k++) {
                             var image = imageList[k];
                             var imageUrl = image.imageUrl;
-                            image.imageUrl = "../" + imageUrl;
+                            //image.imageUrl = "../" + imageUrl;
                         }
                         var title = comicSet.title;
                         if (i > 0) {
@@ -254,7 +254,7 @@ var Router = (function () {
                         for (var k = 0; k < imageList.length; k++) {
                             var image = imageList[k];
                             var imageUrl = image.imageUrl;
-                            image.imageUrl = "../" + imageUrl;
+                            //image.imageUrl = "../" + imageUrl;
                         }
                         var title = comicSet.title;
                         if (i > 0) {
