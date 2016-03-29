@@ -3,6 +3,10 @@ $(function() {
     // SHOP ELEMENT
     var shop = document.querySelector('#shop');
     var data = comicSetData;
+    //var username = user;
+    //var loggedin = log;
+
+    //alert(loggedin);
 
     // INITIALIZE
     (function init() {
@@ -76,14 +80,17 @@ $(function() {
              data : JSON.stringify({title: data.title,
                                     UserRating: rating,
                                     numberOfRate: data.numberofR,
-                                    totalRate: data.totalRate})
+                                    totalRate: data.totalRate,
+                                    username: username})
             })
         };
 
         //function callback(arg) {alert(arg);}
+
         var r = rating(ratingElement, 0, maxRating, callback);
         var s = rating_title(ratingElementTitle, currentRating, maxRating, null);
         //$('#form').html(r.getRating);
     }
 });
+
 

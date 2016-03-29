@@ -3,6 +3,8 @@ extends layout
 block scripts
     script(type='text/javascript').
         var comicSetData = !{JSON.stringify(comicSetList)};
+        //var user = !{JSON.stringify(username)};
+        //var log = !{JSON.stringify(loggedin)};
     script(src='/javascript/star.js')
 
     script(type='text/javascript').
@@ -38,9 +40,16 @@ block content
                 #button-holder
                     img(src='/images/mag.png')
 
-            a.o-header-nav__link(href='/login')
-                .fa-1x Login
-                //i.fa.fa-star
+            if(loggedin === 1)
+                p.fa-xx Welcome,
+                .fa-2x= username
+                a.o-header-nav__link(href='/logout')
+                    .fa-1x Log out
+                    //i.fa.fa-star
+            else
+                a.o-header-nav__link(href='/login')
+                    .fa-1x Log in
+                    //i.fa.fa-star
 
         header.o-header
             .o-container

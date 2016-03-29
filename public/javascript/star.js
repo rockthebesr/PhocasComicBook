@@ -3,6 +3,9 @@ $(function () {
     // SHOP ELEMENT
     var shop = document.querySelector('#shop');
     var data = comicSetData;
+    //var username = user;
+    //var loggedin = log;
+    //alert(loggedin);
     // INITIALIZE
     (function init() {
         for (var i = 0; i < data.length; i++) {
@@ -69,7 +72,8 @@ $(function () {
                 data: JSON.stringify({ title: data.title,
                     UserRating: rating,
                     numberOfRate: data.numberofR,
-                    totalRate: data.totalRate })
+                    totalRate: data.totalRate,
+                    username: username })
             });
         };
         //function callback(arg) {alert(arg);}

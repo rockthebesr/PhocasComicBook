@@ -33,8 +33,17 @@
   font-size: 1.5em;
 }
 
+.fa-xx {
+  font-size: 1.5em;
+  color: black;
+  padding: 1px;
+}
+
 .fa-2x {
   font-size: 2em;
+  padding: 16px;
+  color: black;
+  padding-right: 8%;
 }
 .fa-3x {
   font-size: 3em;
