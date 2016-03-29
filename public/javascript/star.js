@@ -21,7 +21,7 @@ $(function () {
             else
                 return numberofR + ' ratings';
         }
-        var before = '<div class="c-shop-item__details">' +
+        var before = '<div class="c-shop-item__details" id = "details">' +
             '<div class = "c-rating-title">' + '<h3 class="c-shop-item__title">' + title + '</h3>' +
             '&nbsp' + '&nbsp' + '&nbsp' + '&nbsp' +
             '<p id = "rateStat">' + '~ ' + statRating.avgRate.toFixed(2) + ' avg rating' + ' - ' + plural(statRating.numberofR) + ' ~' + '</p>' +
@@ -42,14 +42,15 @@ $(function () {
                 link += '&nbsp' + '&nbsp' + '&nbsp' + '&nbsp';
             }
         }
-        var after = '<div class="c-rating">' + '<p id = "prate">Rate This Comic: </p>' + '&nbsp' + '&nbsp' + '</div>' + '</div>';
+        var after = '<div class="c-rating">' + '<p id = "prate">Rate This Comic: </p>' + '&nbsp' + '&nbsp' + '</div>' +
+            '<br>' + '<br>' + '</div>';
         return before + link + after;
     }
     // BUILD SHOP ITEM
     function buildShopItem(data) {
         var shopItem = document.createElement('anything');
         var html = createHtml(data.imageList, data);
-        shopItem.classList.add('c-shop-item');
+        //shopItem.classList.add('c-shop-item');
         shopItem.innerHTML = html;
         shop.appendChild(shopItem);
         return shopItem;
@@ -77,3 +78,4 @@ $(function () {
         //$('#form').html(r.getRating);
     }
 });
+//# sourceMappingURL=star.js.map

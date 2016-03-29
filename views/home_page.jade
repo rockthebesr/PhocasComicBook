@@ -13,6 +13,10 @@ block scripts
         var titleList = !{JSON.stringify(titleList)};
     script(src='/javascript/home_page.js')
 
+    script(type='text/javascript').
+        //...
+    script(src='/javascript/pagination.js')
+
 
 block content
     head
@@ -37,20 +41,23 @@ block content
             a.o-header-nav__link(href='/login')
                 .fa-1x Login
                 //i.fa.fa-star
+
         header.o-header
             .o-container
                 a(href='/')
                     h1.o-header__title Phocas
+
         main
             if (indicator === 1)
                 p.fa-1x.blocktext No result for '#{userInput}'...
                 p.fa-1x.blocktext Back to #[a(href='/') All Comics]
 
-
         main.o-content
             .o-container
-                .o-section
+                div.div#pagination
+                div.div#content
                     #shop
+
 
         if (indicator === 0)
             footer.o-footer

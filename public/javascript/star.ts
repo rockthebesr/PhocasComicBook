@@ -22,14 +22,15 @@ $(function() {
             else return numberofR + ' ratings';
         }
 
-        var before = '<div class="c-shop-item__details">' +
-            '<div class = "c-rating-title">' + '<h3 class="c-shop-item__title">' + title + '</h3>' +
-            '&nbsp'+ '&nbsp'+'&nbsp'+ '&nbsp' +
-            '<p id = "rateStat">' + '~ ' + statRating.avgRate.toFixed(2) + ' avg rating' + ' - ' + plural(statRating.numberofR) + ' ~' + '</p>' +
-            '&nbsp'+ '&nbsp'+'&nbsp'+ '&nbsp' +
-            '</div>' +
-            '<p class="c-shop-item__description">' + title + ' dolor sit amet, consectetur adipisicing elit.' +
-            'Commodi consectetur similique ullam natus ut debitis praesentium. Commodi consectetur similique ullam natus ut debitis praesentium.' + '</p>';
+        var before =
+            '<div class="c-shop-item__details" id = "details">' +
+                '<div class = "c-rating-title">' + '<h3 class="c-shop-item__title">' + title + '</h3>' +
+                '&nbsp'+ '&nbsp'+'&nbsp'+ '&nbsp' +
+                '<p id = "rateStat">' + '~ ' + statRating.avgRate.toFixed(2) + ' avg rating' + ' - ' + plural(statRating.numberofR) + ' ~' + '</p>' +
+                '&nbsp'+ '&nbsp'+'&nbsp'+ '&nbsp' +
+                '</div>' +
+                '<p class="c-shop-item__description">' + title + ' dolor sit amet, consectetur adipisicing elit.' +
+                'Commodi consectetur similique ullam natus ut debitis praesentium. Commodi consectetur similique ullam natus ut debitis praesentium.' + '</p>';
 
         var link = '';
         for(var i = 0; i < Math.min(4, data.length); i++){
@@ -44,7 +45,9 @@ $(function() {
                 link += '&nbsp'+ '&nbsp'+'&nbsp'+ '&nbsp';
             }
         }
-        var after = '<div class="c-rating">' + '<p id = "prate">Rate This Comic: </p>' + '&nbsp'+ '&nbsp' + '</div>' + '</div>';
+
+        var after = '<div class="c-rating">' + '<p id = "prate">Rate This Comic: </p>' + '&nbsp'+ '&nbsp' + '</div>' +
+                    '<br>' + '<br>' + '</div>';
 
         return before + link + after;
     }
@@ -54,7 +57,7 @@ $(function() {
     function buildShopItem(data) {
         var shopItem = document.createElement('anything');
         var html = createHtml(data.imageList, data);
-        shopItem.classList.add('c-shop-item');
+        //shopItem.classList.add('c-shop-item');
         shopItem.innerHTML = html;
         shop.appendChild(shopItem);
         return shopItem;
