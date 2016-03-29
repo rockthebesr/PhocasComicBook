@@ -1,13 +1,54 @@
 extends layout
 
 block content
-    #header
-        h1= title
+    head
+        link(rel='stylesheet', href='/stylesheets/style-page.css')
+        link(rel='stylesheet', href='/stylesheets/font-awesome.css')
         
-    form#formSignUp(name="adduser",method="post",action="/sign_up")
-        input#inputUserName(type="text", placeholder="username", name="username")
-        input#inputPassword(type="password", placeholder="password", name="userpassword")
-        button#btnSubmit(type="submit") submit
+    body
+
+        nav.o-header-nav
+            a.o-header-nav__link(href='/manage_comics')
+                //i.fa.fa-arrow-left
+                .fa-1x Manage
+
         
-    #footer
-        | Copyright © Phocas
+            
+            form#form
+                input#search-input(type='text', placeholder='Find a Comic', autocomplete = "off")
+                #button-holder
+                    img(src='/images/mag.png')
+
+            a.o-header-nav__link(href='/sign_up')
+                .fa-1x Sign Up
+                //i.fa.fa-star
+        header.o-header
+            .o-container
+                a(href='/')
+                    h1.o-header__title Phocas
+
+        main.o-container
+            .o-container
+                .o-section
+                    form#formSignIn(name="adduser",method="post",action="/sign_up")
+                        t1 Please enter your username.
+                        br
+                        input#inputUserName(type="text", placeholder="username", name="username")
+                        br
+                        t2 Please type in your password. (note: your password has to be at least 8 characters)
+                        br
+                        input#inputPassword(type="password", placeholder="password", name="userpassword")
+                        br
+                        button#btnSubmit(type="submit") submit
+        
+          
+
+        footer.o-footer
+            .o-container
+                small © 2016, Phocas
+        
+    // form#formSignUp(name="adduser",method="post",action="/sign_up")
+    //     input#inputUserName(type="text", placeholder="username", name="username")
+    //     input#inputPassword(type="password", placeholder="password", name="userpassword")
+    //     button#btnSubmit(type="submit") submit
+        
