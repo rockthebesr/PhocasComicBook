@@ -7,12 +7,23 @@ block content
         
     body
 
+        nav.o-home-nav
+            a.o-home-nav__link(href='/')
+                //i.fa.fa-arrow-left
+                .fa-1x Home 
+
+        nav.o-home-nav
+            a.o-home-nav__link(href='/comic_page/' + comicSetTitle)
+                //i.fa.fa-arrow-left
+                .fa-1x Edit 
+
         nav.o-header-nav
             a.o-header-nav__link(href='/manage_comics')
                 //i.fa.fa-arrow-left
                 .fa-1x Manage
+                
 
-        
+       
             
             form#form
                 input#search-input(type='text', placeholder='Find a Comic', autocomplete = "off")
@@ -22,6 +33,7 @@ block content
             a.o-header-nav__link(href='/sign_up')
                 .fa-1x Sign Up
                 //i.fa.fa-star
+
         header.o-header
             .o-container
                 a(href='/')

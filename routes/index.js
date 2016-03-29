@@ -57,8 +57,20 @@ var Router = (function () {
         });
         /* GET signup page. */
         router.get('/sign_up', function (req, res, next) {
-            res.render('sign_up', { title: 'Sign Up' });
+            var db = req.db;
+            var collection = db.get('uploadedSets');
+            var comicSetTitle 
+            collection.find({}, {}, function (err, docs) {
+                //var x = Math.random() * (docs.length - 1) + 1;
+                var x = 1;
+                var comicSet = docs[x];
+                var comicSetTitle = comicSet.title;
+
+            res.render('sign_up', { title: 'Sign Up',
+                                    randomComic: comicSetTitle  });
         });
+        });
+
         /* POST to Add User Service */
         router.post('/sign_up', function (req, res) {
             // Set our internal DB variable
