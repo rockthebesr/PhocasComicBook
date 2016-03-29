@@ -20,9 +20,6 @@ var Router = (function () {
         var session = require('express-session');
         var multer = require('multer');
         var upload = multer({ dest: './public/uploads' });
-        var aws = require('aws-sdk');
-        var AWS_ACCESS_KEY = "AKIAI3H44R3RLQDET4ZA";
-        var AWS_SECRET_KEY = "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";
         /*Middlewear for Session */
         router.use(session({ secret: 'randomstring',
             saveUninitialized: true,
@@ -244,6 +241,9 @@ var Router = (function () {
             var db = req.db;
             var collection = db.get('uploadedSets');
             var comicSetTitle = req.params.comic_set_title;
+            var currentUser = req.session.username;
+            var allowOthersToEdit;
+            var comicSetUser;
             collection.find({}, {}, function (err, docs) {
                 var nextSet = undefined;
                 var prevSet = undefined;
@@ -257,6 +257,8 @@ var Router = (function () {
                             image.imageUrl = "../" + imageUrl;
                         }
                         var title = comicSet.title;
+                        allowOthersToEdit = comicSet.allowOthersToEdit;
+                        comicSetUser = comicSet.uploadedby;
                         if (i > 0) {
                             prevSet = docs[i - 1].title;
                         }
@@ -266,10 +268,15 @@ var Router = (function () {
                         break;
                     }
                 }
-                res.render('edit_comic', {
-                    "title": title,
-                    "imageList": imageList
-                });
+                if (currentUser == comicSetUser || allowOthersToEdit) {
+                    res.render('edit_comic', {
+                        "title": title,
+                        "imageList": imageList
+                    });
+                }
+                else {
+                    res.redirect('/comic_page/' + title);
+                }
             });
         });
         /* Get Manage Comics page. */
@@ -294,35 +301,9 @@ var Router = (function () {
         router.post('/upload', upload.single("image"), function (req, res) {
             var fs = require("fs");
             var oldPath = req.file.path;
-           
             var newPath = oldPath + '.jpg';
-            
             console.log(newPath);
             var title = req.body.title == "undefined" ? undefined : req.body.title;
-            aws.config.update({accessKeyId: 'AKIAI3H44R3RLQDET4ZA', secretAccessKey: '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'});
-            var s3bucket = new aws.S3({
-             params: {Bucket: 'phocascomicsstorage'}
-            });
-
-            var params = {Key: newPath, Body: ''};
-            
-           
-            fs.readFile(req.file.path, function(err, data) {
-              if (err) throw err;
-            params.Body = data;
-
-            s3bucket.putObject(params, function(errBucket, dataBucket) {
-             if (errBucket) {
-                 console.log("Error uploading data: ", errBucket);
-                } else {
-                 console.log(dataBucket);
-                 
-          }
-      });
-    });
-
-            var url = 'https://s3-us-west-2.amazonaws.com/phocascomicsstorage/' + newPath;
-            console.log(url);
             fs.rename(oldPath, newPath, function () {
                 var db = req.db;
                 // Set our collection
@@ -332,14 +313,14 @@ var Router = (function () {
                     imageData = {
                         "isImageInUse": true,
                         "imagePosition": unusedImages + 1,
-                        "imageUrl": url
+                        "imageUrl": newPath.slice(7, newPath.length)
                     };
                 }
                 else {
                     imageData = {
                         "isImageInUse": false,
                         "imagePosition": unusedImages + 1,
-                        "imageUrl": url
+                        "imageUrl": newPath.slice(7, newPath.length)
                     };
                 }
                 var collection = db.get('uploadedImages');
@@ -379,6 +360,7 @@ var Router = (function () {
             collection.insert({
                 "title": req.body.comicSetTitle,
                 "imageList": req.body.imageList,
+                "allowOthersToEdit": req.body.allowOthersToEdit,
                 "uploadedby": req.session.username,
                 "numberofR": 0,
                 "totalRate": 0,
@@ -407,9 +389,10 @@ var Router = (function () {
             var collection = db.get('uploadedSets');
             var oldTitle = req.body.oldComicSetTitle;
             var newTitle = req.body.newComicSetTitle;
+            var allowOthersToEdit = req.body.allowOthersToEdit;
             var imageList = req.body.imageList;
             // Submit to the DB
-            collection.update({ title: oldTitle }, { $set: { title: newTitle, imageList: imageList } }, function (err) {
+            collection.update({ title: oldTitle }, { $set: { title: newTitle, imageList: imageList, allowOthersToEdit: allowOthersToEdit } }, function (err) {
                 console.log("comic set updated");
             });
             res.send({ redirect: "/" });
