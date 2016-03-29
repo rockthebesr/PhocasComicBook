@@ -302,6 +302,8 @@ class Router {
                         "title":title,
                         "imageList" : imageList
                     });
+                } else {
+                    res.redirect('/comic_page/' + title);
                 }
             });
         });
