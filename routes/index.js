@@ -59,12 +59,15 @@ var Router = (function () {
             var comicSetTitle 
             collection.find({}, {}, function (err, docs) {
                 //var x = Math.random() * (docs.length - 1) + 1;
-                var x = 1;
+                var x = Math.floor(Math.random() * docs.length) + 0;
                 var comicSet = docs[x];
                 var comicSetTitle = comicSet.title;
+                var tempurl = '/comic_page/' + comicSetTitle;
+                console.log(tempurl);
+
 
             res.render('sign_up', { title: 'Sign Up',
-                                    randomComic: comicSetTitle  });
+                                    randomComic: tempurl  });
         });
         });
 
