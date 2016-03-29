@@ -10,30 +10,71 @@ block scripts
 
 block content
 
-    #header
-        h2 Phocas
+    head
+        link(rel='stylesheet', href='/stylesheets/style-page.css')
+        link(rel='stylesheet', href='/stylesheets/font-awesome.css')
+        
+    body
+
+        nav.o-header-nav
+            a.o-header-nav__link(href='/manage_comics')
+                //i.fa.fa-arrow-left
+                .fa-1x Manage
+ 
+            form#form
+                input#search-input(type='text', placeholder='Find a Comic', autocomplete = "off")
+                #button-holder
+                    img(src='/images/mag.png')
+
+            a.o-header-nav__link(href='/sign_up')
+                .fa-1x Sign Up
+                //i.fa.fa-star
+        header.o-header
+            .o-container
+                a(href='/')
+                    h1.o-header__title Phocas
         
     
-    form#forUploadImage(name="uploadImage",method="post",action="/upload" enctype="multipart/form-data") Select an image to upload:
-        input#comicSetTitleForImage(type="text", name="title", value="#{title}")
-        input#inputImage(type="file", name="image")
-        button#btnUpload(type="submit") Upload Image
+    
+        
+        main.o-content
+            .o-container
+                .o-section
+                form#forUploadImage(name="uploadImage",method="post",action="/upload" enctype="multipart/form-data") Select an image to upload:
+                    input#comicSetTitleForImage(type="text", name="title", value="#{title}")
+                    input#inputImage(type="file", name="image")
+                    button#btnUpload(type="submit") Upload Image
+                ul
+                    each image, i in imageList
+                        li
+                            input(class="uploadedImagePosition" type='text', name='imagePosition', value = '#{image.imagePosition}')
+                            img(class="uploadedImage", src='#{image.imageUrl}')
+                            button(class="deleteImageButton") Delete this image
+                div
+                #allowEditSection
+                    input#allowEditCheckBox(type='checkbox', checked=false)
+                    t1 Allow other contributors to edit this comic set.
+                t2  Enter the comic set name and then save
+                br
+                input#comicSetTitle(type="text", value="#{title}")
+                button#btmSaveComicSet Save comic set
 
 
-    ul
-        each image, i in imageList
-            li
-                input(class="uploadedImagePosition" type='text', name='imagePosition', value = '#{image.imagePosition}')
-                img(class="uploadedImage", src='#{image.imageUrl}')
-                button(class="deleteImageButton") Delete this image
+    // ul
+    //     each image, i in imageList
+    //         li
+    //             input(class="uploadedImagePosition" type='text', name='imagePosition', value = '#{image.imagePosition}')
+    //             img(class="uploadedImage", src='#{image.imageUrl}')
+    //             button(class="deleteImageButton") Delete this image
 
 
-    div#allowEditSection
-        input#allowEditCheckBox(type='checkbox', checked=false)
-        h1 Allow other contributors to edit this comic set.
-    h1  Enter the comic set name and then save
-    input#comicSetTitle(type="text", value="#{title}")
-    button#btmSaveComicSet Save comic set
+    // div
+    // #allowEditSection
+    //     input#allowEditCheckBox(type='checkbox', checked=false)
+    //     h1 Allow other contributors to edit this comic set.
+    // h1  Enter the comic set name and then save
+    // input#comicSetTitle(type="text", value="#{title}")
+    // button#btmSaveComicSet Save comic set
         
         
     #footer

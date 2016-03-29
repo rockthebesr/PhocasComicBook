@@ -41,10 +41,20 @@ block content
                 a(href='/')
                     h1.o-header__title Phocas
 
-    form#formSignIn(name="adduser",method="post",action="/login")
-        input#inputUserName(type="text", placeholder="username", name="username")
-        input#inputPassword(type="password", placeholder="password", name="userpassword")
-        button#btnSubmit(type="submit") submit
+        main.o-container
+            .o-container
+                .o-section
+                    form#formSignIn(name="adduser",method="post",action="/login")
+                        t1 Please enter your username.
+                        br
+                        input#inputUserName(type="text", placeholder="username", name="username")
+                        br
+                        t2 Please enter your password. 
+                        br
+                        input#inputPassword(type="password", placeholder="password", name="userpassword")
+                        br
+                        button#btnSubmit(type="submit") submit
+        
           
 
         footer.o-footer
