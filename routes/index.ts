@@ -38,7 +38,7 @@ class Router {
         /*Middlewear for Session */
         router.use(session({secret: 'randomstring',
             saveUninitialized: true,
-            resave: true}))
+            resave: true}));
 
         /* GET login page. */
         router.get('/login', function(req, res, next) {
@@ -103,9 +103,11 @@ class Router {
                         }
                         else {
                             // And forward to success page
+                            collection.findOne({username: newUser.getName()}, function (err, user) {
                             req.session.loggedin = 1;
                             req.session.username = user.username;
                             res.redirect('/');
+                            });
                         }
                     });
                 }

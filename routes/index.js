@@ -54,23 +54,8 @@ var Router = (function () {
         });
         /* GET signup page. */
         router.get('/sign_up', function (req, res, next) {
-            var db = req.db;
-            var collection = db.get('uploadedSets');
-            var comicSetTitle 
-            collection.find({}, {}, function (err, docs) {
-                //var x = Math.random() * (docs.length - 1) + 1;
-                var x = Math.floor(Math.random() * docs.length) + 0;
-                var comicSet = docs[x];
-                var comicSetTitle = comicSet.title;
-                var tempurl = '/comic_page/' + comicSetTitle;
-                console.log(tempurl);
-
-
-            res.render('sign_up', { title: 'Sign Up',
-                                    randomComic: tempurl  });
+            res.render('sign_up', { title: 'Sign Up' });
         });
-        });
-
         /* POST to Add User Service */
         router.post('/sign_up', function (req, res) {
             // Set our internal DB variable
@@ -98,9 +83,11 @@ var Router = (function () {
                         }
                         else {
                             // And forward to success page
-                            req.session.loggedin = 1;
-                            req.session.username = req.body.username;
-                            res.redirect('/');
+                            collection.findOne({ username: newUser.getName() }, function (err, user) {
+                                req.session.loggedin = 1;
+                                req.session.username = user.username;
+                                res.redirect('/');
+                            });
                         }
                     });
                 }
@@ -214,7 +201,7 @@ var Router = (function () {
                         for (var k = 0; k < imageList.length; k++) {
                             var image = imageList[k];
                             var imageUrl = image.imageUrl;
-                            //image.imageUrl = "../" + imageUrl;
+                            image.imageUrl = "../" + imageUrl;
                         }
                         var title = comicSet.title;
                         if (i > 0) {
@@ -269,7 +256,7 @@ var Router = (function () {
                         for (var k = 0; k < imageList.length; k++) {
                             var image = imageList[k];
                             var imageUrl = image.imageUrl;
-                            //image.imageUrl = "../" + imageUrl;
+                            image.imageUrl = "../" + imageUrl;
                         }
                         var title = comicSet.title;
                         allowOthersToEdit = comicSet.allowOthersToEdit;
@@ -444,4 +431,3 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
-//# sourceMappingURL=index.js.map
