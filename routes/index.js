@@ -195,18 +195,18 @@ var Router = (function () {
         /* Check for repeated rating */
         router.post("/RateCheck", function (req, res) {
             var db = req.db;
-            var collection = db.get('usersRating');
+            var collection = db.get('uploadedSets');
             var title = req.body.title;
             var theusername = req.body.theusername;
             collection.find({}, {}, function (e, docs) {
-                if (docs[0] === undefined) {
-                    collection.insert({ "title": title,
-                        "usersList": [theusername] });
-                    res.sendStatus(0);
-                }
-                else {
-                    for (var i = 0; i < docs.length; i++) {
-                        if (title === docs[i].title) {
+                for (var i = 0; i < docs.length; i++) {
+                    if (title === docs[i].title) {
+                        if (docs[i].usersList === undefined) {
+                            collection.update({ title: title }, { $set: { "usersList": [theusername] } });
+                            res.sendStatus(0);
+                            break;
+                        }
+                        else {
                             for (var j = 0; j < (docs[i].usersList).length; j++) {
                                 if (theusername === (docs[i].usersList)[j]) {
                                     res.sendStatus("warning");
@@ -225,11 +225,6 @@ var Router = (function () {
                                 break;
                             }
                         }
-                    }
-                    if (i >= docs.length) {
-                        collection.insert({ "title": title,
-                            "usersList": [theusername] });
-                        res.sendStatus(0);
                     }
                 }
             });
@@ -497,4 +492,3 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
-//# sourceMappingURL=index.js.map
