@@ -247,6 +247,8 @@ var Router = (function () {
         });
         /* Get Edit Comics page. */
         router.get('/edit_comic', function (req, res) {
+            if (req.session.loggedin != 1){
+            res.send('Please login to use edit page');}
             var db = req.db;
             var collection = db.get('uploadedImages');
             collection.find({}, {}, function (e, docs) {
@@ -311,15 +313,18 @@ var Router = (function () {
         });
         /* Get Manage Comics page. */
         router.get('/manage_comics', function (req, res) {
+             if (req.session.loggedin != 1){
+            res.send('Please login to use manage page');}
             var db = req.db;
             var collection = db.get('uploadedSets');
             var userloggingin = req.session.username;
             var comicSets = [];
+
             collection.find({}, {}, function (err, docs) {
                 for (var i = 0; i < docs.length; i++) {
                     var comicSet = docs[i];
                     if (comicSet.uploadedby === userloggingin) {
-                        
+
                         comicSets.push(comicSet);
                     }
                 }
