@@ -155,13 +155,13 @@ var Router = (function () {
         router.get('/home/:comic_set_title', function (req, res) {
             var db = req.db;
             var collection = db.get('uploadedSets');
-            var comicSetTitle = req.params.comic_set_title;
+            var comicSetTitle = req.params.comic_set_title.toLowerCase();
             var findComicSet = [];
             var logged;
             var user;
             collection.find({}, {}, function (err, docs) {
                 for (var i = 0, j = 0; i < docs.length; i++) {
-                    if ((docs[i].title).indexOf(comicSetTitle) > -1) {
+                    if ((docs[i].title).toLowerCase().indexOf(comicSetTitle) > -1) {
                         findComicSet[j] = docs[i];
                         j++;
                     }
@@ -252,12 +252,14 @@ var Router = (function () {
             var db = req.db;
             var collection = db.get('uploadedSets');
             var comicSetTitle = req.params.comic_set_title;
+            var theComicSet;
             collection.find({}, {}, function (err, docs) {
                 var nextSet = undefined;
                 var prevSet = undefined;
                 for (var i = 0; i < docs.length; i++) {
                     var comicSet = docs[i];
                     if (comicSet.title === comicSetTitle) {
+                        theComicSet = docs[i];
                         var imageList = comicSet.imageList;
                         for (var k = 0; k < imageList.length; k++) {
                             var image = imageList[k];
@@ -276,9 +278,12 @@ var Router = (function () {
                 }
                 res.render('comic_page', {
                     "title": title,
-                    "imageList": imageList,
+                    //"imageList" : imageList,
+                    "theComicSet": theComicSet,
                     "nextSetTitle": nextSet || "",
-                    "prevSetTitle": prevSet || ""
+                    "prevSetTitle": prevSet || "",
+                    "loggedin": req.session.loggedin,
+                    "user_name": req.session.username
                 });
             });
         });
@@ -492,3 +497,4 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
+//# sourceMappingURL=index.js.map

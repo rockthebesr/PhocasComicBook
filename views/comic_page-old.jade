@@ -2,15 +2,10 @@ extends layout
 
 block scripts
     script(type='text/javascript').
-        var nextSetTitle = !{JSON.stringify(nextSetTitle)};
-        var prevSetTitle = !{JSON.stringify(prevSetTitle)};
+      var nextSetTitle = !{JSON.stringify(nextSetTitle)};
+      var prevSetTitle = !{JSON.stringify(prevSetTitle)};
+
     script(src='/javascript/comic_page.js')
-
-    script(type='text/javascript').
-        var theComicSet = !{JSON.stringify(theComicSet)};
-    script(src='/javascript/comic_display.js')
-
-
 
 block content
     head
@@ -18,14 +13,13 @@ block content
         link(rel='stylesheet', href='/stylesheets/rating.css')
         link(rel='stylesheet', href='/stylesheets/font-awesome.css')
         script(src='/javascript/rating.js')
-        script(src='/javascript/rating_title.js')
-        title Comic Page
-
+        
     body
+
         nav.o-home-nav
             a.o-home-nav__link(href='/')
                 //i.fa.fa-arrow-left
-                .fa-1x Home
+                .fa-1x Home 
 
         nav.o-home-nav
             if(loggedin === 1)
@@ -46,9 +40,14 @@ block content
                 a.o-header-nav__link(href='/login')
                     //i.fa.fa-arrow-left
                     .fa-1x Manage
+            
+            form#form
+                input#search-input(type='hidden', placeholder='Find a Comic', autocomplete = "off")
+                #button-holder
 
             if(loggedin === 1)
-                p.fa-1x-black Welcome, #{user_name}
+                p.fa-xx Welcome,
+                .fa-2x= username
                 a.o-header-nav__link(href='/logout')
                     .fa-1x Log out
                     //i.fa.fa-star
@@ -61,19 +60,34 @@ block content
             .o-container
                 a(href='/')
                     h1.o-header__title Phocas
-        #prev
-            #btnPrev
-                button(class="btn") Previous
-        #next
-            #btnNext
-                button(class="btn") Next
+    #prev           
+        #btnPrev 
+            button(class="btn") Previous
+    #next       
+        #btnNext
+            button(class="btn") Next
+        
+    
+    
+     main.o-content
+        .o-container
+            .o-section
+                #section
+                    h2 #{title}
+                    #editComicBottom
+                        a(href='/edit_comic/' + title) Edit this comic!
+                    ul
+                        each image, i in imageList
+                            li
+                                img(class="uploadedImage", src='#{image.imageUrl}')
+                                    
 
-        main.o-content
-            .o-container
-                #editComicBottom
-                    a(href='/edit_comic/' + title) Edit this comic!
-                    #shop
 
-        footer.o-footer
-            .o-container
-                small © 2016, Phocas
+
+    // footer.o-footer
+    //     .o-container
+    //         small © 2016, Phocas
+    #footer © 2016, Phocas
+
+  
+  

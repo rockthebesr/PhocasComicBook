@@ -33,6 +33,13 @@
   font-size: 1.5em;
 }
 
+.fa-1x-black{
+  font-size: 1.3em;
+  color: black;
+  padding-top: 5px;
+  padding-right: 10%;
+}
+
 .fa-xx {
   font-size: 1.3em;
   color: black;
