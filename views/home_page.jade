@@ -30,10 +30,20 @@ block content
         title Phocas Star Rating
 
     body
+        nav.o-home-nav
+            a.o-home-nav__link(href='/')
+                //i.fa.fa-arrow-left
+                .fa-1x Home 
+
+        nav.o-home-nav
+            a.o-home-nav__link(href='/edit_comic')
+                //i.fa.fa-arrow-left
+                .fa-1x Create        
+
         nav.o-header-nav
             a.o-header-nav__link(href='/manage_comics')
                 //i.fa.fa-arrow-left
-                .fa-1x Manage My Comics
+                .fa-1x Manage
 
             form#form
                 input#search-input(type='text', placeholder='Find a Comic', autocomplete = "off")

@@ -26,7 +26,8 @@ var Router = (function () {
             resave: true }));
         /* GET login page. */
         router.get('/login', function (req, res, next) {
-            res.render('login', { title: 'Login' });
+            res.render('login', {"loggedin": req.session.loggedin,
+                                 "username": req.session.username });
         });
         router.post('/login', function (req, res) {
             var db = req.db;
@@ -54,7 +55,8 @@ var Router = (function () {
         });
         /* GET signup page. */
         router.get('/sign_up', function (req, res, next) {
-            res.render('sign_up', { title: 'Sign Up' });
+            res.render('sign_up', { title: 'Sign Up' 
+                                            });
         });
         /* POST to Add User Service */
         router.post('/sign_up', function (req, res) {
@@ -217,7 +219,10 @@ var Router = (function () {
                     "title": title,
                     "imageList": imageList,
                     "nextSetTitle": nextSet || "",
-                    "prevSetTitle": prevSet || ""
+                    "prevSetTitle": prevSet || "",
+                    "loggedin": req.session.loggedin,
+                    "username": req.session.username
+
                 });
             });
         });
@@ -234,7 +239,9 @@ var Router = (function () {
                 }
                 res.render('edit_comic', {
                     "title": "undefined",
-                    "imageList": imageList
+                    "imageList": imageList,
+                    "loggedin": req.session.loggedin,
+                    "username": req.session.username
                 });
             });
         });
@@ -273,7 +280,9 @@ var Router = (function () {
                 if (currentUser == comicSetUser || allowOthersToEdit) {
                     res.render('edit_comic', {
                         "title": title,
-                        "imageList": imageList
+                        "imageList": imageList,
+                        "loggedin": req.session.loggedin,
+                        "username": req.session.username
                     });
                 }
                 else {
@@ -295,7 +304,10 @@ var Router = (function () {
                     }
                 }
                 res.render('manage_comics', {
-                    "comicSets": comicSets
+                    "comicSetList": comicSets,
+                    "loggedin": req.session.loggedin,
+                    "username": req.session.username
+                   
                 });
             });
         });

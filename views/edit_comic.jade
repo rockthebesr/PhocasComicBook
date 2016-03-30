@@ -15,20 +15,36 @@ block content
         link(rel='stylesheet', href='/stylesheets/font-awesome.css')
         
     body
+        nav.o-home-nav
+            a.o-home-nav__link(href='/')
+                //i.fa.fa-arrow-left
+                .fa-1x Home 
+
+        nav.o-home-nav
+            a.o-home-nav__link(href='/edit_comic')
+                //i.fa.fa-arrow-left
+                .fa-1x Create 
 
         nav.o-header-nav
             a.o-header-nav__link(href='/manage_comics')
-                //i.fa.fa-arrow-left
+                //i.fa.fa-arrow-right
                 .fa-1x Manage
- 
+            
             form#form
-                input#search-input(type='text', placeholder='Find a Comic', autocomplete = "off")
+                input#search-input(type='hidden', placeholder='Find a Comic', autocomplete = "off")
                 #button-holder
-                    img(src='/images/mag.png')
 
-            a.o-header-nav__link(href='/sign_up')
-                .fa-1x Sign Up
-                //i.fa.fa-star
+
+            if(loggedin === 1)
+                p.fa-xx Welcome,
+                .fa-2x= username
+                a.o-header-nav__link(href='/logout')
+                    .fa-1x Log out
+                    //i.fa.fa-star
+            else
+                a.o-header-nav__link(href='/login')
+                    .fa-1x Log in
+                    //i.fa.fa-star
         header.o-header
             .o-container
                 a(href='/')
