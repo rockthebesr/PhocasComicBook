@@ -3,8 +3,8 @@ extends layout
 block scripts
     script(type='text/javascript').
         var comicSetData = !{JSON.stringify(comicSetList)};
-        //var user = !{JSON.stringify(username)};
-        //var log = !{JSON.stringify(loggedin)};
+        var log = !{JSON.stringify(loggedin)};
+        var user_name = !{JSON.stringify(user_name)};
     script(src='/javascript/star.js')
 
     script(type='text/javascript').
@@ -42,7 +42,7 @@ block content
 
             if(loggedin === 1)
                 p.fa-xx Welcome,
-                .fa-2x= username
+                .fa-2x #{user_name}
                 a.o-header-nav__link(href='/logout')
                     .fa-1x Log out
                     //i.fa.fa-star

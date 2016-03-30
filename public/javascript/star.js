@@ -3,9 +3,10 @@ $(function () {
     // SHOP ELEMENT
     var shop = document.querySelector('#shop');
     var data = comicSetData;
-    //var username = user;
-    //var loggedin = log;
-    //alert(loggedin);
+    var logged = log;
+    var user = user_name;
+    //alert("LOGGED: " + logged);
+    //alert("User: " + user);
     // INITIALIZE
     (function init() {
         for (var i = 0; i < data.length; i++) {

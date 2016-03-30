@@ -139,17 +139,26 @@ class Router {
             var collection = db.get('uploadedSets');
             var comicSetList = [];
             var titleList = [];
+            var logged;
+            var user;
             collection.find({},{},function(e,docs){
                 for(var i = 0; i < docs.length; i++){
                     comicSetList[i] = docs[i];
                     titleList[i] = docs[i].title;
                 }
+
+                if(req.session.loggedin === undefined) logged = 0;
+                else logged = 1;
+
+                if(req.session.username === undefined) user = 0;
+                else user = req.session.username;
+
                 res.render('home_page', {
                     "indicator": 0,
                     "comicSetList": comicSetList,
                     "titleList": titleList,
-                    "loggedin": req.session.loggedin,
-                    "username": req.session.username
+                    "loggedin":logged,
+                    "user_name": user
                 });
             });
         });
@@ -169,8 +178,6 @@ class Router {
             res.render('home_page', {
                 //"comicSets":docs,
                 //"astar": undefined,
-                "loggedin": req.session.loggedin,
-                "username": req.session.username
             });
             //});
         });
@@ -182,6 +189,9 @@ class Router {
             var collection = db.get('uploadedSets');
             var comicSetTitle = req.params.comic_set_title;
             var findComicSet = [];
+
+            var logged;
+            var user;
             collection.find({}, {}, function(err,docs) {
                 for(var i = 0, j = 0; i < docs.length; i++) {
                     if ((docs[i].title).indexOf(comicSetTitle) > -1) {
@@ -189,16 +199,27 @@ class Router {
                         j++;
                     }
                 }
+
+                if(req.session.loggedin === undefined) logged = 0;
+                else logged = 1;
+
+                if(req.session.username === undefined) user = 0;
+                else user = req.session.username;
+
                 if(j == 0){
                     res.render('home_page', {
                         "userInput": comicSetTitle,
                         "indicator" : 1,
+                        "loggedin":logged,
+                        "user_name": user
                     });
                 }
                 else{
                     res.render('home_page', {
                         "indicator": 0,
-                        "comicSetList" : findComicSet
+                        "comicSetList" : findComicSet,
+                        "loggedin":logged,
+                        "user_name": user
                     });
                 }
             });
