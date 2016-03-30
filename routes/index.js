@@ -319,6 +319,7 @@ var Router = (function () {
                 for (var i = 0; i < docs.length; i++) {
                     var comicSet = docs[i];
                     if (comicSet.uploadedby === userloggingin) {
+                        
                         comicSets.push(comicSet);
                     }
                 }
