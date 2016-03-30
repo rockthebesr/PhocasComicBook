@@ -25,6 +25,12 @@ $(function () {
             else
                 return numberofR + ' ratings';
         }
+        function loggedInOrNot(whichPage) {
+            if (logged)
+                return '<a href="/' + whichPage + title + '">';
+            else
+                return '<a href="/login">';
+        }
         var before = '<div class="c-shop-item__details" id = "details">' +
             '<div class = "c-rating-title">' + '<h3 class="c-shop-item__title">' + title + '</h3>' +
             '&nbsp' + '&nbsp' + '&nbsp' + '&nbsp' +
@@ -35,13 +41,13 @@ $(function () {
             'Commodi consectetur similique ullam natus ut debitis praesentium. Commodi consectetur similique ullam natus ut debitis praesentium.' + '</p>';
         var link = '';
         for (var i = 0; i < Math.min(4, data.length); i++) {
-            link += '<a href="/comic_page/' + title + '">';
+            link += loggedInOrNot('comic_page/');
             link += '<img src=' + data[i].imageUrl + ' style="width:200px;height:200px;border:0;">' + '</a>';
             link += '&nbsp' + '&nbsp' + '&nbsp' + '&nbsp';
         }
         if (data.length < 4) {
             for (var i = 4; i > data.length; i--) {
-                link += '<a href="/edit_comic/' + title + '">';
+                link += loggedInOrNot('edit_comic/');
                 link += '<img src=' + '../images' + '/add.jpg' + ' style="width:200px;height:200px;border:0;">' + '</a>';
                 link += '&nbsp' + '&nbsp' + '&nbsp' + '&nbsp';
             }
@@ -73,14 +79,18 @@ $(function () {
                 data: JSON.stringify({ title: data.title,
                     UserRating: rating,
                     numberOfRate: data.numberofR,
-                    totalRate: data.totalRate,
-                    username: username })
+                    totalRate: data.totalRate })
             });
         };
+        var toLogin = function () {
+            window.location.replace('/login');
+        };
         //function callback(arg) {alert(arg);}
-        var r = rating(ratingElement, 0, maxRating, callback);
+        if (user === 0)
+            var r = rating(ratingElement, 0, maxRating, toLogin);
+        else
+            var r = rating(ratingElement, 0, maxRating, callback);
         var s = rating_title(ratingElementTitle, currentRating, maxRating, null);
         //$('#form').html(r.getRating);
     }
 });
-//# sourceMappingURL=star.js.map
