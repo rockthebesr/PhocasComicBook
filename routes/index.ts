@@ -231,19 +231,6 @@ class Router {
             var collection = db.get('usersRating');
             var title = req.body.title;
             var theusername = req.body.theusername;
-
-            /*collection.find({},{},function(e,docs){
-                collection.insert({"title" : title,
-                    "usersList" : [theusername]});
-
-                var barry = docs[0].usersList;
-                console.log(barry.push("barry"));
-                console.log(barry);
-        });
-
-        });*/
-
-
             collection.find({},{},function(e,docs){
                 if(docs[0] === undefined){
                     collection.insert({"title" : title,
