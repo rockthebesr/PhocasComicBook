@@ -26,8 +26,7 @@ var Router = (function () {
             resave: true }));
         /* GET login page. */
         router.get('/login', function (req, res, next) {
-            res.render('login', {"loggedin": req.session.loggedin,
-                                 "username": req.session.username });
+            res.render('login', { title: 'Login' });
         });
         router.post('/login', function (req, res) {
             var db = req.db;
@@ -55,8 +54,7 @@ var Router = (function () {
         });
         /* GET signup page. */
         router.get('/sign_up', function (req, res, next) {
-            res.render('sign_up', { title: 'Sign Up' 
-                                            });
+            res.render('sign_up', { title: 'Sign Up' });
         });
         /* POST to Add User Service */
         router.post('/sign_up', function (req, res) {
@@ -194,6 +192,58 @@ var Router = (function () {
                 }
             });
         });
+        /* Check for repeated rating */
+        router.post("/RateCheck", function (req, res) {
+            var db = req.db;
+            var collection = db.get('usersRating');
+            var title = req.body.title;
+            var theusername = req.body.theusername;
+            /*collection.find({},{},function(e,docs){
+                collection.insert({"title" : title,
+                    "usersList" : [theusername]});
+
+                var barry = docs[0].usersList;
+                console.log(barry.push("barry"));
+                console.log(barry);
+        });
+
+        });*/
+            collection.find({}, {}, function (e, docs) {
+                if (docs[0] === undefined) {
+                    collection.insert({ "title": title,
+                        "usersList": [theusername] });
+                    res.sendStatus(0);
+                }
+                else {
+                    for (var i = 0; i < docs.length; i++) {
+                        if (title === docs[i].title) {
+                            for (var j = 0; j < (docs[i].usersList).length; j++) {
+                                if (theusername === (docs[i].usersList)[j]) {
+                                    res.sendStatus("warning");
+                                    break;
+                                }
+                            }
+                            if (j < (docs[i].usersList).length)
+                                break;
+                            else {
+                                docs[i].usersList.push(theusername);
+                                var newrater = docs[i].usersList;
+                                collection.update({ title: title }, { $set: { usersList: newrater } }, function (err) {
+                                    console.log("One more user rated " + docs[i].title);
+                                });
+                                res.sendStatus(0);
+                                break;
+                            }
+                        }
+                    }
+                    if (i >= docs.length) {
+                        collection.insert({ "title": title,
+                            "usersList": [theusername] });
+                        res.sendStatus(0);
+                    }
+                }
+            });
+        });
         /* Update ComicSet rating */
         router.post("/updateRating", function (req, res) {
             var db = req.db;
@@ -238,10 +288,7 @@ var Router = (function () {
                     "title": title,
                     "imageList": imageList,
                     "nextSetTitle": nextSet || "",
-                    "prevSetTitle": prevSet || "",
-                    "loggedin": req.session.loggedin,
-                    "username": req.session.username
-
+                    "prevSetTitle": prevSet || ""
                 });
             });
         });
@@ -258,9 +305,7 @@ var Router = (function () {
                 }
                 res.render('edit_comic', {
                     "title": "undefined",
-                    "imageList": imageList,
-                    "loggedin": req.session.loggedin,
-                    "username": req.session.username
+                    "imageList": imageList
                 });
             });
         });
@@ -299,9 +344,7 @@ var Router = (function () {
                 if (currentUser == comicSetUser || allowOthersToEdit) {
                     res.render('edit_comic', {
                         "title": title,
-                        "imageList": imageList,
-                        "loggedin": req.session.loggedin,
-                        "username": req.session.username
+                        "imageList": imageList
                     });
                 }
                 else {
@@ -319,15 +362,11 @@ var Router = (function () {
                 for (var i = 0; i < docs.length; i++) {
                     var comicSet = docs[i];
                     if (comicSet.uploadedby === userloggingin) {
-                        
                         comicSets.push(comicSet);
                     }
                 }
                 res.render('manage_comics', {
-                    "comicSetList": comicSets,
-                    "loggedin": req.session.loggedin,
-                    "username": req.session.username
-                   
+                    "comicSets": comicSets
                 });
             });
         });
@@ -463,4 +502,3 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
-//# sourceMappingURL=index.js.map

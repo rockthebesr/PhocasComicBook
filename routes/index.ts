@@ -176,8 +176,7 @@ class Router {
                 res.redirect('/');
 
             res.render('home_page', {
-                //"comicSets":docs,
-                //"astar": undefined,
+                // nothing
             });
             //});
         });
@@ -226,6 +225,62 @@ class Router {
         });
 
 
+        /* Check for repeated rating */
+        router.post("/RateCheck", function(req, res) {
+            var db = req.db;
+            var collection = db.get('usersRating');
+            var title = req.body.title;
+            var theusername = req.body.theusername;
+
+            /*collection.find({},{},function(e,docs){
+                collection.insert({"title" : title,
+                    "usersList" : [theusername]});
+
+                var barry = docs[0].usersList;
+                console.log(barry.push("barry"));
+                console.log(barry);
+        });
+
+        });*/
+
+
+            collection.find({},{},function(e,docs){
+                if(docs[0] === undefined){
+                    collection.insert({"title" : title,
+                                        "usersList" : [theusername]});
+                    res.sendStatus(0);
+                }else{
+                    for(var i = 0; i < docs.length; i++){
+                        if(title === docs[i].title){
+                            for(var j = 0; j < (docs[i].usersList).length; j++){
+                                if(theusername === (docs[i].usersList)[j]){
+                                    res.sendStatus("warning");
+                                    break;
+                                }
+                            }
+                            if(j < (docs[i].usersList).length) break;
+                            else{
+                                docs[i].usersList.push(theusername);
+                                var newrater = docs[i].usersList;
+                                collection.update({title: title},
+                                    {$set: {usersList: newrater}}, function(err) {
+                                        console.log("One more user rated " + docs[i].title);
+                                    });
+                                res.sendStatus(0);
+                                break;
+                            }
+                        }
+                    }
+                    if(i >= docs.length){
+                        collection.insert({"title" : title,
+                            "usersList" : [theusername]});
+                        res.sendStatus(0);
+                    }
+                }
+            });
+        });
+
+
         /* Update ComicSet rating */
         router.post("/updateRating", function(req, res) {
             var db = req.db;
@@ -239,6 +294,7 @@ class Router {
             collection.update({title: title},
                     {$set: {numberofR: numberOfRate, totalRate: totalRate, avgRate: totalRate/numberOfRate}}, function(err) {
                     console.log("Rating for " + title + " updated");
+
             });
         });
 

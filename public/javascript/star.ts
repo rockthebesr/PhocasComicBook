@@ -83,15 +83,33 @@ $(function() {
         var maxRating = 5;
         var callback = function(rating) {
             $.ajax({
-             url: '/updateRating',
-             type: 'POST',
-             contentType: 'application/json',
-             data : JSON.stringify({title: data.title,
-                                    UserRating: rating,
-                                    numberOfRate: data.numberofR,
-                                    totalRate: data.totalRate})
+                url: '/RateCheck',
+                type: 'POST',
+                contentType: 'application/json',
+                data : JSON.stringify({title: data.title,
+                                        theusername: user}),
+                success: function(indicator){
+                    if(indicator == 0){
+                        $.ajax({
+                            url: '/updateRating',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data : JSON.stringify({title: data.title,
+                                UserRating: rating,
+                                numberOfRate: data.numberofR,
+                                totalRate: data.totalRate
+                            }),
+                            success: function(update){
+
+                            }
+                        });
+                    }
+                    else
+                        alert("You have already rated this comic set")
+                }
             })
         };
+
 
         var toLogin = function(){
             window.location.replace('/login');
