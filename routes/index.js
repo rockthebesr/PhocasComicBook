@@ -524,13 +524,16 @@ var Router = (function () {
             var oldTitle = req.body.oldComicSetTitle;
             var newTitle = req.body.newComicSetTitle;
             var editedby = "   ";
-            var comicSet = collection.findOne({ title: title }, function (err, comicSet) {
-            if (comicSet) {
+           
+            collection.findOne({ title: title }, function (err, comicSet) {
+          
                 if (comicSet.uploadedby != req.session.username){
                     var editedby = req.session.username
                 }
-                }  
+                
             });
+            console.log(editedby);
+
             var allowOthersToEdit = req.body.allowOthersToEdit;
             var imageList = req.body.imageList;
             // Submit to the DB
