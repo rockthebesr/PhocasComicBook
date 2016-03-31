@@ -397,7 +397,7 @@ var Router = (function () {
             collection.find({}, {}, function (err, docs) {
                 for (var i = 0; i < docs.length; i++) {
                     var comicSet = docs[i];
-                    if (comicSet.uploadedby === userloggingin) {
+                    if (comicSet.editedby === userloggingin) {
                         comicSets.push(comicSet);
                     }
                 }
