@@ -56,7 +56,11 @@ block content
                         br
                         button#btnSubmit(type="submit") submit
         
-          
+        if(passwordshort === 1)
+            .fa-2x Password Must Be At Least 8 Characters         
+
+        if(usernameexists === 1)
+            .fa-2x Username Already Exists
 
         footer.o-footer
             .o-container

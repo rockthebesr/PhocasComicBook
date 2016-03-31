@@ -21,20 +21,23 @@ var Router = (function () {
         var multer = require('multer');
         var upload = multer({ dest: './public/uploads' });
         var aws = require('aws-sdk');
+
         /*Middlewear for Session */
         router.use(session({ secret: 'randomstring',
             saveUninitialized: true,
             resave: true }));
         /* GET login page. */
         router.get('/login', function (req, res, next) {
-            res.render('login', { title: 'Login' });
+            res.render('login', { title: 'Login',
+                                 "invalidusername": req.session.invalidusername });
         });
         router.post('/login', function (req, res) {
             var db = req.db;
             var collection = db.get('usercollection');
             collection.findOne({ username: req.body.username }, function (err, user) {
                 if (!user) {
-                    res.send('Invalid username or password');
+                    req.session.invalidusername = 1;
+                    res.redirect('/login');
                 }
                 else {
                     if (req.body.userpassword === user.password) {
@@ -44,6 +47,7 @@ var Router = (function () {
                         else {
                             req.session.loggedin = 1;
                             req.session.username = user.username;
+                            req.session.invalidusername = 0;
                             res.redirect('/');
                         }
                     }
@@ -53,9 +57,12 @@ var Router = (function () {
                 }
             });
         });
+
         /* GET signup page. */
         router.get('/sign_up', function (req, res, next) {
-            res.render('sign_up', { title: 'Sign Up' });
+            res.render('sign_up', { title: 'Sign Up',
+                                    "passwordshort": req.session.passwordshort,
+                                    "usernameexists": req.session.usernameexists  });
         });
         /* POST to Add User Service */
         router.post('/sign_up', function (req, res) {
@@ -68,10 +75,12 @@ var Router = (function () {
             // Submit to the DB
             collection.findOne({ username: req.body.username }, function (err, user) {
                 if (user) {
-                    res.send('Username exists');
+                    req.session.usernameexists = 0;
+                    res.redirect('/sign_up');
                 }
                 else if (req.body.userpassword.length < 8) {
-                    res.send('Password is too short');
+                    req.session.passwordshort = 1;
+                    res.redirect('/sign_up');
                 }
                 else {
                     collection.insert({
@@ -87,6 +96,8 @@ var Router = (function () {
                             collection.findOne({ username: newUser.getName() }, function (err, user) {
                                 req.session.loggedin = 1;
                                 req.session.username = user.username;
+                                req.session.passwordshort = 0;
+                                req.session.usernameexists = 0;
                                 res.redirect('/');
                             });
                         }
@@ -369,7 +380,7 @@ var Router = (function () {
                 });
             });
         });
-        
+
         /* Get Edited Comics page. */
         router.get('/edited_comics', function(req, res) {
             var db = req.db;

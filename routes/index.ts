@@ -40,59 +40,63 @@ class Router {
             saveUninitialized: true,
             resave: true}));
 
-        /* GET login page. */
-        router.get('/login', function(req, res, next) {
-            res.render('login', { title: 'Login' });
+        router.get('/login', function (req, res, next) {
+            res.render('login', { title: 'Login',
+                                 "invalidusername": req.session.invalidusername });
         });
-
         router.post('/login', function (req, res) {
             var db = req.db;
             var collection = db.get('usercollection');
-
-            collection.findOne({ username: req.body.username}, function(err, user) {
+            collection.findOne({ username: req.body.username }, function (err, user) {
                 if (!user) {
-                    res.send( 'Invalid username or password');}
+                    req.session.invalidusername = 1;
+                    res.redirect('/login');
+                }
                 else {
                     if (req.body.userpassword === user.password) {
-                        if (req.session.loggedin === 1){
-                            res.send("Please Logout before signing in")}
+                        if (req.session.loggedin === 1) {
+                            res.send("Please Logout before signing in");
+                        }
                         else {
                             req.session.loggedin = 1;
                             req.session.username = user.username;
-                            res.redirect('/');}}
+                            req.session.invalidusername = 0;
+                            res.redirect('/');
+                        }
+                    }
                     else {
-
-                        res.send('Invalid username or password');
-                    }}
+                        req.session.invalidusername = 1;
+                        res.redirect('/login');
+                    }
+                }
             });
         });
 
 
-        /* GET signup page. */
-        router.get('/sign_up', function(req, res, next) {
-            res.render('sign_up', { title: 'Sign Up' });
+        router.get('/sign_up', function (req, res, next) {
+            res.render('sign_up', { title: 'Sign Up',
+                                    "passwordshort": req.session.passwordshort,
+                                    "usernameexists": req.session.usernameexists  });
         });
-
-
         /* POST to Add User Service */
-        router.post('/sign_up', function(req, res) {
-
+        router.post('/sign_up', function (req, res) {
             // Set our internal DB variable
             var db = req.db;
-
             // Get our form values. These rely on the "name" attributes
             var newUser = new User(req.body.username, req.body.userpassword);
-
             // Set our collection
             var collection = db.get('usercollection');
-
             // Submit to the DB
-            collection.findOne({username: req.body.username}, function (err, user) {
+            collection.findOne({ username: req.body.username }, function (err, user) {
                 if (user) {
-                    res.send('Username exists');
-                } else if (req.body.userpassword.length < 8) {
-                    res.send('Password is too short');
-                } else {
+                    req.session.usernameexists = 0;
+                    res.redirect('/sign_up');
+                }
+                else if (req.body.userpassword.length < 8) {
+                    req.session.passwordshort = 1;
+                    res.redirect('/sign_up');
+                }
+                else {
                     collection.insert({
                         "username": newUser.getName(),
                         "password": newUser.getPassword()
@@ -103,10 +107,12 @@ class Router {
                         }
                         else {
                             // And forward to success page
-                            collection.findOne({username: newUser.getName()}, function (err, user) {
-                            req.session.loggedin = 1;
-                            req.session.username = user.username;
-                            res.redirect('/');
+                            collection.findOne({ username: newUser.getName() }, function (err, user) {
+                                req.session.loggedin = 1;
+                                req.session.username = user.username;
+                                req.session.passwordshort = 0;
+                                req.session.usernameexists = 0;
+                                res.redirect('/');
                             });
                         }
                     });
