@@ -288,6 +288,8 @@ class Router {
             var collection = db.get('uploadedSets');
             var comicSetTitle = req.params.comic_set_title;
             var theComicSet;
+            var comicSetUser;
+            var allowOthersToEdit;
             collection.find({}, {}, function(err,docs) {
                 var nextSet = undefined;
                 var prevSet = undefined;
@@ -302,6 +304,8 @@ class Router {
                             image.imageUrl = imageUrl;
                         }
                         var title = comicSet.title;
+                        comicSetUser = comicSet.uploadedby;
+                        allowOthersToEdit = comicSet.allowOthersToEdit;
                         if (i > 0) {prevSet = docs[i-1].title}
                         if (i < docs.length - 1) {nextSet = docs[i + 1].title}
                         break;
@@ -318,7 +322,9 @@ class Router {
                     "nextSetTitle" : nextSet || "",
                     "prevSetTitle" : prevSet || "",
                     "loggedin": req.session.loggedin,
-                    "user_name": req.session.username
+                    "user_name": req.session.username,
+                    "uploadedBy": comicSetUser,
+                    "allowOthersToEdit": allowOthersToEdit
                 });
             });
         });

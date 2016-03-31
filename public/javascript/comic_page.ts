@@ -24,3 +24,20 @@
     };
 
 
+    jQuery(document).on('click', '#editComicBottom', function() {
+        if (currentUser != uploadedBy || allowOthersToEdit == "false") {
+            window.alert("You cannot edit this comic!")
+        } else {
+            $.ajax({
+                url: '/edit_comic/' + title,
+                type: 'GET',
+                contentType: 'application/json',
+                data: {},
+                success: function () {
+                }
+            })
+        }
+
+    });
+
+
