@@ -4,10 +4,12 @@ block scripts
     script(type='text/javascript').
         var nextSetTitle = !{JSON.stringify(nextSetTitle)};
         var prevSetTitle = !{JSON.stringify(prevSetTitle)};
-    script(src='/javascript/comic_page.js')
-
-    script(type='text/javascript').
         var theComicSet = !{JSON.stringify(theComicSet)};
+        var uploadedBy = !{JSON.stringify(uploadedBy)};
+        var currentUser = !{JSON.stringify(user_name)};
+        var allowOthersToEdit = !{JSON.stringify(allowOthersToEdit)};
+        var title = !{JSON.stringify(title)};
+    script(src='/javascript/comic_page.js')
     script(src='/javascript/comic_display.js')
 
 
