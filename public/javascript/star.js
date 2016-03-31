@@ -72,7 +72,6 @@ $(function () {
         var currentRating = data.avgRate;
         var maxRating = 5;
         var callback = function (rating) {
-            alert(rating);
             $.ajax({
                 url: '/RateCheck',
                 type: 'POST',
@@ -80,7 +79,6 @@ $(function () {
                 data: JSON.stringify({ title: data.title,
                     theusername: user }),
                 success: function (indicator) {
-                    alert(indicator);
                     if (indicator == "update") {
                         $.ajax({
                             url: '/updateRating',
