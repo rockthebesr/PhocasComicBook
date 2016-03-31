@@ -52,7 +52,8 @@ var Router = (function () {
                         }
                     }
                     else {
-                        res.send('Invalid username or password');
+                        req.session.invalidusername = 1;
+                        res.redirect('/login');
                     }
                 }
             });
@@ -75,7 +76,7 @@ var Router = (function () {
             // Submit to the DB
             collection.findOne({ username: req.body.username }, function (err, user) {
                 if (user) {
-                    req.session.usernameexists = 0;
+                    req.session.usernameexists = 1;
                     res.redirect('/sign_up');
                 }
                 else if (req.body.userpassword.length < 8) {
