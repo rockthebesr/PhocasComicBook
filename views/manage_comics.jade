@@ -6,6 +6,7 @@ block scripts
         //var user = !{JSON.stringify(username)};
         //var log = !{JSON.stringify(loggedin)};
     script(src='/javascript/star_manage.js')
+    script(src='/javascript/manage_page.js')
 
     script(type='text/javascript').
         //...
@@ -75,6 +76,13 @@ block content
             .o-container
                 a(href='/')
                     h1.o-header__title Phocas
+
+    #create           
+        #btnCreate 
+            button(class="btn") Created
+    #edit       
+        #btnEdit
+            button(class="btn") Edited   
 
         main
             if (indicator === 1)

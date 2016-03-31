@@ -356,7 +356,7 @@ var Router = (function () {
                     }
                 }
                 res.render('manage_comics', {
-                    "comicSets": comicSets
+                    "comicSetList": comicSets
                 });
             });
         });
