@@ -27,7 +27,8 @@ var Router = (function () {
             resave: true }));
         router.get('/login', function (req, res, next) {
             res.render('login', { title: 'Login',
-                "invalidusername": req.session.invalidusername });
+                "invalidusername": req.session.invalidusername,
+                "loggedin": req.session.loggedin });
         });
         router.post('/login', function (req, res) {
             var db = req.db;
@@ -59,7 +60,8 @@ var Router = (function () {
         router.get('/sign_up', function (req, res, next) {
             res.render('sign_up', { title: 'Sign Up',
                 "passwordshort": req.session.passwordshort,
-                "usernameexists": req.session.usernameexists });
+                "usernameexists": req.session.usernameexists,
+                "loggedin": req.session.loggedin });
         });
         /* POST to Add User Service */
         router.post('/sign_up', function (req, res) {
@@ -313,7 +315,8 @@ var Router = (function () {
                 }
                 res.render('edit_comic', {
                     "title": "undefined",
-                    "imageList": imageList
+                    "imageList": imageList,
+                    "loggedin": req.session.loggedin
                 });
             });
         });
@@ -352,7 +355,8 @@ var Router = (function () {
                 if (currentUser == comicSetUser || allowOthersToEdit) {
                     res.render('edit_comic', {
                         "title": title,
-                        "imageList": imageList
+                        "imageList": imageList,
+                        "loggedin": req.session.loggedin
                     });
                 }
                 else {
@@ -374,7 +378,8 @@ var Router = (function () {
                     }
                 }
                 res.render('manage_comics', {
-                    "comicSetList": comicSets
+                    "comicSetList": comicSets,
+                    "loggedin": req.session.loggedin
                 });
             });
         });
@@ -392,7 +397,8 @@ var Router = (function () {
                     }
                 }
                 res.render('edited_comics', {
-                    "comicSetList": comicSets
+                    "comicSetList": comicSets,
+                    "loggedin": req.session.loggedin
                 });
             });
         });
