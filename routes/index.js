@@ -248,6 +248,7 @@ var Router = (function () {
             var collection = db.get('uploadedSets');
             var comicSetTitle = req.params.comic_set_title;
             var theComicSet;
+
             collection.find({}, {}, function (err, docs) {
                 var nextSet = undefined;
                 var prevSet = undefined;
@@ -259,7 +260,7 @@ var Router = (function () {
                         for (var k = 0; k < imageList.length; k++) {
                             var image = imageList[k];
                             var imageUrl = image.imageUrl;
-                            image.imageUrl = "../" + imageUrl;
+                            image.imageUrl = imageUrl;
                         }
                         var title = comicSet.title;
                         if (i > 0) {
@@ -271,9 +272,14 @@ var Router = (function () {
                         break;
                     }
                 }
+                var random = Math.floor(Math.random() * docs.length) + 0;
+                var randomTitle = docs[random].title;
+
                 res.render('comic_page', {
                     "title": title,
+                    "randomTitle": randomTitle, 
                     //"imageList" : imageList,
+
                     "theComicSet": theComicSet,
                     "nextSetTitle": nextSet || "",
                     "prevSetTitle": prevSet || "",
@@ -317,7 +323,7 @@ var Router = (function () {
                         for (var k = 0; k < imageList.length; k++) {
                             var image = imageList[k];
                             var imageUrl = image.imageUrl;
-                            image.imageUrl = "../" + imageUrl;
+                            image.imageUrl = imageUrl;
                         }
                         var title = comicSet.title;
                         allowOthersToEdit = comicSet.allowOthersToEdit;
@@ -331,6 +337,7 @@ var Router = (function () {
                         break;
                     }
                 }
+
                 if (currentUser == comicSetUser || allowOthersToEdit) {
                     res.render('edit_comic', {
                         "title": title,
@@ -340,6 +347,7 @@ var Router = (function () {
                 else {
                     res.redirect('/comic_page/' + title);
                 }
+
             });
         });
         /* Get Manage Comics page. */
@@ -364,9 +372,36 @@ var Router = (function () {
         router.post('/upload', upload.single("image"), function (req, res) {
             var fs = require("fs");
             var oldPath = req.file.path;
+            var string = oldPath.substring(25, oldPath.length);
             var newPath = oldPath + '.jpg';
+            var string = newPath;
+            var s3key = string.substring(15, newPath.length)
             console.log(newPath);
             var title = req.body.title == "undefined" ? undefined : req.body.title;
+            aws.config.update({accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY});
+            var s3bucket = new aws.S3({
+             params: {Bucket: 'phocascomicsstorage'}
+            });
+
+            var params = {Key: string, Body: ''};
+            
+           
+            fs.readFile(req.file.path, function(err, data) {
+              if (err) throw err;
+            params.Body = data;
+
+            s3bucket.putObject(params, function(errBucket, dataBucket) {
+             if (errBucket) {
+                 console.log("Error uploading data: ", errBucket);
+                } else {
+                 console.log(dataBucket);
+                 
+          }
+      });
+    });
+
+            var url = 'https://s3-us-west-2.amazonaws.com/phocascomicsstorage/public%5Cuploads%5C' + s3key;
+
             fs.rename(oldPath, newPath, function () {
                 var db = req.db;
                 // Set our collection
@@ -376,14 +411,14 @@ var Router = (function () {
                     imageData = {
                         "isImageInUse": true,
                         "imagePosition": unusedImages + 1,
-                        "imageUrl": newPath.slice(7, newPath.length)
+                        "imageUrl": url
                     };
                 }
                 else {
                     imageData = {
                         "isImageInUse": false,
                         "imagePosition": unusedImages + 1,
-                        "imageUrl": newPath.slice(7, newPath.length)
+                        "imageUrl": url
                     };
                 }
                 var collection = db.get('uploadedImages');
