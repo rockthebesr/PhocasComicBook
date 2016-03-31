@@ -529,7 +529,12 @@ var Router = (function () {
             var oldTitle = req.body.oldComicSetTitle;
             var newTitle = req.body.newComicSetTitle;
             var editedby = "aaa";
-           
+            console.log(req.body.allowOthersToEdit);
+            var othersToEdit = 0;
+            if (req.body.allowOthersToEdit === "Y"){
+                othersToEdit = 1
+            }
+            console.log(othersToEdit);
             collection.find({}, {}, function (err, docs) {
                 for (var i = 0; i < docs.length; i++) {
                     var comicSet = docs[i];
@@ -548,7 +553,7 @@ var Router = (function () {
             console.log(req.body.allowOthersToEdit);
             var imageList = req.body.imageList;
             // Submit to the DB
-            collection.update({ title: oldTitle }, { $set: { title: newTitle, editedby: editedby, imageList: imageList, allowOthersToEdit: allowOthersToEdit } }, function (err) {
+            collection.update({ title: oldTitle }, { $set: { title: newTitle, editedby: editedby, imageList: imageList, allowOthersToEdit: othersToEdit } }, function (err) {
                 console.log("comic set updated");
             });
             res.send({ redirect: "/" });

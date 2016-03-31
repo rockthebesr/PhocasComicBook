@@ -70,11 +70,12 @@ block content
             #btnNext
                 button(class="btn") Next
 
-        if(othersToEdit === 1)
-            main.o-content
-                .o-container
-                    a(href='/edit_comic/' + title) Edit this comic!
-
+        main.o-content
+            .o-container
+                if(allowOthersToEdit === 1)
+                    #editComicBottom
+                        a(href='/edit_comic/' + title) Edit this comic!
+                        #shop       
 
         header.o-header
             .o-container
