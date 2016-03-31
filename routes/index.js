@@ -400,7 +400,7 @@ var Router = (function () {
     });
 
             var url = 'https://s3-us-west-2.amazonaws.com/phocascomicsstorage/' + newPath;
-            console.log(dataBucket);
+            console.log(url);
 
             fs.rename(oldPath, newPath, function () {
                 var db = req.db;
