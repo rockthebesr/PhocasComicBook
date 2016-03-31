@@ -5,6 +5,7 @@ block scripts
       var uploadImageList = !{JSON.stringify(imageList)};
       var title = !{JSON.stringify(title)};
       var imageList = imageList || {};
+      var editedby = !{JSON.stringify(editedby)};
 
     script(src= '/javascript/edit_comic.js')
 
@@ -84,6 +85,7 @@ block content
                 br
                 input#comicSetTitle(type="text", value="#{title}")
                 button#btmSaveComicSet Save comic set
+                button#btmDeleteComicSet Delete this comic set
 
 
     // ul

@@ -12,12 +12,28 @@ jQuery(document).on("click", "#btmSaveComicSet", function () {
     saveComicSet();
 });
 
+jQuery(document).on("click", "#btmDeleteComicSet", function() {
+    deleteComicSet();
+});
+
 jQuery(document).on("click", ".deleteImageButton", function() {
     var imageIndex = $('.deleteImageButton').index(this);
     var imageUrl = uploadImageList[imageIndex].imageUrl;
     deleteComicImage(imageUrl);
 });
 
+var deleteComicSet = function () {
+    $.ajax({
+        url: '/deleteComicSet',
+        type: 'DELETE',
+        contentType: 'application/json',
+        data : JSON.stringify({comicSetTitle: title}),
+        success: function(data) {
+            if (typeof data.redirect == 'string')
+                window.location = data.redirect;
+        }
+    })
+};
 var deleteComicImage = function(imageUrl) {
     $.ajax({
         url: '/deleteComicImage',
@@ -56,6 +72,7 @@ var saveComicSet = function () {
                 oldComicSetTitle: title,
                 newComicSetTitle: inputTitle,
                 allowOthersToEdit: allowOthersToEdit,
+                editedby: editedby,
                 imageList: imageList}),
             success: function (data) {
                 if (typeof data.redirect == 'string')
