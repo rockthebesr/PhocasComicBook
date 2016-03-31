@@ -47,16 +47,7 @@ div#header {
     text-align: center;
     vertical-align: middle;
 }
-#rate {
-    line-height:30px;
-    /*background-color:#eeeeee;*/
-    /*height:600px;*/
-    /*width:100px;*/
-    float:left;
-    padding:15px;
-    text-align: center;
-    vertical-align: middle;
-}
+
 #login{
     line-height:30px;
     background-color:#eeeeee;
