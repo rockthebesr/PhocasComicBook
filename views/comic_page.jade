@@ -58,7 +58,6 @@ block content
                 a.o-header-nav__link(href='/login')
                     .fa-1x Log in
                     //i.fa.fa-star
-
         header.o-header
             .o-container
                 a(href='/')
@@ -72,10 +71,9 @@ block content
 
         main.o-content
             .o-container
-                if(allowOthersToEdit === 1)
-                    #editComicBottom
-                        a(href='/edit_comic/' + title) Edit this comic!
-                        #shop       
+                #editComicBottom
+                    a(href='/edit_comic/' + title) Edit this comic!
+                    #shop
 
         header.o-header
             .o-container

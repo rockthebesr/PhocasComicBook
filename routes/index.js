@@ -489,16 +489,14 @@ var Router = (function () {
             var collection = db.get('uploadedSets');
             var imageList = req.body.imageList;
             console.log(req.body.allowOthersToEdit);
-            var othersToEdit = 0;
-            if (req.body.allowOthersToEdit === "Y"){
-                othersToEdit = 1
-            }
+            var allowOthersToEdit = req.body.allowOthersToEdit;
+            
             console.log(othersToEdit);
             // Submit to the DB
             collection.insert({
                 "title": req.body.comicSetTitle,
                 "imageList": req.body.imageList,
-                "allowOthersToEdit": othersToEdit,
+                "allowOthersToEdit": allowOthersToEdit,
                 "uploadedby": req.session.username,
                 "editedby"  : "aaa",
                 "numberofR": 0,
@@ -530,10 +528,8 @@ var Router = (function () {
             var newTitle = req.body.newComicSetTitle;
             var editedby = "aaa";
             console.log(req.body.allowOthersToEdit);
-            var othersToEdit = 0;
-            if (req.body.allowOthersToEdit === "Y"){
-                othersToEdit = 1
-            }
+            var allowOthersToEdit = req.body.allowOthersToEdit;
+           
             console.log(othersToEdit);
             collection.find({}, {}, function (err, docs) {
                 for (var i = 0; i < docs.length; i++) {
@@ -553,7 +549,7 @@ var Router = (function () {
             console.log(req.body.allowOthersToEdit);
             var imageList = req.body.imageList;
             // Submit to the DB
-            collection.update({ title: oldTitle }, { $set: { title: newTitle, editedby: editedby, imageList: imageList, allowOthersToEdit: othersToEdit } }, function (err) {
+            collection.update({ title: oldTitle }, { $set: { title: newTitle, editedby: editedby, imageList: imageList, allowOthersToEdit: allowOthersToEdit } }, function (err) {
                 console.log("comic set updated");
             });
             res.send({ redirect: "/" });
