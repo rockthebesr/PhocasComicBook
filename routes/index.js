@@ -75,10 +75,12 @@ var Router = (function () {
             collection.findOne({ username: req.body.username }, function (err, user) {
                 if (user) {
                     req.session.usernameexists = 1;
+                    req.session.passwordshort = 0;
                     res.redirect('/sign_up');
                 }
                 else if (req.body.userpassword.length < 8) {
                     req.session.passwordshort = 1;
+                    req.session.usernameexists = 0;
                     res.redirect('/sign_up');
                 }
                 else {
@@ -316,7 +318,8 @@ var Router = (function () {
                 res.render('edit_comic', {
                     "title": "undefined",
                     "imageList": imageList,
-                    "loggedin": req.session.loggedin
+                    "loggedin": req.session.loggedin,
+                    "user_name": req.session.username
                 });
             });
         });
@@ -356,7 +359,8 @@ var Router = (function () {
                     res.render('edit_comic', {
                         "title": title,
                         "imageList": imageList,
-                        "loggedin": req.session.loggedin
+                        "loggedin": req.session.loggedin,
+                        "user_name": req.session.username
                     });
                 }
                 else {
@@ -379,7 +383,8 @@ var Router = (function () {
                 }
                 res.render('manage_comics', {
                     "comicSetList": comicSets,
-                    "loggedin": req.session.loggedin
+                    "loggedin": req.session.loggedin,
+                    "user_name": req.session.username
                 });
             });
         });
@@ -398,7 +403,8 @@ var Router = (function () {
                 }
                 res.render('edited_comics', {
                     "comicSetList": comicSets,
-                    "loggedin": req.session.loggedin
+                    "loggedin": req.session.loggedin,
+                    "user_name": req.session.username
                 });
             });
         });
