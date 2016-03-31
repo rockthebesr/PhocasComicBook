@@ -489,11 +489,16 @@ var Router = (function () {
             var collection = db.get('uploadedSets');
             var imageList = req.body.imageList;
             console.log(req.body.allowOthersToEdit);
+            var othersToEdit = 0;
+            if (req.body.allowOthersToEdit === "Y"){
+                othersToEdit = 1
+            }
+            console.log(othersToEdit);
             // Submit to the DB
             collection.insert({
                 "title": req.body.comicSetTitle,
                 "imageList": req.body.imageList,
-                "allowOthersToEdit": req.body.allowOthersToEdit,
+                "allowOthersToEdit": othersToEdit,
                 "uploadedby": req.session.username,
                 "editedby"  : "aaa",
                 "numberofR": 0,
