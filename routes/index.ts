@@ -33,7 +33,7 @@ class Router {
         var session = require('express-session');
         var multer = require('multer');
         var upload = multer({ dest: './public/uploads'});
-
+        var aws = require('aws-sdk');
 
         /*Middlewear for Session */
         router.use(session({secret: 'randomstring',
@@ -299,7 +299,7 @@ class Router {
                         for (var k = 0; k < imageList.length; k++) {
                             var image = imageList[k];
                             var imageUrl = image.imageUrl;
-                            image.imageUrl = "../" + imageUrl;
+                            image.imageUrl = imageUrl;
                         }
                         var title = comicSet.title;
                         if (i > 0) {prevSet = docs[i-1].title}
@@ -307,8 +307,12 @@ class Router {
                         break;
                     }
                 }
+                var random = Math.floor(Math.random() * docs.length) + 0;
+                var randomTitle = docs[random].title;
+
                 res.render('comic_page', {
                     "title":title,
+                    "randomTitle": randomTitle,
                     //"imageList" : imageList,
                     "theComicSet": theComicSet,
                     "nextSetTitle" : nextSet || "",
@@ -354,7 +358,7 @@ class Router {
                         for (var k = 0; k < imageList.length; k++) {
                             var image = imageList[k];
                             var imageUrl = image.imageUrl;
-                            image.imageUrl = "../" + imageUrl;
+                            image.imageUrl = imageUrl;
                         }
                         var title = comicSet.title;
                         allowOthersToEdit = comicSet.allowOthersToEdit;
@@ -398,9 +402,34 @@ class Router {
         router.post('/upload',  upload.single("image"), function(req, res) {
             var fs = require("fs");
             var oldPath = req.file.path;
+            var string = oldPath.substring(25, oldPath.length);
             var newPath = oldPath + '.jpg';
             console.log(newPath);
             var title = req.body.title == "undefined" ? undefined : req.body.title;
+            aws.config.update({accessKeyId: "AKIAI3H44R3RLQDET4ZA", secretAccessKey: "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"});
+            var s3bucket = new aws.S3({
+             params: {Bucket: 'phocascomicsstorage'}
+            });
+
+            var params = {Key: newPath, Body: ''};
+            
+           
+            fs.readFile(req.file.path, function(err, data) {
+              if (err) throw err;
+            params.Body = data;
+
+            s3bucket.putObject(params, function(errBucket, dataBucket) {
+             if (errBucket) {
+                 console.log("Error uploading data: ", errBucket);
+                } else {
+                 console.log(dataBucket);
+                 
+          }
+      });
+    });
+
+            var url = 'https://s3-us-west-2.amazonaws.com/phocascomicsstorage/' + newPath;
+            console.log(url);
             fs.rename(oldPath, newPath, function() {
 
                 var db = req.db;
@@ -411,13 +440,13 @@ class Router {
                     imageData = {
                         "isImageInUse" : true,
                         "imagePosition" : unusedImages + 1,
-                        "imageUrl" : newPath.slice(7, newPath.length)
+                        "imageUrl" : url
                     };
                 } else {
                     imageData = {
                         "isImageInUse" : false,
                         "imagePosition" : unusedImages + 1,
-                        "imageUrl" : newPath.slice(7, newPath.length)
+                        "imageUrl" : url
                     };
                 }
                 var collection = db.get('uploadedImages');
