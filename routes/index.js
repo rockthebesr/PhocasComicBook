@@ -375,8 +375,8 @@ var Router = (function () {
             var oldPath = req.file.path;
             var string = oldPath.substring(25, oldPath.length);
             var newPath = oldPath + '.jpg';
-            var string = newPath;
-            var s3key = string.substring(15, newPath.length)
+    
+            var s3key = newPath;
             console.log(newPath);
             var title = req.body.title == "undefined" ? undefined : req.body.title;
             aws.config.update({accessKeyId: "AKIAI3H44R3RLQDET4ZA", secretAccessKey: "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"});
@@ -384,7 +384,7 @@ var Router = (function () {
              params: {Bucket: 'phocascomicsstorage'}
             });
 
-            var params = {Key: string, Body: ''};
+            var params = {Key: s3key, Body: ''};
             
            
             fs.readFile(req.file.path, function(err, data) {
@@ -401,7 +401,7 @@ var Router = (function () {
       });
     });
 
-            var url = 'https://s3-us-west-2.amazonaws.com/phocascomicsstorage/public%5Cuploads%5C' + s3key;
+            var url = 'https://s3-us-west-2.amazonaws.com/phocascomicsstorage/public/uploads/' + s3key;
 
             fs.rename(oldPath, newPath, function () {
                 var db = req.db;
