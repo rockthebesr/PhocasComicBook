@@ -169,6 +169,17 @@ img {
   }
 }
 
+.o-subheader__title {
+  margin: 24px;
+  padding: 0;
+  color: black;
+  font-size: 24px;
+  font-weight: 300;
+  text-align: center;
+
+  
+}
+
 /* -----------------------------------------------------------------------------
   HOME OBJECT
 
@@ -332,7 +343,60 @@ img {
     font-size: 42px;
   }
 }
+/* -----------------------------------------------------------------------------
+  SUBHEADER2 
 
+----------------------------------------------------------------------------- */
+.o-sheader {
+  margin: 0;
+  padding: 0;
+  float:left;
+}
+
+.o-sheader-nav {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  background-color: #28aadc;
+  padding-right: 10%;
+  font-size: 13px;
+  line-height: 1.2;
+  float:left;
+}
+
+.o-sheader-nav__link {
+  padding: 18px;
+  color: #fff;
+  float:left;
+}
+
+.o-sheader-nav__link:hover {
+  color: #fff;
+  background-color: #166888;
+}
+
+.o-sheader__title {
+  margin: 24px;
+  padding: 0;
+  color: black;
+  font-size: 12px;
+  font-weight: 300;
+  text-align: center;
+  float:left;
+}
+
+@media all and (min-width: 48px) {
+  .o-sheader__title {
+    margin: 36px;
+    font-size: 12px;
+    float:left;
+  }
+}
 /* -----------------------------------------------------------------------------
   MAIN OBJECT
 

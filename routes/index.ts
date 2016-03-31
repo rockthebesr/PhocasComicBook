@@ -393,7 +393,26 @@ class Router {
                     }
                 }
                 res.render('manage_comics', {
-                    "comicSets":comicSets
+                    "comicSetList":comicSets
+                });
+            });
+        });
+
+        /* Get Edited Comics page. */
+        router.get('/edited_comics', function(req, res) {
+            var db = req.db;
+            var collection = db.get('uploadedSets');
+            var userloggingin = req.session.username;
+            var comicSets = [];
+            collection.find({},{},function(err,docs){
+                for(var i =0; i<docs.length; i++) {
+                    var comicSet = docs[i];
+                    if (comicSet.uploadedby === userloggingin) {
+                        comicSets.push(comicSet);
+                    }
+                }
+                res.render('edited_comics', {
+                    "comicSetList":comicSets
                 });
             });
         });

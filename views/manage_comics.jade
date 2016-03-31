@@ -77,12 +77,15 @@ block content
                 a(href='/')
                     h1.o-header__title Phocas
 
-    #create           
-        #btnCreate 
-            button(class="btn") Created
-    #create       
-        #btnEdit
-            button(class="btn") Edited   
+        subheader.o-subheader
+            .o-container
+                a(href='/manage_comics/')
+                    h1.o-subheader__title Created Comics
+        
+        subheader.o-subheader
+            .o-container
+                a(href='/edited_comics')
+                    h1.o-subheader__title Edited Comics
 
         main
             if (indicator === 1)
