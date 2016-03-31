@@ -46,8 +46,7 @@ block content
 
 
             if(loggedin === 1)
-                p.fa-xx Welcome,
-                .fa-2x= username
+                p.fa-1x-black Welcome, #{user_name}
                 a.o-header-nav__link(href='/logout')
                     .fa-1x Log out
                     //i.fa.fa-star
@@ -55,6 +54,7 @@ block content
                 a.o-header-nav__link(href='/login')
                     .fa-1x Log in
                     //i.fa.fa-star
+                    
         header.o-header
             .o-container
                 a(href='/')
