@@ -78,8 +78,8 @@ block content
                             button(class="deleteImageButton") Delete this image
                 div
                 #allowEditSection
-                    input#editedbyothers(type="text", value="#{Y/N}")
-                    t1 Allow other contributors to edit this comic set (Y/N).
+                    input#allowEditCheckBox(type='checkbox', checked=false)
+                    t1 Allow other contributors to edit this comic set.
                 t2  Enter the comic set name and then save
                 br
                 input#comicSetTitle(type="text", value="#{title}")
