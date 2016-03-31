@@ -20,6 +20,7 @@ var Router = (function () {
         var session = require('express-session');
         var multer = require('multer');
         var upload = multer({ dest: './public/uploads' });
+        var aws = require('aws-sdk');
         /*Middlewear for Session */
         router.use(session({ secret: 'randomstring',
             saveUninitialized: true,
@@ -378,7 +379,7 @@ var Router = (function () {
             var s3key = string.substring(15, newPath.length)
             console.log(newPath);
             var title = req.body.title == "undefined" ? undefined : req.body.title;
-            aws.config.update({accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY});
+            aws.config.update({accessKeyId: "AKIAI3H44R3RLQDET4ZA", secretAccessKey: "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"});
             var s3bucket = new aws.S3({
              params: {Bucket: 'phocascomicsstorage'}
             });
