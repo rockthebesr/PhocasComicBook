@@ -32,7 +32,7 @@ var deleteComicImage = function(imageUrl) {
 };
 
 var saveComicSet = function () {
-    var allowOthersToEdit = $('#allowEditCheckBox').is(':checked');
+    var allowOthersToEdit = $('#allowEditCheckBox').is(':checked') ? 'true' : 'false';
     if (title != "undefined") {
         var positions = [];
         jQuery(".uploadedImagePosition").each(function(index, element) {

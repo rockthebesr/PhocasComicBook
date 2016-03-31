@@ -380,7 +380,7 @@ class Router {
                         break;
                     }
                 }
-                if (currentUser == comicSetUser || allowOthersToEdit) {
+                if (currentUser == comicSetUser || allowOthersToEdit == 'true') {
                     res.render('edit_comic', {
                         "title":title,
                         "imageList" : imageList

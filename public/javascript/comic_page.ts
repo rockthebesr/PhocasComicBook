@@ -25,8 +25,8 @@
 
 
     jQuery(document).on('click', '#editComicBottom', function() {
-        if (currentUser != uploadedBy || allowOthersToEdit == "false") {
-            window.alert("You cannot edit this comic!")
+        if (currentUser != uploadedBy && allowOthersToEdit == "false") {
+            alert("You cannot edit this comic!")
         } else {
             $.ajax({
                 url: '/edit_comic/' + title,
