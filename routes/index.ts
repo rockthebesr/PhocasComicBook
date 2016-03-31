@@ -243,7 +243,7 @@ class Router {
                         if(docs[i].usersList === undefined){
                             collection.update({title: title},
                                 {$set: {"usersList" : [theusername]}});
-                            res.send(0);
+                            res.send("update");
                             break;
                         }else{
                             for(var j = 0; j < (docs[i].usersList).length; j++){
@@ -260,7 +260,7 @@ class Router {
                                     {$set: {usersList: newrater}}, function(err) {
                                         console.log("One more user rated " + docs[i].title);
                                     });
-                                res.send(0);
+                                res.send("update");
                                 break;
                             }
                         }

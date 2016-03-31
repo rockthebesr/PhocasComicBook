@@ -21,15 +21,13 @@ var Router = (function () {
         var multer = require('multer');
         var upload = multer({ dest: './public/uploads' });
         var aws = require('aws-sdk');
-
         /*Middlewear for Session */
         router.use(session({ secret: 'randomstring',
             saveUninitialized: true,
             resave: true }));
-        /* GET login page. */
         router.get('/login', function (req, res, next) {
             res.render('login', { title: 'Login',
-                                 "invalidusername": req.session.invalidusername });
+                "invalidusername": req.session.invalidusername });
         });
         router.post('/login', function (req, res) {
             var db = req.db;
@@ -58,12 +56,10 @@ var Router = (function () {
                 }
             });
         });
-
-        /* GET signup page. */
         router.get('/sign_up', function (req, res, next) {
             res.render('sign_up', { title: 'Sign Up',
-                                    "passwordshort": req.session.passwordshort,
-                                    "usernameexists": req.session.usernameexists  });
+                "passwordshort": req.session.passwordshort,
+                "usernameexists": req.session.usernameexists });
         });
         /* POST to Add User Service */
         router.post('/sign_up', function (req, res) {
@@ -216,7 +212,7 @@ var Router = (function () {
                     if (title === docs[i].title) {
                         if (docs[i].usersList === undefined) {
                             collection.update({ title: title }, { $set: { "usersList": [theusername] } });
-                            res.send(0);
+                            res.send("update");
                             break;
                         }
                         else {
@@ -234,7 +230,7 @@ var Router = (function () {
                                 collection.update({ title: title }, { $set: { usersList: newrater } }, function (err) {
                                     console.log("One more user rated " + docs[i].title);
                                 });
-                                res.send(0);
+                                res.send("update");
                                 break;
                             }
                         }
@@ -382,7 +378,6 @@ var Router = (function () {
                 });
             });
         });
-
         /* Get Edited Comics page. */
         router.get('/edited_comics', function (req, res) {
             var db = req.db;
@@ -554,3 +549,4 @@ var Router = (function () {
 })();
 var router = new Router();
 module.exports = router.router;
+//# sourceMappingURL=index.js.map

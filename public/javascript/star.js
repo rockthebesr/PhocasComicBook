@@ -81,7 +81,7 @@ $(function () {
                     theusername: user }),
                 success: function (indicator) {
                     alert(indicator);
-                    if (indicator == 0) {
+                    if (indicator == "update") {
                         $.ajax({
                             url: '/updateRating',
                             type: 'POST',
