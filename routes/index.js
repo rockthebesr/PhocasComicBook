@@ -488,7 +488,7 @@ var Router = (function () {
             var db = req.db;
             var collection = db.get('uploadedSets');
             var imageList = req.body.imageList;
-
+            console.log(req.body.allowOthersToEdit);
             // Submit to the DB
             collection.insert({
                 "title": req.body.comicSetTitle,
@@ -540,6 +540,7 @@ var Router = (function () {
             console.log(editedby);
 
             var allowOthersToEdit = req.body.allowOthersToEdit;
+            console.log(req.body.allowOthersToEdit);
             var imageList = req.body.imageList;
             // Submit to the DB
             collection.update({ title: oldTitle }, { $set: { title: newTitle, editedby: editedby, imageList: imageList, allowOthersToEdit: allowOthersToEdit } }, function (err) {
