@@ -488,12 +488,14 @@ var Router = (function () {
             var db = req.db;
             var collection = db.get('uploadedSets');
             var imageList = req.body.imageList;
+
             // Submit to the DB
             collection.insert({
                 "title": req.body.comicSetTitle,
                 "imageList": req.body.imageList,
                 "allowOthersToEdit": req.body.allowOthersToEdit,
                 "uploadedby": req.session.username,
+                "editedby"  : "  ",
                 "numberofR": 0,
                 "totalRate": 0,
                 "avgRate": 0
@@ -521,10 +523,18 @@ var Router = (function () {
             var collection = db.get('uploadedSets');
             var oldTitle = req.body.oldComicSetTitle;
             var newTitle = req.body.newComicSetTitle;
+            var editedby = "   ";
+            var comicSet = collection.findOne({ title: title }, function (err, comicSet) {
+            if (comicSet) {
+                if (comicSet.uploadedby != req.session.username){
+                    var editedby = req.session.username
+                }
+                }  
+            });
             var allowOthersToEdit = req.body.allowOthersToEdit;
             var imageList = req.body.imageList;
             // Submit to the DB
-            collection.update({ title: oldTitle }, { $set: { title: newTitle, imageList: imageList, allowOthersToEdit: allowOthersToEdit } }, function (err) {
+            collection.update({ title: oldTitle }, { $set: { title: newTitle, editedby: editedby ,imageList: imageList, allowOthersToEdit: allowOthersToEdit } }, function (err) {
                 console.log("comic set updated");
             });
             res.send({ redirect: "/" });
