@@ -310,8 +310,8 @@ var Router = (function () {
             var collection = db.get('uploadedImages');
             collection.find({}, {}, function (e, docs) {
                 var imageList = [];
-                for (var _i = 0, docs_1 = docs; _i < docs_1.length; _i++) {
-                    var image = docs_1[_i];
+-                for (var _i = 0; _i < docs.length; _i++) {
+ -                  var image = docs[_i];
                     if (!image.isImageInUse)
                         imageList.push(image);
                 }
