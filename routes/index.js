@@ -12,7 +12,7 @@ var User = (function () {
         return this.password;
     };
     return User;
-})();
+}());
 var Router = (function () {
     function Router() {
         var express = require('express');
@@ -27,7 +27,8 @@ var Router = (function () {
             resave: true }));
         router.get('/login', function (req, res, next) {
             res.render('login', { title: 'Login',
-                "invalidusername": req.session.invalidusername });
+                "invalidusername": req.session.invalidusername,
+                "loggedin": req.session.loggedin });
         });
         router.post('/login', function (req, res) {
             var db = req.db;
@@ -59,7 +60,8 @@ var Router = (function () {
         router.get('/sign_up', function (req, res, next) {
             res.render('sign_up', { title: 'Sign Up',
                 "passwordshort": req.session.passwordshort,
-                "usernameexists": req.session.usernameexists });
+                "usernameexists": req.session.usernameexists,
+                "loggedin": req.session.loggedin });
         });
         /* POST to Add User Service */
         router.post('/sign_up', function (req, res) {
@@ -73,10 +75,12 @@ var Router = (function () {
             collection.findOne({ username: req.body.username }, function (err, user) {
                 if (user) {
                     req.session.usernameexists = 1;
+                    req.session.passwordshort = 0;
                     res.redirect('/sign_up');
                 }
                 else if (req.body.userpassword.length < 8) {
                     req.session.passwordshort = 1;
+                    req.session.usernameexists = 0;
                     res.redirect('/sign_up');
                 }
                 else {
@@ -306,14 +310,16 @@ var Router = (function () {
             var collection = db.get('uploadedImages');
             collection.find({}, {}, function (e, docs) {
                 var imageList = [];
-                for (var _i = 0; _i < docs.length; _i++) {
-                    var image = docs[_i];
+                for (var _i = 0, docs_1 = docs; _i < docs_1.length; _i++) {
+                    var image = docs_1[_i];
                     if (!image.isImageInUse)
                         imageList.push(image);
                 }
                 res.render('edit_comic', {
                     "title": "undefined",
                     "imageList": imageList,
+                    "loggedin": req.session.loggedin,
+                    "user_name": req.session.username,
                     "editedby": []
                 });
             });
@@ -352,10 +358,12 @@ var Router = (function () {
                         break;
                     }
                 }
-                if (currentUser == comicSetUser || allowOthersToEdit == 'true') {
+                if (currentUser == comicSetUser || allowOthersToEdit) {
                     res.render('edit_comic', {
                         "title": title,
                         "imageList": imageList,
+                        "loggedin": req.session.loggedin,
+                        "user_name": req.session.username,
                         "editedby": editedby
                     });
                 }
@@ -378,7 +386,9 @@ var Router = (function () {
                     }
                 }
                 res.render('manage_comics', {
-                    "comicSetList": comicSets
+                    "comicSetList": comicSets,
+                    "loggedin": req.session.loggedin,
+                    "user_name": req.session.username
                 });
             });
         });
@@ -399,7 +409,9 @@ var Router = (function () {
                     }
                 }
                 res.render('edited_comics', {
-                    "comicSetList": comicSets
+                    "comicSetList": comicSets,
+                    "loggedin": req.session.loggedin,
+                    "user_name": req.session.username
                 });
             });
         });
@@ -483,11 +495,15 @@ var Router = (function () {
             var db = req.db;
             var collection = db.get('uploadedSets');
             var imageList = req.body.imageList;
+            console.log(req.body.allowOthersToEdit);
+            var allowOthersToEdit = req.body.allowOthersToEdit;
+            
+            console.log(allowOthersToEdit);
             // Submit to the DB
             collection.insert({
                 "title": req.body.comicSetTitle,
                 "imageList": req.body.imageList,
-                "allowOthersToEdit": req.body.allowOthersToEdit,
+                "allowOthersToEdit": allowOthersToEdit,
                 "uploadedby": req.session.username,
                 "editedby": [],
                 "numberofR": 0,
@@ -520,6 +536,7 @@ var Router = (function () {
             var editedby = req.body.editedby;
             editedby.push(req.session.username);
             var allowOthersToEdit = req.body.allowOthersToEdit;
+            console.log(req.body.allowOthersToEdit);
             var imageList = req.body.imageList;
             // Submit to the DB
             collection.update({ title: oldTitle }, { $set: { title: newTitle, imageList: imageList, allowOthersToEdit: allowOthersToEdit, editedby: editedby } }, function (err) {
@@ -557,12 +574,13 @@ var Router = (function () {
             var db = req.db;
             var collection = db.get('uploadedSets');
             var title = req.body.comicSetTitle;
-            collection.remove({ title: title });
+            collection.remove({title: title});
             res.send({ redirect: "/" });
         });
         this.router = router;
     }
     return Router;
-})();
+}());
 var router = new Router();
 module.exports = router.router;
+//# sourceMappingURL=index.js.map
