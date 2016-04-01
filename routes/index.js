@@ -12,7 +12,7 @@ var User = (function () {
         return this.password;
     };
     return User;
-}());
+})();
 var Router = (function () {
     function Router() {
         var express = require('express');
@@ -580,7 +580,7 @@ var Router = (function () {
         this.router = router;
     }
     return Router;
-}());
+})();
 var router = new Router();
 module.exports = router.router;
 //# sourceMappingURL=index.js.map
